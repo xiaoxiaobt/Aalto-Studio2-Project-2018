@@ -10,7 +10,7 @@ class Fridge {
   def food_list_raw = food_list.filter(_._1.ingredients.isEmpty)
   def food_list_cooked = food_list.filter(!_._1.ingredients.isEmpty)
   def p[T](a: T): Unit = if (settings.diagnosis) println(a.toString)
-  
+
   def remove_food(food: Food, amount: Double): Boolean = {
     if (food_list.contains(food) && amount >= 0) {
       if (food_list(food) < amount) {

@@ -5,11 +5,11 @@ import org.junit.Assert._
 import scala.collection.mutable.Map
 
 class UnitTests {
-  var settings = new Settings  // Here settings only work for diagnosis.
+  var settings = new Settings // Here settings only work for diagnosis.
   def p[T](a: T) = if (settings.diagnosis) print(a.toString)
 
   def s() = if (settings.diagnosis) print("\t\t\t\tpass\n")
-  
+
   /** Unit test 1 */
   @Test def test1() {
     p("-Test 1: Fridge add/remove functions\n")
@@ -119,7 +119,7 @@ class UnitTests {
     s()
     p("-Test 3: Done\n")
   }
-  
+
   /** Unit test 4 */
   @Test def test4() {
     p("-Test 4: Menu availability\n")

@@ -25,7 +25,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   } catch {
     case e: NumberFormatException =>
   }
-  
+
   def allergies_remove(map: scala.collection.mutable.Map[Food, Double]): scala.collection.mutable.Map[Food, Double] = {
     var allergies = (fridge.settings.all_abbri zip ui.right_checkbox_list.map(_.selected)).filter(_._2).map(_._1)
     map.filter(x => allergies.forall(y => x._1.tag.contains(y)))

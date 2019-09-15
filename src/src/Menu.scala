@@ -42,9 +42,9 @@ class Menu {
   //  test_list = fridge.food_list ++ Map()
   //  test_state = true
   //}
-  
+
   /**Returns the amount of food as an integer*/
-  def check_availability(food: Food): Int = {  
+  def check_availability(food: Food): Int = {
     test_list = fridge.food_list ++ Map()
     test_state = true
     if (fridge.food_list.map(_._1).toList.contains(food)) {
@@ -71,14 +71,14 @@ class Menu {
         if (food.ingredients.isEmpty) {
           test_state = false
         } else {
-          food.ingredients.foreach(x=>check_amount(x._1, x._2))
+          food.ingredients.foreach(x => check_amount(x._1, x._2))
         }
       }
     } else {
       test_state = false
     }
   }
-  
+
   def return_food_with_name(name: String): Option[Food] = {
     if (fridge.food_list.filter(_._1.name == name).size != 0) {
       Some(fridge.food_list.filter(_._1.name == name).head._1)
@@ -86,7 +86,7 @@ class Menu {
       None
     }
   }
-  
+
   def make(food: Food, num: Double): Unit = {
     if (fridge.food_list(food) >= num) {
       fridge.food_list(food) -= num
@@ -95,7 +95,7 @@ class Menu {
       fridge.food_list(food) = 0
       make(food, temp)
     } else {
-      food.ingredients.foreach(x=>make(x._1, x._2*num))
+      food.ingredients.foreach(x => make(x._1, x._2 * num))
     }
   }
 

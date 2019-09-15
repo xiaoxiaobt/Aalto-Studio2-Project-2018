@@ -22,7 +22,7 @@ class Holder(name_add: String, ingre_map: Map[String, Double], first_unit_add: S
   var aller = alleriges_add
   var description = description_add
   var boo = isMenu_add
-  var amount = amount_add
+  var amount = amount_add 
 }
 
 class UI extends MainFrame {

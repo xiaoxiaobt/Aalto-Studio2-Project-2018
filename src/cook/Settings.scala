@@ -1,4 +1,4 @@
-package src
+package cook
 import java.awt.Color
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Map

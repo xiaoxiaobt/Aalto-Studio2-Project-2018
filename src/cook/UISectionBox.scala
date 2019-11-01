@@ -1,4 +1,4 @@
-package src
+package cook
 import scala.swing._
 import scala.swing.BorderPanel.Position._
 import scala.swing.Orientation._
@@ -238,7 +238,7 @@ class UISectionBox(food: Food, ui: UI) {
       if (menu.return_food_with_name(name_add) != None) throw new IOException
       if (ingredients_add.isEmpty) {
         var food_add = new Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
-        if (isMenu_add) { food_add.set_to_menu() }
+        if (isMenu_add) food_add.set_to_menu()
         menu.fridge.add_food(food_add, amount_add)
       } else {
         var ingre_map: collection.mutable.Map[Food, Double] = {
@@ -268,13 +268,12 @@ class UISectionBox(food: Food, ui: UI) {
       }
     }
     ui.left_feedback.repaint()
-    if (ui.temp_search_text.isEmpty()) {
+    if (ui.temp_search_text.isEmpty) {
       ui.search_box.text = " Search for recipes or ingredients here..."
-      ui.search_box.foreground = GRAY
     } else {
       ui.search_box.text = ui.temp_search_text
-      ui.search_box.foreground = GRAY
     }
+    ui.search_box.foreground = GRAY
     if (ui.changed == 0) ui.refresh_menu_box() else ui.change_box(ui.search_box.text)
   }
 

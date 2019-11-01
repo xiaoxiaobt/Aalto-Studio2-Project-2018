@@ -1,5 +1,3 @@
 language: scala
-addons:
-  apt:
-    packages:
-      ant
+install: ant deps
+

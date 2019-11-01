@@ -1,4 +1,4 @@
-package src
+package cook
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source._
 import scala.util.control.Breaks._
@@ -19,7 +19,7 @@ class FileReader(ui: UI) {
       var num = item._2
       var boo = if (food.is_menu) "1" else "0"
       var ingredients_string = ""
-      if (!food.ingredients.isEmpty) {
+      if (food.ingredients.nonEmpty) {
         var ingredients_string = food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
       }
       pw.write(food.name + ":" + ingredients_string + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + num.toString + "\n")
@@ -29,9 +29,9 @@ class FileReader(ui: UI) {
 
   /**IO Read Function*/
   def IORead() = {
-    var lines = fromFile("src/saved_data/default.txt").getLines().filter(!_.isEmpty())
+    var lines = fromFile("src/saved_data/default.txt").getLines().filter(_.nonEmpty)
     try {
-      lines = fromFile("src/saved_data/data.txt").getLines().filter(!_.isEmpty)
+      lines = fromFile("src/saved_data/data.txt").getLines().filter(_.nonEmpty)
       ui.left_feedback.text = "> User saved file loaded successfully. "
     } catch {
       case e: FileNotFoundException => {
@@ -96,7 +96,7 @@ class FileReader(ui: UI) {
           }
         }
         var accumulator = 0
-        while (!buffer.isEmpty) {
+        while (buffer.nonEmpty) {
           try {
             for (data <- buffer) {
               var name_any = data(0).asInstanceOf[String]

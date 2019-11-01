@@ -1,5 +1,5 @@
-package src
-
+package tests
+import cook._
 import org.junit.Test
 import org.junit.Assert._
 import scala.collection.mutable.Map

@@ -1,4 +1,4 @@
-package src
+package cook
 import collection.mutable._
 
 class Fridge {
@@ -8,7 +8,7 @@ class Fridge {
     food_list.toString()
   }
   def food_list_raw = food_list.filter(_._1.ingredients.isEmpty)
-  def food_list_cooked = food_list.filter(!_._1.ingredients.isEmpty)
+  def food_list_cooked = food_list.filter(_._1.ingredients.nonEmpty)
   def p[T](a: T): Unit = if (settings.diagnosis) println(a.toString)
 
   def remove_food(food: Food, amount: Double): Boolean = {

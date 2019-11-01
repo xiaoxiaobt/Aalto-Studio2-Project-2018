@@ -1,4 +1,4 @@
-package src
+package cook
 import scala.swing._
 import scala.swing.BorderPanel.Position._
 import scala.swing.Orientation._

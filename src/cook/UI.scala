@@ -1,4 +1,4 @@
-package src
+package cook
 import scala.swing._
 import scala.swing.BorderPanel.Position._
 import scala.swing.Orientation._
@@ -22,7 +22,7 @@ class Holder(name_add: String, ingre_map: Map[String, Double], first_unit_add: S
   var aller = alleriges_add
   var description = description_add
   var boo = isMenu_add
-  var amount = amount_add 
+  var amount = amount_add
 }
 
 class UI extends MainFrame {
@@ -114,10 +114,10 @@ class UI extends MainFrame {
 
   //IO Read Function
   def IORead() = {
-    var lines = fromFile("src/saved_data/default.txt").getLines.filter(!_.isEmpty)
+    var lines = fromFile("src/saved_data/default.txt").getLines.filter(_.nonEmpty)
     var line_num = 1
     try {
-      lines = fromFile("src/saved_data/data.txt").getLines.filter(!_.isEmpty)
+      lines = fromFile("src/saved_data/data.txt").getLines.filter(_.nonEmpty)
       left_feedback.text = "> User-saved file loaded successfully. "
       left_feedback.repaint()
     } catch {
@@ -185,7 +185,7 @@ class UI extends MainFrame {
           }
         }
         var accumulator = 0
-        while (!buffer.isEmpty) {
+        while (buffer.nonEmpty) {
           try {
             for (data <- buffer) {
               var pre_ingre_list = data.ingre.map(_._1)
@@ -247,7 +247,7 @@ class UI extends MainFrame {
   }
   def refresh_menu_box() = {
     listenTo(search_box)
-    while (!left_normal_menu_box.contents.isEmpty) {
+    while (left_normal_menu_box.contents.nonEmpty) {
       left_normal_menu_box.contents -= left_normal_menu_box.contents.last
     }
     var food_list_menu = food_list.filter(_._1.is_menu()).toSeq.sortBy(x => menu.check_availability(x._1)).reverse.toMap
@@ -264,7 +264,7 @@ class UI extends MainFrame {
   }
   def change_box(keyword: String) = {
     var sub_ui = new UISearchRepresentation(this, keyword)
-    while (!left_normal_menu_box.contents.isEmpty) {
+    while (left_normal_menu_box.contents.nonEmpty) {
       left_normal_menu_box.contents -= left_normal_menu_box.contents.last
     }
     left_normal_menu_box.contents += sub_ui.headline_border
@@ -350,7 +350,7 @@ class UI extends MainFrame {
     } finally {
       left_feedback.repaint()
     }
-    search_box.text = if (temp_search_text.isEmpty()) " Search for recipes or ingredients here..." else temp_search_text
+    search_box.text = if (temp_search_text.isEmpty) " Search for recipes or ingredients here..." else temp_search_text
     search_box.foreground = GRAY
   }
 

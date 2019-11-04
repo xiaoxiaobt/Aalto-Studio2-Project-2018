@@ -11,7 +11,7 @@ https://plus.cs.hut.fi/studio_2/k2019/studioprojekti/232/
 USING THIS PROJECT IN ANY SCHOOLWORK IS STRICTLY FORBIDDEN.
 PLAGIARISM IS A CRIME. DO IT AT YOUR OWN RISK.
 
-Keywords: Scala, Swing, Continuous Integration, UI, Algorithm
+Keywords: Scala, Swing, Continuous Integration, UI, Algorithm, UML
 
 ## Requirements
 

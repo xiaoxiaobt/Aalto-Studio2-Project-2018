@@ -19,9 +19,7 @@ class UISectionBox(food: Food, ui: UI) {
   var first_row = new BoxPanel(Horizontal)
   var label_name = new Label(" " + food.name + " " * (28 - food.name.length))
   var first_row_iconset = new BoxPanel(Horizontal)
-  var icon_boxes = new ArrayBuffer[Button](6)
-  (0 to 5).foreach(x => icon_boxes(x) = Button("") {})
-
+  var icon_boxes = ArrayBuffer.fill[Button](6)(Button("") {})
   var button_del = Button(" x ") {
     menu.fridge.food_list -= food
     p("Notice: " + food.name + " has been removed from the list")
@@ -122,38 +120,39 @@ class UISectionBox(food: Food, ui: UI) {
   first_row.contents += button_mod
   first_row.contents += button_del
 
+  var foodTag = food.tag.toUpperCase
   // Icon A
-  if (food.tag.toUpperCase.contains('A')) {
+  if (foodTag.contains('A')) {
     icon_boxes(0).icon = new ImageIcon("src/icons/B_A.png")
   } else {
     icon_boxes(0).icon = new ImageIcon("src/icons/W_A.png")
   }
   // ICON G
-  if (food.tag.toUpperCase.contains('G')) {
+  if (foodTag.contains('G')) {
     icon_boxes(1).icon = new ImageIcon("src/icons/B_G.png")
   } else {
     icon_boxes(1).icon = new ImageIcon("src/icons/W_G.png")
   }
   // ICON L
-  if (food.tag.toUpperCase.contains('L')) {
+  if (foodTag.contains('L')) {
     icon_boxes(2).icon = new ImageIcon("src/icons/B_L.png")
   } else {
     icon_boxes(2).icon = new ImageIcon("src/icons/W_L.png")
   }
   // ICON M
-  if (food.tag.toUpperCase.contains('M')) {
+  if (foodTag.contains('M')) {
     icon_boxes(3).icon = new ImageIcon("src/icons/B_M.png")
   } else {
     icon_boxes(3).icon = new ImageIcon("src/icons/W_M.png")
   }
   // ICON V
-  if (food.tag.toUpperCase.contains('V')) {
+  if (foodTag.contains('V')) {
     icon_boxes(4).icon = new ImageIcon("src/icons/B_V.png")
   } else {
     icon_boxes(4).icon = new ImageIcon("src/icons/W_V.png")
   }
   // ICON W
-  if (food.tag.toUpperCase.contains('W')) {
+  if (foodTag.contains('W')) {
     icon_boxes(5).icon = new ImageIcon("src/icons/B_W.png")
   } else {
     icon_boxes(5).icon = new ImageIcon("src/icons/W_W.png")
@@ -201,7 +200,7 @@ class UISectionBox(food: Food, ui: UI) {
 
   def add_menu_from_ui(str: String, remove: Boolean) = {
     try {
-      var str_list = str.split(":").map(_.trim)
+      var str_list = str.split(":").map(_.trim())
       p(str_list.mkString(":"))
       if (str_list.size != 9) throw new Exception
       var name_add: String = str_list(0)

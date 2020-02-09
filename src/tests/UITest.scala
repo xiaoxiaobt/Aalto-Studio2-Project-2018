@@ -5,7 +5,7 @@ import org.junit.Assert._
 import scala.collection.mutable.Map
 
 class UnitTests {
-  var settings = new Settings // Here settings only work for diagnosis.
+  var settings = Settings // Here settings only work for diagnosis.
   def p[T](a: T) = if (settings.diagnosis) print(a.toString)
 
   def s() = if (settings.diagnosis) print("\t\t\t\tpass\n")

@@ -3,7 +3,7 @@ import collection.mutable._
 
 class Fridge {
   var food_list = Map[Food, Double]()
-  var settings = new Settings
+  var settings = Settings
   override def toString() = {
     food_list.toString()
   }

@@ -35,8 +35,8 @@ class UI extends MainFrame {
   var settings = fridge.settings
   def food_list = fridge.food_list
   var my_color = settings.color
-  var changed = 0
-  var edit = 0
+  var changed = false
+  var edit = false
   var editing: Food = null
   var temp_search_text = ""
 
@@ -53,13 +53,13 @@ class UI extends MainFrame {
   var search_button = Button("") {
     if (search_box.text == " Search for recipes or ingredients here...") search_box.text = ""
     p("Notice: Searched: \"" + search_box.text + "\"")
-    changed = 1
+    changed = true
     left_feedback.text = "> Return to the previous page, click Back button"
     change_box(search_box.text)
     temp_search_text = search_box.text
   }
   var back_button = Button("") {
-    changed = 0
+    changed = false
     refresh_menu_box()
     left_feedback.text = "> To perform search, type in the box above and click Search button"
     search_box.text = " Search for recipes or ingredients here..."
@@ -75,7 +75,7 @@ class UI extends MainFrame {
     left_multi_text.border = BorderFactory.createEmptyBorder()
     left_multi_text.editable = false
     left_multi_text.text = ""
-    if (changed == 0) refresh_menu_box() else change_box(search_box.text)
+    if (!changed) refresh_menu_box() else change_box(search_box.text)
     button_save.visible = true
     outer_box.repaint()
     outer_box.revalidate()
@@ -239,7 +239,7 @@ class UI extends MainFrame {
   }
   def revalidate_window(box: BoxPanel) = {
     left_normal_menu_box.contents -= box
-    if (changed == 1) change_box(search_box.text)
+    if (changed) change_box(search_box.text)
     left_normal_menu_box.repaint()
     left_normal_menu_box.revalidate()
     outer_box.repaint()
@@ -294,7 +294,7 @@ class UI extends MainFrame {
       var description_add: String = str_list(6)
       var isMenu_add: Boolean = if (str_list(7) == "1") true else if (str_list(7) == "0") false else throw new Exception
       var amount_add: Double = str_list(8).toDouble
-      if ((edit == 0) && (menu.return_food_with_name(name_add) != None)) throw new IOException
+      if ((!edit) && (menu.return_food_with_name(name_add) != None)) throw new IOException
       if (amount_add > 1000) {
         amount_add = 1000
         println("Notice: The maximum amount allowed in this system is 1000. Your input has been changed to 1000.")
@@ -335,7 +335,7 @@ class UI extends MainFrame {
         if (isMenu_add) food_add.set_to_menu()
         menu.fridge.add_food(food_add, amount_add)
       }
-      if (edit == 1) menu.fridge.food_list -= editing
+      if (edit) menu.fridge.food_list -= editing
       left_feedback.text = "> Added/Modified successfully!"
     } catch {
       case e: IOException => {
@@ -496,7 +496,7 @@ class UI extends MainFrame {
     case e: ButtonClicked => {
       var allergies = (settings.all_abbri zip right_checkbox_list.map(_.selected)).filter(_._2).map(_._1)
       p("Notice: Checkbox(es) selection changed, new allergen list is: " + allergies.mkString(""))
-      if (changed == 0) {
+      if (!changed) {
         search_box.text = " Search for recipes or ingredients here..."
         search_box.foreground = GRAY
         refresh_menu_box()

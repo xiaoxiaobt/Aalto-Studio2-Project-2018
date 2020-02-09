@@ -5,7 +5,7 @@ import collection.mutable._
 class Menu {
 
   var fridge = new Fridge()
-  var settings = new Settings
+  var settings = Settings
   var menu = get_menu()
   var test_list = fridge.food_list
   var test_state = true

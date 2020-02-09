@@ -2,7 +2,8 @@ package cook
 import java.awt.Color
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Map
-class Settings {
+
+object Settings {
   // System Settings
   val diagnosis = true
   // Allergies Settings (default)
@@ -11,4 +12,6 @@ class Settings {
   var allergies_string = ""
   //  Color
   val color = new Color(120, 200, 220)
+  // Scaling factor
+  var scale = 1
 }

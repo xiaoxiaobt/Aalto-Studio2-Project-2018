@@ -13,18 +13,15 @@ import scala.collection.mutable.ArrayBuffer
 
 class UISectionBox(food: Food, ui: UI) {
   var menu = ui.menu
-  var my_color = (new Settings).color
+  var my_color = Settings.color
   def p[T](a: T) = if (menu.settings.diagnosis) println(a.toString)
   var default_box = new BoxPanel(Vertical)
   var first_row = new BoxPanel(Horizontal)
   var label_name = new Label(" " + food.name + " " * (28 - food.name.length))
   var first_row_iconset = new BoxPanel(Horizontal)
-  var icon_box1 = Button("") {}
-  var icon_box2 = Button("") {}
-  var icon_box3 = Button("") {}
-  var icon_box4 = Button("") {}
-  var icon_box5 = Button("") {}
-  var icon_box6 = Button("") {}
+  var icon_boxes = new ArrayBuffer[Button](6)
+  (0 to 5).foreach(x => icon_boxes(x) = Button("") {})
+
   var button_del = Button(" x ") {
     menu.fridge.food_list -= food
     p("Notice: " + food.name + " has been removed from the list")
@@ -97,12 +94,12 @@ class UISectionBox(food: Food, ui: UI) {
   label_name.foreground = my_color
   label_name.horizontalAlignment = Left
   label_name.preferredSize = new Dimension(1330, 60)
-  first_row_iconset.contents += icon_box1
-  first_row_iconset.contents += icon_box2
-  first_row_iconset.contents += icon_box3
-  first_row_iconset.contents += icon_box4
-  first_row_iconset.contents += icon_box5
-  first_row_iconset.contents += icon_box6
+  for (x <- icon_boxes) {
+    first_row_iconset.contents += x
+    x.border = BorderFactory.createEmptyBorder()
+    x.background = WHITE
+    x.preferredSize = new Dimension(30, 30)
+  }
   button_add.font = new Font("Arial", 0, 40)
   button_add.border = BorderFactory.createEmptyBorder()
   button_add.opaque = false
@@ -126,58 +123,40 @@ class UISectionBox(food: Food, ui: UI) {
   first_row.contents += button_del
 
   // Icon A
-  icon_box1.border = BorderFactory.createEmptyBorder()
-  icon_box1.background = WHITE
-  icon_box1.preferredSize = new Dimension(30, 30)
   if (food.tag.toUpperCase.contains('A')) {
-    icon_box1.icon = new ImageIcon("src/icons/B_A.png")
+    icon_boxes(0).icon = new ImageIcon("src/icons/B_A.png")
   } else {
-    icon_box1.icon = new ImageIcon("src/icons/W_A.png")
+    icon_boxes(0).icon = new ImageIcon("src/icons/W_A.png")
   }
   // ICON G
-  icon_box2.border = BorderFactory.createEmptyBorder()
-  icon_box2.background = WHITE
-  icon_box2.preferredSize = new Dimension(30, 30)
   if (food.tag.toUpperCase.contains('G')) {
-    icon_box2.icon = new ImageIcon("src/icons/B_G.png")
+    icon_boxes(1).icon = new ImageIcon("src/icons/B_G.png")
   } else {
-    icon_box2.icon = new ImageIcon("src/icons/W_G.png")
+    icon_boxes(1).icon = new ImageIcon("src/icons/W_G.png")
   }
   // ICON L
-  icon_box3.border = BorderFactory.createEmptyBorder()
-  icon_box3.background = WHITE
-  icon_box3.preferredSize = new Dimension(30, 30)
   if (food.tag.toUpperCase.contains('L')) {
-    icon_box3.icon = new ImageIcon("src/icons/B_L.png")
+    icon_boxes(2).icon = new ImageIcon("src/icons/B_L.png")
   } else {
-    icon_box3.icon = new ImageIcon("src/icons/W_L.png")
+    icon_boxes(2).icon = new ImageIcon("src/icons/W_L.png")
   }
   // ICON M
-  icon_box4.border = BorderFactory.createEmptyBorder()
-  icon_box4.background = WHITE
-  icon_box4.preferredSize = new Dimension(30, 30)
   if (food.tag.toUpperCase.contains('M')) {
-    icon_box4.icon = new ImageIcon("src/icons/B_M.png")
+    icon_boxes(3).icon = new ImageIcon("src/icons/B_M.png")
   } else {
-    icon_box4.icon = new ImageIcon("src/icons/W_M.png")
+    icon_boxes(3).icon = new ImageIcon("src/icons/W_M.png")
   }
   // ICON V
-  icon_box5.border = BorderFactory.createEmptyBorder()
-  icon_box5.background = WHITE
-  icon_box5.preferredSize = new Dimension(30, 30)
   if (food.tag.toUpperCase.contains('V')) {
-    icon_box5.icon = new ImageIcon("src/icons/B_V.png")
+    icon_boxes(4).icon = new ImageIcon("src/icons/B_V.png")
   } else {
-    icon_box5.icon = new ImageIcon("src/icons/W_V.png")
+    icon_boxes(4).icon = new ImageIcon("src/icons/W_V.png")
   }
   // ICON W
-  icon_box6.border = BorderFactory.createEmptyBorder()
-  icon_box6.background = WHITE
-  icon_box6.preferredSize = new Dimension(30, 30)
   if (food.tag.toUpperCase.contains('W')) {
-    icon_box6.icon = new ImageIcon("src/icons/B_W.png")
+    icon_boxes(5).icon = new ImageIcon("src/icons/B_W.png")
   } else {
-    icon_box6.icon = new ImageIcon("src/icons/W_W.png")
+    icon_boxes(5).icon = new ImageIcon("src/icons/W_W.png")
   }
   // Second row: Description
   label_des.font = new Font("Arial", 0, 36)

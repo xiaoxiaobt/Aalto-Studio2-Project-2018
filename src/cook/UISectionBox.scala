@@ -121,42 +121,16 @@ class UISectionBox(food: Food, ui: UI) {
   first_row.contents += button_del
 
   var foodTag = food.tag.toUpperCase
-  // Icon A
-  if (foodTag.contains('A')) {
-    icon_boxes(0).icon = new ImageIcon("src/icons/B_A.png")
-  } else {
-    icon_boxes(0).icon = new ImageIcon("src/icons/W_A.png")
+  var tagPair = "AGLMVW".zipWithIndex
+  // Icon A/G/L/M/V/W
+  for ((letter, index) <- tagPair) {
+    if (foodTag.contains(letter)) {
+      icon_boxes(index).icon = new ImageIcon("src/icons/B_" + letter + ".png")
+    } else {
+      icon_boxes(index).icon = new ImageIcon("src/icons/W_" + letter + ".png")
+    }
   }
-  // ICON G
-  if (foodTag.contains('G')) {
-    icon_boxes(1).icon = new ImageIcon("src/icons/B_G.png")
-  } else {
-    icon_boxes(1).icon = new ImageIcon("src/icons/W_G.png")
-  }
-  // ICON L
-  if (foodTag.contains('L')) {
-    icon_boxes(2).icon = new ImageIcon("src/icons/B_L.png")
-  } else {
-    icon_boxes(2).icon = new ImageIcon("src/icons/W_L.png")
-  }
-  // ICON M
-  if (foodTag.contains('M')) {
-    icon_boxes(3).icon = new ImageIcon("src/icons/B_M.png")
-  } else {
-    icon_boxes(3).icon = new ImageIcon("src/icons/W_M.png")
-  }
-  // ICON V
-  if (foodTag.contains('V')) {
-    icon_boxes(4).icon = new ImageIcon("src/icons/B_V.png")
-  } else {
-    icon_boxes(4).icon = new ImageIcon("src/icons/W_V.png")
-  }
-  // ICON W
-  if (foodTag.contains('W')) {
-    icon_boxes(5).icon = new ImageIcon("src/icons/B_W.png")
-  } else {
-    icon_boxes(5).icon = new ImageIcon("src/icons/W_W.png")
-  }
+
   // Second row: Description
   label_des.font = new Font("Arial", 0, 36)
   // Third row: Ingredients

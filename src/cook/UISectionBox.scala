@@ -31,9 +31,9 @@ class UISectionBox(food: Food, ui: UI) {
     ui.right_checkbox_list.foreach(_.visible = false)
     ui.button_save.visible = false
     ui.left_multi_button.visible = true
-    ui.edit = 0
+    ui.edit = false
     ui.deafTo(ui.search_box)
-    if (ui.changed == 0) ui.refresh_menu_box() else ui.change_box(ui.search_box.text)
+    if (!ui.changed) ui.refresh_menu_box() else ui.change_box(ui.search_box.text)
     ui.left_menu_scroll.revalidate()
     var edit_string = "Example_name:Ingredient_a=1,Ingredient_b=2:unit_1:unit_2:0:Allengens:Description:isMenudigit (1=yes, 0=no):amount"
     p("Adding string: " + edit_string)
@@ -47,7 +47,7 @@ class UISectionBox(food: Food, ui: UI) {
     ui.button_save.visible = false
     ui.right_box.revalidate()
     ui.left_multi_button.visible = true
-    ui.edit = 1
+    ui.edit = true
     ui.editing = food
     ui.deafTo(ui.search_box)
     var boo = if (food.is_menu) "1" else "0"
@@ -83,7 +83,7 @@ class UISectionBox(food: Food, ui: UI) {
   var button_make = Button("  Use/Make  ") {
     menu.make(food, 1)
     p("Notice: 1 " + food.name + " has been made/consumed")
-    if (ui.changed == 0) ui.refresh_menu_box() else ui.change_box(ui.search_box.text)
+    if (!ui.changed) ui.refresh_menu_box() else ui.change_box(ui.search_box.text)
     ui.left_normal_menu_box.contents -= default_box
     ui.outer_box.revalidate()
   }
@@ -201,7 +201,7 @@ class UISectionBox(food: Food, ui: UI) {
 
   def add_menu_from_ui(str: String, remove: Boolean) = {
     try {
-      var str_list = str.split(":").map(_.trim())
+      var str_list = str.split(":").map(_.trim)
       p(str_list.mkString(":"))
       if (str_list.size != 9) throw new Exception
       var name_add: String = str_list(0)
@@ -253,7 +253,7 @@ class UISectionBox(food: Food, ui: UI) {
       ui.search_box.text = ui.temp_search_text
     }
     ui.search_box.foreground = GRAY
-    if (ui.changed == 0) ui.refresh_menu_box() else ui.change_box(ui.search_box.text)
+    if (!ui.changed) ui.refresh_menu_box() else ui.change_box(ui.search_box.text)
   }
 
 }

@@ -62,12 +62,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   var result1 = allergies_remove(fridge.get_by_name(key))
   line1_border.layout(line1) = West
   box1.contents += line1_border
-  for (item <- result1) {
-    var item_food = item._1
-    var item_amount = item._2
-    var temp = new UISectionBox(item_food, ui)
-    box1.contents += temp.default_box
-  }
+  for ((item_food, item_amount) <- result1) box1.contents += new UISectionBox(item_food, ui).default_box
   if (box1.contents.size == 1) {
     var label_no_1 = new Label("  No matches")
     label_no_1.font = new Font("Arial", 0, 36)
@@ -88,11 +83,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   var result2 = allergies_remove(fridge.get_by_ingredients(key))
   line2_border.layout(line2) = West
   box2.contents += line2_border
-  for (item <- result2) {
-    var item_food = item._1
-    var item_amount = item._2
-    box2.contents += new UISectionBox(item_food, ui).default_box
-  }
+  for ((item_food, item_amount) <- result2) box2.contents += new UISectionBox(item_food, ui).default_box
   if (box2.contents.size == 1) {
     var label_no_2 = new Label("  No matches")
     label_no_2.font = new Font("Arial", 0, 36)
@@ -113,11 +104,8 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   var result3 = allergies_remove(fridge.get_by_availability(keyDouble))
   line3_border.layout(line3) = West
   box3.contents += line3_border
-  for (item <- result3) {
-    var item_food = item._1
-    var item_amount = item._2
-    box3.contents += new UISectionBox(item_food, ui).default_box
-  }
+  for ((item_food, item_amount) <- result3) box3.contents += new UISectionBox(item_food, ui).default_box
+
   if (box3.contents.size == 1) {
     var label_no_3 = new Label("  No matches")
     label_no_3.font = new Font("Arial", 0, 36)

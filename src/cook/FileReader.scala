@@ -47,7 +47,7 @@ class FileReader(ui: UI) {
         lines.next()
         var buffer = ArrayBuffer[ArrayBuffer[Any]]()
         for (line <- lines) {
-          var splitted = line.split(":").map(_.trim())
+          var splitted = line.split(":").map(_.trim)
           if (splitted.size != 9) throw new IOException
           var name_add: String = splitted(0)
           var ingredients_add: String = splitted(1)

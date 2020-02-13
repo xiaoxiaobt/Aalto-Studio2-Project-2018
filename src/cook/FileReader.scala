@@ -118,7 +118,7 @@ class FileReader(ui: UI) {
                 buffer -= data
               }
             }
-          } catch {
+          } catch { 
             case e: NullPointerException => {
               ui.p("Notice: One food is waiting for raw material(s)")
             }

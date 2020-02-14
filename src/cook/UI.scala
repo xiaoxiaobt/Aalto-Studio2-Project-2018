@@ -13,18 +13,6 @@ import javax.swing.{ ImageIcon, BorderFactory }
 import Swing._
 import Settings.scaleTo
 
-class Holder(name_add: String, ingre_map: Map[String, Double], first_unit_add: String, second_unit_add: String, density_add: Double, alleriges_add: String, description_add: String, isMenu_add: Boolean, amount_add: Double) {
-  var name = name_add
-  var ingre = ingre_map
-  var first_u = first_unit_add
-  var second_u = second_unit_add
-  var density = density_add
-  var aller = alleriges_add
-  var description = description_add
-  var boo = isMenu_add
-  var amount = amount_add
-}
-
 class UI extends MainFrame {
   title = "Smart Cookbook"
   preferredSize = new Dimension(scaleTo(1920), scaleTo(1080))
@@ -39,6 +27,7 @@ class UI extends MainFrame {
   var edit = false
   var editing: Food = null
   var temp_search_text = ""
+  var fileProcessor = new FileProcessor(this)
 
   // Frames, boxes and buttons (Almost all boxes)
   var outer_box = new BoxPanel(Horizontal)
@@ -85,149 +74,12 @@ class UI extends MainFrame {
   var right_welcome = new Label("Options: ")
   var right_checkbox_list = ArrayBuffer[CheckBox]()
   var button_save = Button("") {
-    IOWrite()
+    fileProcessor.IOWrite()
     p("Notice: Saved")
     left_feedback.text = "> All changes are saved to src/saved_data/data.txt "
     left_feedback.repaint()
   }
   var button_exit = Button("") { sys.exit(0) }
-
-  //IO Write Function
-  def IOWrite() = {
-    var file = new File("src/saved_data/data.txt")
-    val pw = new PrintWriter(file)
-    pw.write("RecipeBook v0.1 data\n")
-    pw.write("name : ingredients : main_unit : second_unit : density : tag : description : isMenu : amount\n")
-    for (item <- food_list) {
-      var food = item._1
-      var num = item._2
-      var boo = if (food.is_menu) "1" else "0"
-      if (food.ingredients.isEmpty) {
-        pw.write(food.name + "::" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + num.toString + "\n")
-      } else {
-        var ingredients_string = food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
-        pw.write(food.name + ":" + ingredients_string + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + num.toString + "\n")
-      }
-    }
-    pw.close
-  }
-
-  //IO Read Function
-  def IORead() = {
-    var lines = fromFile("src/saved_data/default.txt").getLines.filter(_.nonEmpty)
-    var line_num = 1
-    try {
-      lines = fromFile("src/saved_data/data.txt").getLines.filter(_.nonEmpty)
-      left_feedback.text = "> User-saved file loaded successfully. "
-      left_feedback.repaint()
-    } catch {
-      case e: FileNotFoundException => {
-        left_feedback.text = "> User-saved file not found. Loaded from default. "
-        left_feedback.repaint()
-      }
-    }
-    if (!lines.next().startsWith("RecipeBook")) {
-      println("IOError")
-    } else {
-      try {
-        lines.next()
-        line_num = 2
-        var buffer = ArrayBuffer[Holder]()
-        for (line <- lines) {
-          line_num += 1
-          var splitted = line.split(":").map(_.trim)
-          if (splitted.size != 9) throw new IOException
-          var name_add: String = splitted(0)
-          var ingredients_add: String = splitted(1)
-          var first_unit_add: String = splitted(2).toLowerCase
-          var second_unit_add: String = splitted(3).toLowerCase
-          var density_add: Double = splitted(4).toDouble
-          var alleriges_add: String = splitted(5).toUpperCase
-          var description_add: String = splitted(6)
-          var isMenu_add: Boolean = if (splitted(7) == "1") true else if (splitted(7) == "0") false else throw new IOException
-          var amount_add: Double = splitted(8).toDouble
-          if (amount_add > 1000) {
-            amount_add = 1000
-            println("Notice: The maximum amount allowed in this system is 1000. Your input has been changed to 1000.")
-          }
-          if (amount_add < 0) {
-            amount_add = 0
-            println("Notice: The amount cannot be negative. Your input has been changed to 0.")
-          }
-          if (density_add < 0) {
-            density_add = 0
-            println("Notice: Density cannot be negative. System changed it to the default value: 0")
-          }
-          if (ingredients_add.isEmpty) {
-            var food_add = new Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
-            if (isMenu_add) food_add.set_to_menu()
-            fridge.add_food(food_add, amount_add)
-          } else {
-            var ingre_map: Map[String, Double] = {
-              var item_list = ingredients_add.split(",")
-              var name_list = ArrayBuffer[String]()
-              var amount_list = ArrayBuffer[Double]()
-              for (item <- item_list) {
-                name_list += item.split("=").head.trim
-                var temp_amount = item.split("=").last.toDouble
-                if (temp_amount > 1000) {
-                  temp_amount = 1000
-                  println("Notice: The maximum amount allowed in this system is 1000. The amount of " + item.split("=").head.trim + "has been changed to 1000.")
-                } else if (temp_amount < 0) {
-                  temp_amount = 0
-                  println("Notice: The amount cannot be negative. The amount of " + item.split("=").head.trim + "has been changed to 0.")
-                }
-                amount_list += temp_amount
-              }
-              (name_list zip amount_list).toMap
-            }
-            buffer += new Holder(name_add, ingre_map, first_unit_add, second_unit_add, density_add, alleriges_add, description_add, isMenu_add, amount_add)
-          }
-        }
-        var accumulator = 0
-        while (buffer.nonEmpty) {
-          try {
-            for (data <- buffer) {
-              var pre_ingre_list = data.ingre.map(_._1)
-              if (pre_ingre_list.forall(menu.return_food_with_name(_) != None)) {
-                var ingre_mapped = data.ingre.map(x => (menu.return_food_with_name(x._1).get, x._2))
-                var ingre = collection.mutable.Map(ingre_mapped.toSeq: _*)
-                //var tag_ingre = (ingre.keys.map(_.tag).mkString("").toUpperCase+data.aller).distinct
-                var food_add = new Food(data.name, ingre, data.first_u, data.second_u, data.density, data.aller, data.description)
-                if (data.boo) food_add.set_to_menu()
-                fridge.add_food(food_add, data.amount)
-                buffer -= data
-              }
-            }
-          } catch {
-            case e: NullPointerException => {
-              p("Notice: One food is waiting for raw material(s)")
-            }
-          }
-          accumulator += 1
-          if (accumulator > 100) {
-            throw new IOException
-          }
-        }
-        p("Notice: User Interface loaded successfully")
-        p("Notice: " + menu.menu_foodlist.size.toString + " menus and " + menu.non_menu_foodlist.size.toString + " ingredients have been imported")
-      } catch {
-        case e: Exception => {
-          left_feedback.text = "> Errors in file. Please check your input file. "
-          left_feedback.foreground = RED
-          button_save = button_exit
-          search_button.enabled = false
-          back_button.enabled = false
-          left_multi_text.repaint()
-          search_button.repaint()
-          left_feedback.repaint()
-          button_save.repaint()
-        }
-      }
-    }
-  }
-
-  IORead()
 
   // Definitions
   def p[T](a: T) = if (settings.diagnosis) println(a.toString)
@@ -552,12 +404,15 @@ class UI extends MainFrame {
   right_box.layout(right_info_section) = North
   right_box.background = my_color
 
+  // Load file
+  fileProcessor.loadFromIO()
 }
 
 object UI extends App {
   def main() {
     val ui = new UI
     ui.visible = true
+
   }
   private def run() = {
     main()

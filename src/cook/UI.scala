@@ -132,8 +132,8 @@ class UI extends MainFrame {
   }
   def add_menu_to_ui(str: String) = {
     try {
-      var str_list = str.split(":").map(_.trim())
-      p("Input string: " + str_list.mkString(":"))
+      var str_list = str.split("\t").map(_.trim())
+      p("Input string: " + str_list.mkString("\t"))
       if (str_list.size != 9) throw new Exception
       var name_add: String = str_list(0)
       var ingredients_add: String = str_list(1)
@@ -148,8 +148,7 @@ class UI extends MainFrame {
       if (amount_add > 1000) {
         amount_add = 1000
         println("Notice: The maximum amount allowed in this system is 1000. Your input has been changed to 1000.")
-      }
-      if (amount_add < 0) {
+      } else if (amount_add < 0) {
         amount_add = 0
         println("Notice: The amount cannot be negative. Your input has been changed to 0.")
       }

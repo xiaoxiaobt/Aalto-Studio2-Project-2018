@@ -24,14 +24,14 @@ class FileProcessor(ui: UI) {
     var file = new File("src/saved_data/data.txt")
     val pw = new PrintWriter(file)
     pw.write("RecipeBook v0.1 data\n")
-    pw.write("name : ingredients : main_unit : second_unit : density : tag : description : isMenu : amount\n")
+    pw.write("name \t ingredients \t main_unit \t second_unit \t density \t tag \t description \t isMenu \t amount\n")
     for ((food, num) <- ui.food_list) {
       var boo = if (food.is_menu) "1" else "0"
       if (food.ingredients.isEmpty) {
-        pw.write(food.name + "::" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + num.toString + "\n")
+        pw.write(food.name + "\t\t" + food.main_unit + "\t" + food.second_unit + "\t" + food.density.toString + "\t" + food.tag + "\t" + food.description + "\t" + boo + "\t" + num.toString + "\n")
       } else {
         var ingredients_string = food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
-        pw.write(food.name + ":" + ingredients_string + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + num.toString + "\n")
+        pw.write(food.name + "\t" + ingredients_string + "\t" + food.main_unit + "\t" + food.second_unit + "\t" + food.density.toString + "\t" + food.tag + "\t" + food.description + "\t" + boo + "\t" + num.toString + "\n")
       }
     }
     pw.close
@@ -54,7 +54,7 @@ class FileProcessor(ui: UI) {
   }
 
   def lineProcessor(line: String, container: ArrayBuffer[Holder]): Unit = {
-    var splitted = line.split(":").map(_.trim)
+    var splitted = line.split("\t").map(_.trim)
     if (splitted.size != 9) throw new IOException
     var name_add: String = splitted(0)
     var ingredients_add: String = splitted(1)

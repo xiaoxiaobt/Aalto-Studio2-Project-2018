@@ -25,9 +25,7 @@ class FileProcessor(ui: UI) {
     val pw = new PrintWriter(file)
     pw.write("RecipeBook v0.1 data\n")
     pw.write("name : ingredients : main_unit : second_unit : density : tag : description : isMenu : amount\n")
-    for (item <- ui.food_list) {
-      var food = item._1
-      var num = item._2
+    for ((food, num) <- ui.food_list) {
       var boo = if (food.is_menu) "1" else "0"
       if (food.ingredients.isEmpty) {
         pw.write(food.name + "::" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + num.toString + "\n")
@@ -109,9 +107,7 @@ class FileProcessor(ui: UI) {
     var lines = IOReadlines()
     try {
       var buffer = ArrayBuffer[Holder]()
-      for (line <- lines) {
-        lineProcessor(line, buffer)
-      }
+      for (line <- lines) lineProcessor(line, buffer)
       var accumulator = 0
       var threshold = 100
       while (buffer.nonEmpty) {

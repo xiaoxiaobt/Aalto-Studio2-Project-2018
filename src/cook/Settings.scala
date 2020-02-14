@@ -13,5 +13,6 @@ object Settings {
   //  Color
   val color = new Color(120, 200, 220)
   // Scaling factor
-  var scale = 1
+  var scale: Double = 0.5
+  def scaleTo(num: Int):Int = (scale * num).toInt
 }

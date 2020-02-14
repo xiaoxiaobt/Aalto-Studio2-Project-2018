@@ -4,12 +4,12 @@ import scala.swing.BorderPanel.Position._
 import scala.swing.Orientation._
 import scala.swing.Alignment._
 import scala.swing.event._
-import java.awt.Color._
+import java.awt.Color.{ BLACK, WHITE, GREEN, BLUE, RED, ORANGE, GRAY }
 import Swing._
 import java.io._
-import javax.swing.ImageIcon
-import javax.swing.BorderFactory
+import javax.swing.{ ImageIcon, BorderFactory }
 import scala.collection.mutable.ArrayBuffer
+import Settings.scaleTo
 
 class UISectionBox(food: Food, ui: UI) {
   var menu = ui.menu
@@ -37,7 +37,7 @@ class UISectionBox(food: Food, ui: UI) {
     p("Adding string: " + edit_string)
     ui.left_multi_text.editable = true
     ui.left_multi_text.text = edit_string
-    ui.left_multi_text.border = BorderFactory.createLineBorder(my_color, 5)
+    ui.left_multi_text.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
     ui.left_feedback.text = "> Edit menu in given format (Example below), press green Complete button when finished"
   }
   var button_mod = Button("") {
@@ -60,7 +60,7 @@ class UISectionBox(food: Food, ui: UI) {
     p("Editing string: " + edit_string)
     ui.left_multi_text.text = edit_string
     ui.left_multi_text.editable = true
-    ui.left_multi_text.border = BorderFactory.createLineBorder(my_color, 5)
+    ui.left_multi_text.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
     ui.left_feedback.text = "> Edit menu in given format in the box below, press green Complete button when finished"
   }
   var edit_icon = new ImageIcon("src/icons/edit.png")
@@ -88,34 +88,34 @@ class UISectionBox(food: Food, ui: UI) {
   if (food.ingredients.isEmpty) button_make.text = "       Use       "
 
   //first_row
-  label_name.font = new Font("Consolas", 0, 48)
+  label_name.font = new Font("Consolas", 0, scaleTo(48))
   label_name.foreground = my_color
   label_name.horizontalAlignment = Left
-  label_name.preferredSize = new Dimension(1330, 60)
+  label_name.preferredSize = new Dimension(scaleTo(1330), scaleTo(60))
   for (x <- icon_boxes) {
     first_row_iconset.contents += x
     x.border = BorderFactory.createEmptyBorder()
     x.background = WHITE
-    x.preferredSize = new Dimension(30, 30)
+    x.preferredSize = new Dimension(scaleTo(30), scaleTo(30))
   }
-  button_add.font = new Font("Arial", 0, 40)
+  button_add.font = new Font("Arial", 0, scaleTo(40))
   button_add.border = BorderFactory.createEmptyBorder()
   button_add.opaque = false
   button_add.background = WHITE
   button_add.foreground = GREEN
-  button_mod.font = new Font("Arial", 0, 40)
+  button_mod.font = new Font("Arial", 0, scaleTo(40))
   button_mod.border = BorderFactory.createEmptyBorder()
   button_mod.opaque = false
   button_mod.background = WHITE
   button_mod.foreground = BLUE
-  button_del.font = new Font("Arial", 0, 40)
+  button_del.font = new Font("Arial", 0, scaleTo(40))
   button_del.border = BorderFactory.createEmptyBorder()
   button_del.opaque = false
   button_del.background = WHITE
   button_del.foreground = RED
   first_row.contents += label_name
   first_row.contents += first_row_iconset
-  first_row.contents += HStrut(280)
+  first_row.contents += HStrut(scaleTo(280))
   first_row.contents += button_add
   first_row.contents += button_mod
   first_row.contents += button_del
@@ -132,12 +132,12 @@ class UISectionBox(food: Food, ui: UI) {
   }
 
   // Second row: Description
-  label_des.font = new Font("Arial", 0, 36)
+  label_des.font = new Font("Arial", 0, scaleTo(36))
   // Third row: Ingredients
-  label_ingre.font = new Font("Arial", 0, 36)
+  label_ingre.font = new Font("Arial", 0, scaleTo(36))
   // Last row: Cooked, Cookable & Make
-  label_ready.font = new Font("Arial", 0, 30)
-  label_cookable.font = new Font("Arial", 0, 30)
+  label_ready.font = new Font("Arial", 0, scaleTo(30))
+  label_cookable.font = new Font("Arial", 0, scaleTo(30))
   if (menu.fridge.food_list(food) > 0) {
     label_ready.foreground = ORANGE
   } else {
@@ -150,15 +150,15 @@ class UISectionBox(food: Food, ui: UI) {
     label_cookable.text = "Available: 0"
     button_make.enabled = false
   }
-  button_make.font = new Font("Arial", 0, 32)
+  button_make.font = new Font("Arial", 0, scaleTo(32))
   button_make.background = WHITE
-  button_make.border = BorderFactory.createLineBorder(my_color, 2)
+  button_make.border = BorderFactory.createLineBorder(my_color, scaleTo(2))
   last_row.contents += label_ready
-  last_row.contents += HStrut(20)
+  last_row.contents += HStrut(scaleTo(20))
   last_row.contents += label_cookable
-  last_row.contents += HStrut(20)
+  last_row.contents += HStrut(scaleTo(20))
   last_row.contents += button_make
-  last_row.contents += HStrut(10)
+  last_row.contents += HStrut(scaleTo(10))
 
   first_part.layout(first_row) = West
   second_part.layout(label_des) = West
@@ -169,8 +169,8 @@ class UISectionBox(food: Food, ui: UI) {
   default_box.contents += second_part
   default_box.contents += third_part
   default_box.contents += last_part
-  default_box.preferredSize = new Dimension(1330, 200)
-  default_box.border = BorderFactory.createLineBorder(my_color, 1)
+  default_box.preferredSize = new Dimension(scaleTo(1330), scaleTo(200))
+  default_box.border = BorderFactory.createLineBorder(my_color, scaleTo(1))
 
   def add_menu_from_ui(str: String, remove: Boolean) = {
     try {

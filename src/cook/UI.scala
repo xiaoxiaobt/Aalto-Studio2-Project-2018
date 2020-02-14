@@ -5,13 +5,13 @@ import scala.swing.Orientation._
 import scala.swing.Alignment._
 import scala.swing.event._
 import scala.collection.mutable.ArrayBuffer
+import java.io._
 import scala.io.Source._
 import scala.util.control.Breaks._
-import java.awt.Color._
-import java.io._
-import javax.swing.ImageIcon
-import javax.swing.BorderFactory
+import java.awt.Color.{ BLACK, WHITE, GRAY, RED }
+import javax.swing.{ ImageIcon, BorderFactory }
 import Swing._
+import Settings.scaleTo
 
 class Holder(name_add: String, ingre_map: Map[String, Double], first_unit_add: String, second_unit_add: String, density_add: Double, alleriges_add: String, description_add: String, isMenu_add: Boolean, amount_add: Double) {
   var name = name_add
@@ -27,12 +27,12 @@ class Holder(name_add: String, ingre_map: Map[String, Double], first_unit_add: S
 
 class UI extends MainFrame {
   title = "Smart Cookbook"
-  preferredSize = new Dimension(1920, 1080)
+  preferredSize = new Dimension(scaleTo(1920), scaleTo(1080))
 
   // Initialize
   var menu = new Menu()
   var fridge = menu.fridge
-  var settings = fridge.settings
+  var settings = Settings
   def food_list = fridge.food_list
   var my_color = settings.color
   var changed = false
@@ -135,7 +135,7 @@ class UI extends MainFrame {
         var buffer = ArrayBuffer[Holder]()
         for (line <- lines) {
           line_num += 1
-          var splitted = line.split(":").map(_.trim())
+          var splitted = line.split(":").map(_.trim)
           if (splitted.size != 9) throw new IOException
           var name_add: String = splitted(0)
           var ingredients_add: String = splitted(1)
@@ -254,9 +254,7 @@ class UI extends MainFrame {
     var allergies = (settings.all_abbri zip right_checkbox_list.map(_.selected)).filter(_._2).map(_._1)
     if (allergies.isEmpty) allergies = List[String]()
     var food_list_menu_allergies = food_list_menu.filter(x => allergies.forall(y => x._1.tag.contains(y)))
-    for (item <- food_list_menu_allergies) {
-      var item_food = item._1
-      var item_amount = item._2
+    for ((item_food, item_amount) <- food_list_menu_allergies) {
       left_normal_menu_box.contents += new UISectionBox(item_food, this).default_box
     }
     outer_box.repaint()
@@ -268,11 +266,11 @@ class UI extends MainFrame {
       left_normal_menu_box.contents -= left_normal_menu_box.contents.last
     }
     left_normal_menu_box.contents += sub_ui.headline_border
-    left_normal_menu_box.contents += VStrut(40)
+    left_normal_menu_box.contents += VStrut(scaleTo(40))
     left_normal_menu_box.contents += sub_ui.box1_border
-    left_normal_menu_box.contents += VStrut(20)
+    left_normal_menu_box.contents += VStrut(scaleTo(20))
     left_normal_menu_box.contents += sub_ui.box2_border
-    left_normal_menu_box.contents += VStrut(20)
+    left_normal_menu_box.contents += VStrut(scaleTo(20))
     if (!sub_ui.keyDouble.isNaN()) left_normal_menu_box.contents += sub_ui.box3_border
     listenTo(search_box)
     left_normal_menu_box.repaint()
@@ -367,17 +365,17 @@ class UI extends MainFrame {
 
   // Left Welcome Label
   left_welcome.horizontalAlignment = Left
-  left_welcome.font = new Font("Arial", 0, 80)
-  left_info_section.contents += VStrut(20)
+  left_welcome.font = new Font("Arial", 0, scaleTo(80))
+  left_info_section.contents += VStrut(scaleTo(20))
   left_info_section.contents += left_welcome
 
   // Left Info Box
   left_info_section.background = WHITE
-  left_info_section.border = EmptyBorder(30, 30, 30, 30)
+  left_info_section.border = EmptyBorder(scaleTo(30), scaleTo(30), scaleTo(30), scaleTo(30))
 
   // Left Menu Box ScrollPane Frame
-  left_menu_scroll.preferredSize = new Dimension(1440, 600)
-  left_info_section.contents += VStrut(20)
+  left_menu_scroll.preferredSize = new Dimension(scaleTo(1440), scaleTo(600))
+  left_info_section.contents += VStrut(scaleTo(20))
   left_info_section.contents += left_menu_scroll
 
   // Left Menu BoxPanel Normal
@@ -385,19 +383,19 @@ class UI extends MainFrame {
   left_menu_scroll.contents = left_normal_menu_box
 
   // Left Search Area
-  left_search_area.preferredSize = new Dimension(1440, 100)
+  left_search_area.preferredSize = new Dimension(scaleTo(1440), scaleTo(100))
   left_search_area.background = WHITE
-  left_info_section.contents += VStrut(10)
+  left_info_section.contents += VStrut(scaleTo(10))
 
   // Left Search Prevention TextField (Avoiding cursor move to search box after clicking "MAKE")
-  search_prevention_box.font = new Font("Arial", 0, 1)
+  search_prevention_box.font = new Font("Arial", 0, scaleTo(1))
   search_prevention_box.border = BorderFactory.createEmptyBorder()
   left_info_section.contents += search_prevention_box
 
   // Left Search TextField
-  search_box.font = new Font("Arial", 0, 50)
+  search_box.font = new Font("Arial", 0, scaleTo(50))
   search_box.foreground = GRAY
-  search_box.border = BorderFactory.createLineBorder(my_color, 5)
+  search_box.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
   listenTo(search_box)
   reactions += {
     case e: FocusGained => {
@@ -408,41 +406,41 @@ class UI extends MainFrame {
     }
   }
   search_button.background = WHITE
-  search_button.font = new Font("Arial", 0, 50)
-  search_button.preferredSize = new Dimension(100, 100)
-  search_button.border = BorderFactory.createLineBorder(my_color, 5)
+  search_button.font = new Font("Arial", 0, scaleTo(50))
+  search_button.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
+  search_button.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
   search_button.icon = icon_find
   back_button.background = WHITE
-  back_button.font = new Font("Arial", 0, 50)
-  back_button.preferredSize = new Dimension(100, 100)
-  back_button.border = BorderFactory.createLineBorder(my_color, 5)
+  back_button.font = new Font("Arial", 0, scaleTo(50))
+  back_button.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
+  back_button.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
   back_button.icon = icon_back
   left_search_area.contents += search_box
   left_search_area.contents += search_button
   left_search_area.contents += back_button
   left_info_section.contents += left_search_area
-  left_info_section.contents += VStrut(20)
+  left_info_section.contents += VStrut(scaleTo(20))
 
   // Left Real-time feedback TextField
-  left_feedback.preferredSize = new Dimension(200, 40)
-  left_feedback.font = new Font("Arial", 0, 34)
+  left_feedback.preferredSize = new Dimension(scaleTo(200), scaleTo(40))
+  left_feedback.font = new Font("Arial", 0, scaleTo(34))
   left_feedback.border = BorderFactory.createEmptyBorder()
   left_feedback.editable = false
   left_feedback.background = WHITE
   left_info_section.contents += left_feedback
-  left_info_section.contents += VStrut(20)
+  left_info_section.contents += VStrut(scaleTo(20))
 
   // Left Multi-usage Testfield
   left_multi_text.editable = false
   left_multi_text.background = WHITE
-  left_multi_text.preferredSize = new Dimension(1300, 30)
-  left_multi_text.font = new Font("Arial", 0, 30)
+  left_multi_text.preferredSize = new Dimension(scaleTo(1300), scaleTo(30))
+  left_multi_text.font = new Font("Arial", 0, scaleTo(30))
   left_multi_text.border = BorderFactory.createEmptyBorder()
 
   // Left Muti-usage Button
-  left_multi_button.font = new Font("Arial", 0, 30)
+  left_multi_button.font = new Font("Arial", 0, scaleTo(30))
   left_multi_button.border = BorderFactory.createEmptyBorder()
-  left_multi_button.preferredSize = new Dimension(50, 50)
+  left_multi_button.preferredSize = new Dimension(scaleTo(50), scaleTo(50))
   left_multi_button.background = WHITE
   left_multi_button.visible = false
   left_multi_button.icon = icon_tick
@@ -463,18 +461,18 @@ class UI extends MainFrame {
   // Left multi-usage box
   left_multi_box.background = WHITE
   left_multi_box.contents += left_multi_text
-  left_multi_box.contents += HStrut(10)
+  left_multi_box.contents += HStrut(scaleTo(10))
   left_multi_box.contents += left_multi_button
 
   // Left multi-usage frame
-  left_multi_frame.preferredSize = new Dimension(1440, 50)
+  left_multi_frame.preferredSize = new Dimension(scaleTo(1440), scaleTo(50))
   left_multi_frame.background = WHITE
   left_multi_frame.layout(left_multi_box) = West
   left_info_section.contents += left_multi_frame
 
   // Right Welcome Label
   right_welcome.horizontalAlignment = Left
-  right_welcome.font = new Font("Arial", 0, 64)
+  right_welcome.font = new Font("Arial", 0, scaleTo(64))
   right_welcome.foreground = WHITE
   right_welcome.opaque = false
 
@@ -484,10 +482,10 @@ class UI extends MainFrame {
     var current = new CheckBox(settings.allergies(i))
     current.opaque = false
     current.foreground = WHITE
-    current.font = new Font("Arial", 0, 50)
+    current.font = new Font("Arial", 0, scaleTo(50))
     current.selectedIcon = icon_selected
     current.icon = icon_free
-    current.iconTextGap = 10
+    current.iconTextGap = scaleTo(10)
     right_checkbox_list += current
     i += 1
   }
@@ -529,28 +527,28 @@ class UI extends MainFrame {
 
   // Right Info Box
   right_info_section.contents += right_welcome
-  right_info_section.contents += VStrut(30)
+  right_info_section.contents += VStrut(scaleTo(30))
   for (checkbox <- right_checkbox_list) {
     right_info_section.contents += checkbox
-    right_info_section.contents += VStrut(20)
+    right_info_section.contents += VStrut(scaleTo(20))
   }
-  right_info_section.contents += VStrut(200)
+  right_info_section.contents += VStrut(scaleTo(200))
   right_info_section.contents += button_save
   right_info_section.background = my_color
-  right_info_section.border = EmptyBorder(20, 20, 20, 20)
+  right_info_section.border = EmptyBorder(scaleTo(20), scaleTo(20), scaleTo(20), scaleTo(20))
 
   // Frame Section
   outer_box.contents += left_box
   outer_box.contents += right_box
 
   // Left Panel Section
-  left_box.preferredSize = new Dimension(1440, 1080)
+  left_box.preferredSize = new Dimension(scaleTo(1440), scaleTo(1080))
   left_box.layout(left_info_section) = North
   left_box.background = WHITE
   contents = outer_box
 
   // Right Panel Section
-  right_box.preferredSize = new Dimension(480, 1080)
+  right_box.preferredSize = new Dimension(scaleTo(480), scaleTo(1080))
   right_box.layout(right_info_section) = North
   right_box.background = my_color
 

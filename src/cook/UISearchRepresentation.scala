@@ -5,13 +5,12 @@ import scala.swing.Orientation._
 import scala.swing.Alignment._
 import scala.swing.event._
 import scala.collection.mutable.ArrayBuffer
+import java.io._
 import scala.io.Source._
 import scala.util.control.Breaks._
-import java.awt.Color._
-import java.io._
-import javax.swing.ImageIcon
-import javax.swing.BorderFactory
+import javax.swing.{ ImageIcon, BorderFactory }
 import Swing._
+import Settings.scaleTo
 
 class UISearchRepresentation(ui: UI, keyword: String) {
   var menu = ui.menu
@@ -48,14 +47,14 @@ class UISearchRepresentation(ui: UI, keyword: String) {
 
   // Headline
   headline.horizontalAlignment = Left
-  headline.font = new Font("Arial", 0, 40)
+  headline.font = new Font("Arial", 0, scaleTo(40))
 
   // Headline frame
   headline_border.layout(headline) = West
 
   // Line 1
   line1.horizontalAlignment = Left
-  line1.font = new Font("Arial", 0, 40)
+  line1.font = new Font("Arial", 0, scaleTo(40))
   line1.foreground = my_color
 
   // Box 1
@@ -65,7 +64,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   for ((item_food, item_amount) <- result1) box1.contents += new UISectionBox(item_food, ui).default_box
   if (box1.contents.size == 1) {
     var label_no_1 = new Label("  No matches")
-    label_no_1.font = new Font("Arial", 0, 36)
+    label_no_1.font = new Font("Arial", 0, scaleTo(36))
     var border_no_1 = new BorderPanel
     border_no_1.layout(label_no_1) = West
     box1.contents += border_no_1
@@ -76,7 +75,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
 
   // Line 2
   line2.horizontalAlignment = Left
-  line2.font = new Font("Arial", 0, 40)
+  line2.font = new Font("Arial", 0, scaleTo(40))
   line2.foreground = my_color
 
   // Box 2
@@ -86,7 +85,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   for ((item_food, item_amount) <- result2) box2.contents += new UISectionBox(item_food, ui).default_box
   if (box2.contents.size == 1) {
     var label_no_2 = new Label("  No matches")
-    label_no_2.font = new Font("Arial", 0, 36)
+    label_no_2.font = new Font("Arial", 0, scaleTo(36))
     var border_no_2 = new BorderPanel
     border_no_2.layout(label_no_2) = West
     box2.contents += border_no_2
@@ -97,7 +96,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
 
   // Line 3
   line3.horizontalAlignment = Left
-  line3.font = new Font("Arial", 0, 40)
+  line3.font = new Font("Arial", 0, scaleTo(40))
   line3.foreground = my_color
 
   // Box 3
@@ -108,7 +107,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
 
   if (box3.contents.size == 1) {
     var label_no_3 = new Label("  No matches")
-    label_no_3.font = new Font("Arial", 0, 36)
+    label_no_3.font = new Font("Arial", 0, scaleTo(36))
     var border_no_3 = new BorderPanel
     border_no_3.layout(label_no_3) = West
     box3.contents += border_no_3

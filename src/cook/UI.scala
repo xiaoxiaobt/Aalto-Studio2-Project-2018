@@ -123,7 +123,7 @@ class UI extends MainFrame {
     left_normal_menu_box.contents += VStrut(scaleTo(20))
     left_normal_menu_box.contents += sub_ui.box2_border
     left_normal_menu_box.contents += VStrut(scaleTo(20))
-    if (!sub_ui.keyDouble.isNaN()) left_normal_menu_box.contents += sub_ui.box3_border
+    if (!sub_ui.keyDouble.isNaN) left_normal_menu_box.contents += sub_ui.box3_border
     listenTo(search_box)
     left_normal_menu_box.repaint()
     left_menu_scroll.revalidate()
@@ -409,13 +409,9 @@ class UI extends MainFrame {
 }
 
 object UI extends App {
-  def main() {
+  private def run() {
     val ui = new UI
     ui.visible = true
-
-  }
-  private def run() = {
-    main()
   }
   this.run()
 }

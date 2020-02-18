@@ -3,13 +3,12 @@ import collection.mutable._
 
 class Fridge {
   var food_list = Map[Food, Double]()
-  var settings = Settings
   override def toString() = {
     food_list.toString()
   }
   def food_list_raw = food_list.filter(_._1.ingredients.isEmpty)
   def food_list_cooked = food_list.filter(_._1.ingredients.nonEmpty)
-  def p[T](a: T): Unit = if (settings.diagnosis) println(a.toString)
+  def p[T](a: T): Unit = if (Settings.diagnosis) println(a.toString)
 
   def remove_food(food: Food, amount: Double): Boolean = {
     if (food_list.contains(food) && amount >= 0) {

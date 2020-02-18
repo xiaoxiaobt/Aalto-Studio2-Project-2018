@@ -22,7 +22,7 @@ class UI extends MainFrame {
   var fridge = menu.fridge
   var settings = Settings
   def food_list = fridge.food_list
-  var my_color = settings.color
+  var myColor = settings.color
   var changed = false
   var edit = false
   var editing: Food = null
@@ -137,7 +137,7 @@ class UI extends MainFrame {
       if (str_list.size != 9) throw new Exception
       var name_add: String = str_list(0)
       var ingredients_add: String = str_list(1)
-      var first_unit_add: String = str_list(2)toLowerCase
+      var first_unit_add: String = str_list(2).toLowerCase
       var second_unit_add: String = str_list(3).toLowerCase
       var density_add: Double = str_list(4).toDouble
       var alleriges_add: String = str_list(5).toUpperCase
@@ -246,7 +246,7 @@ class UI extends MainFrame {
   // Left Search TextField
   search_box.font = new Font("Arial", 0, scaleTo(50))
   search_box.foreground = GRAY
-  search_box.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
+  search_box.border = BorderFactory.createLineBorder(myColor, scaleTo(5))
   listenTo(search_box)
   reactions += {
     case e: FocusGained => {
@@ -259,12 +259,12 @@ class UI extends MainFrame {
   search_button.background = WHITE
   search_button.font = new Font("Arial", 0, scaleTo(50))
   search_button.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
-  search_button.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
+  search_button.border = BorderFactory.createLineBorder(myColor, scaleTo(5))
   search_button.icon = icon_find
   back_button.background = WHITE
   back_button.font = new Font("Arial", 0, scaleTo(50))
   back_button.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
-  back_button.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
+  back_button.border = BorderFactory.createLineBorder(myColor, scaleTo(5))
   back_button.icon = icon_back
   left_search_area.contents += search_box
   left_search_area.contents += search_button
@@ -385,7 +385,7 @@ class UI extends MainFrame {
   }
   right_info_section.contents += VStrut(scaleTo(200))
   right_info_section.contents += button_save
-  right_info_section.background = my_color
+  right_info_section.background = myColor
   right_info_section.border = EmptyBorder(scaleTo(20), scaleTo(20), scaleTo(20), scaleTo(20))
 
   // Frame Section
@@ -401,16 +401,16 @@ class UI extends MainFrame {
   // Right Panel Section
   right_box.preferredSize = new Dimension(scaleTo(480), scaleTo(1080))
   right_box.layout(right_info_section) = North
-  right_box.background = my_color
+  right_box.background = myColor
 
   // Load file
   fileProcessor.loadFromIO()
 }
 
 object UI extends App {
-  private def run() {
+  private def main() {
     val ui = new UI
     ui.visible = true
   }
-  this.run()
+  this.main()
 }

@@ -47,20 +47,18 @@ class Menu {
   def check_availability(food: Food): Int = {
     test_list = fridge.food_list ++ Map()
     test_state = true
+    var i = 0
     if (fridge.food_list.map(_._1).toList.contains(food)) {
-      var i = 0
       while (test_state) {
         check_amount(food, 1)
         if (test_state) i += 1
       }
-      i.toInt
-    } else {
-      0
     }
+    i
   }
 
   def check_amount(food: Food, num: Double): Unit = {
-    if (fridge.food_list.map(_._1).toList.contains(food)) {
+    if (fridge.food_list.keys.toArray.contains(food)) {
       var current_amount = test_list(food)
       if (current_amount >= num) {
         test_list = test_list updated (food, test_list(food) - num)
@@ -80,11 +78,8 @@ class Menu {
   }
 
   def return_food_with_name(name: String): Option[Food] = {
-    if (fridge.food_list.filter(_._1.name == name).size != 0) {
-      Some(fridge.food_list.filter(_._1.name == name).head._1)
-    } else {
-      None
-    }
+    var result = fridge.food_list.find(_._1.name == name)
+    if (result.isDefined) Some(result.get._1) else None
   }
 
   def make(food: Food, num: Double): Unit = {

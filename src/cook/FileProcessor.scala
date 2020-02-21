@@ -19,20 +19,21 @@ class Holder(name_add: String, ingre_map: Map[String, Double], first_unit_add: S
 }
 
 class FileProcessor(ui: UI) {
+  var menu = ui.menu
+  var fridge = ui.fridge
   /**IO Write Function*/
   def IOWrite() = {
     var file = new File("src/saved_data/data.txt")
     val pw = new PrintWriter(file)
     pw.write("RecipeBook v0.1 data\n")
     pw.write("name \t ingredients \t main_unit \t second_unit \t density \t tag \t description \t isMenu \t amount\n")
-    for ((food, num) <- ui.food_list) {
-      var boo = if (food.is_menu) "1" else "0"
-      if (food.ingredients.isEmpty) {
-        pw.write(food.name + "\t\t" + food.main_unit + "\t" + food.second_unit + "\t" + food.density.toString + "\t" + food.tag + "\t" + food.description + "\t" + boo + "\t" + num.toString + "\n")
-      } else {
-        var ingredients_string = food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
-        pw.write(food.name + "\t" + ingredients_string + "\t" + food.main_unit + "\t" + food.second_unit + "\t" + food.density.toString + "\t" + food.tag + "\t" + food.description + "\t" + boo + "\t" + num.toString + "\n")
+    for ((food, num) <- fridge.foodList) {
+      var boo = if (food.isMenu) "1" else "0"
+      var ingredientsString = ""
+      if (food.ingredients.nonEmpty) {
+        ingredientsString = food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
       }
+      pw.write(food.name + "\t" + ingredientsString + "\t" + food.main_unit + "\t" + food.second_unit + "\t" + food.density.toString + "\t" + food.tag + "\t" + food.description + "\t" + boo + "\t" + num.toString + "\n")
     }
     pw.close
   }
@@ -42,15 +43,15 @@ class FileProcessor(ui: UI) {
     var lines = fromFile("src/saved_data/default.txt").getLines.filter(_.nonEmpty)
     try {
       lines = fromFile("src/saved_data/data.txt").getLines.filter(_.nonEmpty)
-      ui.left_feedback.text = "> User-saved file loaded successfully. "
+      ui.leftFeedback.text = "> User-saved file loaded successfully. "
     } catch {
-      case e: FileNotFoundException => ui.left_feedback.text = "> User-saved file not found. Loaded from default. "
+      case e: FileNotFoundException => ui.leftFeedback.text = "> User-saved file not found. Loaded from default. "
     } finally {
-      ui.left_feedback.repaint()
+      ui.leftFeedback.repaint()
       if (!lines.next().startsWith("RecipeBook")) throw new IOException
       var temp = lines.next()
     }
-    return lines
+    lines
   }
 
   def lineProcessor(line: String, container: ArrayBuffer[Holder]): Unit = {
@@ -78,8 +79,8 @@ class FileProcessor(ui: UI) {
     }
     if (ingredients_add.isEmpty) {
       var food_add = new Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
-      if (isMenu_add) food_add.set_to_menu()
-      ui.fridge.add_food(food_add, amount_add)
+      if (isMenu_add) food_add.setToMenu()
+      fridge.addFood(food_add, amount_add)
     } else {
       var ingre_map: Map[String, Double] = {
         var item_list = ingredients_add.split(",")
@@ -114,13 +115,13 @@ class FileProcessor(ui: UI) {
         try {
           for (data <- buffer) {
             var pre_ingre_list = data.ingre.map(_._1)
-            if (pre_ingre_list.forall(ui.menu.return_food_with_name(_) != None)) {
-              var ingre_mapped = data.ingre.map(x => (ui.menu.return_food_with_name(x._1).get, x._2))
+            if (pre_ingre_list.forall(menu.returnFoodWithName(_).isDefined)) {
+              var ingre_mapped = data.ingre.map(x => (menu.returnFoodWithName(x._1).get, x._2))
               var ingre = collection.mutable.Map(ingre_mapped.toSeq: _*)
               //var tag_ingre = (ingre.keys.map(_.tag).mkString("").toUpperCase+data.aller).distinct
               var food_add = new Food(data.name, ingre, data.first_u, data.second_u, data.density, data.aller, data.description)
-              if (data.boo) food_add.set_to_menu()
-              ui.fridge.add_food(food_add, data.amount)
+              if (data.boo) food_add.setToMenu()
+              fridge.addFood(food_add, data.amount)
               buffer -= data
             }
           }
@@ -131,18 +132,18 @@ class FileProcessor(ui: UI) {
         if (accumulator > threshold) throw new IOException
       }
       ui.p("Notice: User Interface loaded successfully")
-      ui.p("Notice: " + ui.menu.menu_foodlist.size.toString + " menus and " + ui.menu.non_menu_foodlist.size.toString + " ingredients have been imported")
+      ui.p("Notice: " + menu.menuFoodlist.size.toString + " menus and " + menu.nonMenuFoodlist.size.toString + " ingredients have been imported")
     } catch {
       case e: IOException => {
-        ui.left_feedback.text = "> Errors in file. Please check your input file. "
-        ui.left_feedback.foreground = RED
-        ui.button_save = ui.button_exit
-        ui.search_button.enabled = false
-        ui.back_button.enabled = false
-        ui.left_multi_text.repaint()
-        ui.search_button.repaint()
-        ui.left_feedback.repaint()
-        ui.button_save.repaint()
+        ui.leftFeedback.text = "> Errors in file. Please check your input file. "
+        ui.leftFeedback.foreground = RED
+        ui.buttonSave = ui.buttonExit
+        ui.searchButton.enabled = false
+        ui.backButton.enabled = false
+        ui.leftMultifunctionalText.repaint()
+        ui.searchButton.repaint()
+        ui.leftFeedback.repaint()
+        ui.buttonSave.repaint()
       }
     }
   }

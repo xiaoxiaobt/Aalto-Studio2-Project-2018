@@ -21,34 +21,34 @@ class UISectionBox(food: Food, ui: UI) {
   var first_row_iconset = new BoxPanel(Horizontal)
   var icon_boxes = ArrayBuffer.fill[Button](6)(Button("") {})
   var button_del = Button(" x ") {
-    menu.fridge.food_list -= food
+    menu.fridge.foodList -= food
     p("Notice: " + food.name + " has been removed from the list")
-    ui.revalidate_window(default_box)
+    ui.revalidateWindow(default_box)
   }
   var button_add = Button(" + ") {
-    ui.right_checkbox_list.foreach(_.visible = false)
-    ui.button_save.visible = false
-    ui.left_multi_button.visible = true
+    ui.rightCheckboxList.foreach(_.visible = false)
+    ui.buttonSave.visible = false
+    ui.leftMultifunctionalButton.visible = true
     ui.edit = false
-    ui.deafTo(ui.search_box)
-    if (!ui.changed) ui.refresh_menu_box() else ui.change_box(ui.search_box.text)
-    ui.left_menu_scroll.revalidate()
+    ui.deafTo(ui.searchBox)
+    if (!ui.changed) ui.refreshMenuBox() else ui.changeBox(ui.searchBox.text)
+    ui.leftMenuScroll.revalidate()
     var edit_string = "Example_name:Ingredient_a=1,Ingredient_b=2:unit_1:unit_2:0:Allengens:Description:isMenudigit (1=yes, 0=no):amount"
     p("Adding string: " + edit_string)
-    ui.left_multi_text.editable = true
-    ui.left_multi_text.text = edit_string
-    ui.left_multi_text.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
-    ui.left_feedback.text = "> Edit menu in given format (Example below), press green Complete button when finished"
+    ui.leftMultifunctionalText.editable = true
+    ui.leftMultifunctionalText.text = edit_string
+    ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
+    ui.leftFeedback.text = "> Edit menu in given format (Example below), press green Complete button when finished"
   }
   var button_mod = Button("") {
-    ui.right_checkbox_list.foreach(_.visible = false)
-    ui.button_save.visible = false
-    ui.right_box.revalidate()
-    ui.left_multi_button.visible = true
+    ui.rightCheckboxList.foreach(_.visible = false)
+    ui.buttonSave.visible = false
+    ui.rightBox.revalidate()
+    ui.leftMultifunctionalButton.visible = true
     ui.edit = true
     ui.editing = food
-    ui.deafTo(ui.search_box)
-    var boo = if (food.is_menu) "1" else "0"
+    ui.deafTo(ui.searchBox)
+    var boo = if (food.isMenu) "1" else "0"
     var ingredients_string = {
       if (food.ingredients.isEmpty) {
         ""
@@ -56,12 +56,12 @@ class UISectionBox(food: Food, ui: UI) {
         food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
       }
     }
-    var edit_string = food.name + ":" + ingredients_string + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + menu.fridge.food_list(food).toString
+    var edit_string = food.name + ":" + ingredients_string + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + menu.fridge.foodList(food).toString
     p("Editing string: " + edit_string)
-    ui.left_multi_text.text = edit_string
-    ui.left_multi_text.editable = true
-    ui.left_multi_text.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
-    ui.left_feedback.text = "> Edit menu in given format in the box below, press green Complete button when finished"
+    ui.leftMultifunctionalText.text = edit_string
+    ui.leftMultifunctionalText.editable = true
+    ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
+    ui.leftFeedback.text = "> Edit menu in given format in the box below, press green Complete button when finished"
   }
   var edit_icon = new ImageIcon("src/icons/edit.png")
   button_mod.icon = edit_icon
@@ -74,16 +74,16 @@ class UISectionBox(food: Food, ui: UI) {
   var third_part = new BorderPanel
   var last_part = new BorderPanel
   var last_row = new BoxPanel(Horizontal)
-  var label_ready = new Label("Ready to eat: " + menu.fridge.food_list(food).toInt.toString)
-  if (food.ingredients.isEmpty) label_ready.text = "Amount: " + menu.fridge.food_list(food).toInt.toString
-  var label_cookable = new Label("Cookable: " + (menu.check_availability(food) - menu.fridge.food_list(food).toInt).toString)
+  var label_ready = new Label("Ready to eat: " + menu.fridge.foodList(food).toInt.toString)
+  if (food.ingredients.isEmpty) label_ready.text = "Amount: " + menu.fridge.foodList(food).toInt.toString
+  var label_cookable = new Label("Cookable: " + (menu.checkAvailability(food) - menu.fridge.foodList(food).toInt).toString)
   if (food.ingredients.isEmpty) label_cookable.visible = false
   var button_make = Button("  Use/Make  ") {
-    menu.make(food, 1)
+    menu.makeDish(food, 1)
     p("Notice: 1 " + food.name + " has been made/consumed")
-    if (!ui.changed) ui.refresh_menu_box() else ui.change_box(ui.search_box.text)
-    ui.left_normal_menu_box.contents -= default_box
-    ui.outer_box.revalidate()
+    if (!ui.changed) ui.refreshMenuBox() else ui.changeBox(ui.searchBox.text)
+    ui.leftNormalMenuBox.contents -= default_box
+    ui.outerBox.revalidate()
   }
   if (food.ingredients.isEmpty) button_make.text = "       Use       "
 
@@ -138,12 +138,12 @@ class UISectionBox(food: Food, ui: UI) {
   // Last row: Cooked, Cookable & Make
   label_ready.font = new Font("Arial", 0, scaleTo(30))
   label_cookable.font = new Font("Arial", 0, scaleTo(30))
-  if (menu.fridge.food_list(food) > 0) {
+  if (menu.fridge.foodList(food) > 0) {
     label_ready.foreground = ORANGE
   } else {
     label_ready.visible = false
   }
-  if (menu.check_availability(food) > 0) {
+  if (menu.checkAvailability(food) > 0) {
     label_cookable.foreground = GREEN
   } else {
     label_cookable.foreground = RED

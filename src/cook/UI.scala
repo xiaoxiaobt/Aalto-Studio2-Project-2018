@@ -9,7 +9,8 @@ import java.io._
 import scala.io.Source._
 import scala.util.control.Breaks._
 import java.awt.Color.{ BLACK, WHITE, GRAY, RED }
-import javax.swing.{ ImageIcon, BorderFactory }
+import javax.swing.ImageIcon
+import javax.swing.BorderFactory.{ createEmptyBorder, createLineBorder }
 import Swing._
 import Settings.scaleTo
 
@@ -21,116 +22,115 @@ class UI extends MainFrame {
   var menu = new Menu()
   var fridge = menu.fridge
   var settings = Settings
-  def food_list = fridge.food_list
+  def foodList = fridge.foodList
   var myColor = settings.color
   var changed = false
   var edit = false
   var editing: Food = null
-  var temp_search_text = ""
+  var tempSearchText = ""
   var fileProcessor = new FileProcessor(this)
 
   // Frames, boxes and buttons (Almost all boxes)
-  var outer_box = new BoxPanel(Horizontal)
-  var left_box = new BorderPanel
-  var left_info_section = new BoxPanel(Vertical)
-  var left_welcome = new Label("What would you like to eat today? ")
-  var left_menu_scroll = new ScrollPane()
-  var left_normal_menu_box = new BoxPanel(Vertical)
-  var left_search_area = new BoxPanel(Horizontal)
-  var search_prevention_box = new TextField("")
-  var search_box = new TextField(" Search for recipes or ingredients here...")
-  var search_button = Button("") {
-    if (search_box.text == " Search for recipes or ingredients here...") search_box.text = ""
-    p("Notice: Searched: \"" + search_box.text + "\"")
+  var outerBox = new BoxPanel(Horizontal)
+  var leftBox = new BorderPanel
+  var leftInfoSection = new BoxPanel(Vertical)
+  var leftWelcome = new Label("What would you like to eat today? ")
+  var leftMenuScroll = new ScrollPane()
+  var leftNormalMenuBox = new BoxPanel(Vertical)
+  var leftSearchArea = new BoxPanel(Horizontal)
+  var searchPreventionBox = new TextField("")
+  var searchBox = new TextField(" Search for recipes or ingredients here...")
+  var searchButton = Button("") {
+    if (searchBox.text == " Search for recipes or ingredients here...") searchBox.text = ""
+    p("Notice: Searched: \"" + searchBox.text + "\"")
     changed = true
-    left_feedback.text = "> Return to the previous page, click Back button"
-    change_box(search_box.text)
-    temp_search_text = search_box.text
+    leftFeedback.text = "> Return to the previous page, click Back button"
+    changeBox(searchBox.text)
+    tempSearchText = searchBox.text
   }
-  var back_button = Button("") {
+  var backButton = Button("") {
     changed = false
-    refresh_menu_box()
-    left_feedback.text = "> To perform search, type in the box above and click Search button"
-    search_box.text = " Search for recipes or ingredients here..."
-    search_box.foreground = GRAY
+    refreshMenuBox()
+    leftFeedback.text = "> To perform search, type in the box above and click Search button"
+    searchBox.text = " Search for recipes or ingredients here..."
+    searchBox.foreground = GRAY
     p("Notice: Returned to the main interface")
   }
-  var left_feedback = new TextField("")
-  var left_multi_frame = new BorderPanel
-  var left_multi_box = new BoxPanel(Horizontal)
-  var left_multi_text = new TextField("")
-  var left_multi_button = Button("") {
-    add_menu_to_ui(left_multi_text.text)
-    left_multi_text.border = BorderFactory.createEmptyBorder()
-    left_multi_text.editable = false
-    left_multi_text.text = ""
-    if (!changed) refresh_menu_box() else change_box(search_box.text)
-    button_save.visible = true
-    outer_box.repaint()
-    outer_box.revalidate()
+  var leftFeedback = new TextField("")
+  var leftMultifunctionalFrame = new BorderPanel
+  var leftMultifunctionalBox = new BoxPanel(Horizontal)
+  var leftMultifunctionalText = new TextField("")
+  var leftMultifunctionalButton = Button("") {
+    addMenuToUI(leftMultifunctionalText.text)
+    leftMultifunctionalText.border = createEmptyBorder()
+    leftMultifunctionalText.editable = false
+    leftMultifunctionalText.text = ""
+    if (!changed) refreshMenuBox() else changeBox(searchBox.text)
+    outerBox.repaint()
+    outerBox.revalidate()
   }
-  var right_box = new BorderPanel
-  var right_info_section = new BoxPanel(Vertical)
-  var right_welcome = new Label("Options: ")
-  var right_checkbox_list = ArrayBuffer[CheckBox]()
-  var button_save = Button("") {
+  var rightBox = new BorderPanel
+  var rightInfoSection = new BoxPanel(Vertical)
+  var rightWelcome = new Label("Options: ")
+  var rightCheckboxList = ArrayBuffer[CheckBox]()
+  var buttonSave = Button("") {
     fileProcessor.IOWrite()
     p("Notice: Saved")
-    left_feedback.text = "> All changes are saved to src/saved_data/data.txt "
-    left_feedback.repaint()
+    leftFeedback.text = "> All changes are saved to src/saved_data/data.txt "
+    leftFeedback.repaint()
   }
-  var button_exit = Button("") { sys.exit(0) }
+  var buttonExit = Button("") { sys.exit(0) }
 
   // Definitions
   def p[T](a: T) = if (settings.diagnosis) println(a.toString)
 
-  def return_status() = (settings.all_abbri zip right_checkbox_list.map(_.selected))
+  def returnStatus() = (settings.all_abbri zip rightCheckboxList.map(_.selected))
 
-  def update_allergies_string() = {
-    settings.allergies_string = return_status().filter(_._2).map(_._1).mkString
+  def updateAllergiesString() = {
+    settings.allergiesString = returnStatus().filter(_._2).map(_._1).mkString
   }
-  def revalidate_window(box: BoxPanel) = {
-    left_normal_menu_box.contents -= box
-    if (changed) change_box(search_box.text)
-    left_normal_menu_box.repaint()
-    left_normal_menu_box.revalidate()
-    outer_box.repaint()
-    outer_box.revalidate()
+  def revalidateWindow(box: BoxPanel) = {
+    leftNormalMenuBox.contents -= box
+    if (changed) changeBox(searchBox.text)
+    leftNormalMenuBox.repaint()
+    leftNormalMenuBox.revalidate()
+    outerBox.repaint()
+    outerBox.revalidate()
   }
-  def refresh_menu_box() = {
-    listenTo(search_box)
-    while (left_normal_menu_box.contents.nonEmpty) {
-      left_normal_menu_box.contents -= left_normal_menu_box.contents.last
+  def refreshMenuBox() = {
+    listenTo(searchBox)
+    while (leftNormalMenuBox.contents.nonEmpty) {
+      leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
     }
-    var food_list_menu = food_list.filter(_._1.is_menu()).toSeq.sortBy(x => menu.check_availability(x._1)).reverse.toMap
-    var allergies = (settings.all_abbri zip right_checkbox_list.map(_.selected)).filter(_._2).map(_._1)
+    var food_list_menu = foodList.filter(_._1.isMenu).toSeq.sortBy(x => menu.checkAvailability(x._1)).reverse.toMap
+    var allergies = (settings.all_abbri zip rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
     if (allergies.isEmpty) allergies = List[String]()
     var food_list_menu_allergies = food_list_menu.filter(x => allergies.forall(y => x._1.tag.contains(y)))
     for ((item_food, item_amount) <- food_list_menu_allergies) {
-      left_normal_menu_box.contents += new UISectionBox(item_food, this).default_box
+      leftNormalMenuBox.contents += new UISectionBox(item_food, this).default_box
     }
-    outer_box.repaint()
-    outer_box.revalidate()
+    outerBox.repaint()
+    outerBox.revalidate()
   }
-  def change_box(keyword: String) = {
+  def changeBox(keyword: String) = {
     var sub_ui = new UISearchRepresentation(this, keyword)
-    while (left_normal_menu_box.contents.nonEmpty) {
-      left_normal_menu_box.contents -= left_normal_menu_box.contents.last
+    while (leftNormalMenuBox.contents.nonEmpty) {
+      leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
     }
-    left_normal_menu_box.contents += sub_ui.headline_border
-    left_normal_menu_box.contents += VStrut(scaleTo(40))
-    left_normal_menu_box.contents += sub_ui.box1_border
-    left_normal_menu_box.contents += VStrut(scaleTo(20))
-    left_normal_menu_box.contents += sub_ui.box2_border
-    left_normal_menu_box.contents += VStrut(scaleTo(20))
-    if (!sub_ui.keyDouble.isNaN) left_normal_menu_box.contents += sub_ui.box3_border
-    listenTo(search_box)
-    left_normal_menu_box.repaint()
-    left_menu_scroll.revalidate()
-    outer_box.repaint()
-    outer_box.revalidate()
+    leftNormalMenuBox.contents += sub_ui.headlineBorder
+    leftNormalMenuBox.contents += VStrut(scaleTo(40))
+    leftNormalMenuBox.contents += sub_ui.box1Border
+    leftNormalMenuBox.contents += VStrut(scaleTo(20))
+    leftNormalMenuBox.contents += sub_ui.box2Border
+    leftNormalMenuBox.contents += VStrut(scaleTo(20))
+    if (!sub_ui.keyDouble.isNaN) leftNormalMenuBox.contents += sub_ui.box3Border
+    listenTo(searchBox)
+    leftNormalMenuBox.repaint()
+    leftMenuScroll.revalidate()
+    outerBox.repaint()
+    outerBox.revalidate()
   }
-  def add_menu_to_ui(str: String) = {
+  def addMenuToUI(str: String) = {
     try {
       var str_list = str.split("\t").map(_.trim())
       p("Input string: " + str_list.mkString("\t"))
@@ -144,7 +144,7 @@ class UI extends MainFrame {
       var description_add: String = str_list(6)
       var isMenu_add: Boolean = if (str_list(7) == "1") true else if (str_list(7) == "0") false else throw new Exception
       var amount_add: Double = str_list(8).toDouble
-      if ((!edit) && (menu.return_food_with_name(name_add) != None)) throw new IOException
+      if ((!edit) && (menu.returnFoodWithName(name_add) != None)) throw new IOException
       if (amount_add > 1000) {
         amount_add = 1000
         println("Notice: The maximum amount allowed in this system is 1000. Your input has been changed to 1000.")
@@ -158,15 +158,15 @@ class UI extends MainFrame {
       }
       if (ingredients_add.isEmpty) {
         var food_add = new Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
-        if (isMenu_add) food_add.set_to_menu()
-        menu.fridge.add_food(food_add, amount_add)
+        if (isMenu_add) food_add.setToMenu()
+        fridge.addFood(food_add, amount_add)
       } else {
         var ingre_map: collection.mutable.Map[Food, Double] = {
           var item_list = ingredients_add.split(",")
           var name_list = ArrayBuffer[Food]()
           var amount_list = ArrayBuffer[Double]()
           for (item <- item_list) {
-            name_list += menu.return_food_with_name(item.split("=").head.trim).get
+            name_list += menu.returnFoodWithName(item.split("=").head.trim).get
             var temp_amount = item.split("=").last.trim.toDouble
             if (temp_amount > 1000) {
               temp_amount = 1000
@@ -181,151 +181,151 @@ class UI extends MainFrame {
           collection.mutable.Map(temp.toSeq: _*)
         }
         var food_add = new Food(name_add, ingre_map, first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
-        if (isMenu_add) food_add.set_to_menu()
-        menu.fridge.add_food(food_add, amount_add)
+        if (isMenu_add) food_add.setToMenu()
+        fridge.addFood(food_add, amount_add)
       }
-      if (edit) menu.fridge.food_list -= editing
-      left_feedback.text = "> Added/Modified successfully!"
+      if (edit) fridge.foodList -= editing
+      leftFeedback.text = "> Added/Modified successfully!"
     } catch {
       case e: IOException => {
-        left_feedback.text = "> Failed. The menu with the same name already exists"
+        leftFeedback.text = "> Failed. The menu with the same name already exists"
       }
       case e: NoSuchElementException => {
-        left_feedback.text = "> Failed. One or more ingredients is missing. Please add ingredients first"
+        leftFeedback.text = "> Failed. One or more ingredients is missing. Please add ingredients first"
       }
       case e: Exception => {
-        left_feedback.text = "> Failed. Wrong format"
+        leftFeedback.text = "> Failed. Wrong format"
       }
     } finally {
-      left_feedback.repaint()
+      leftFeedback.repaint()
     }
-    search_box.text = if (temp_search_text.isEmpty) " Search for recipes or ingredients here..." else temp_search_text
-    search_box.foreground = GRAY
+    searchBox.text = if (tempSearchText.isEmpty) " Search for recipes or ingredients here..." else tempSearchText
+    searchBox.foreground = GRAY
   }
 
   // Icons
-  var icon_selected = new ImageIcon("src/icons/selected.png")
-  var icon_free = new ImageIcon("src/icons/free.png")
-  var icon_button = new ImageIcon("src/icons/button.png")
-  var icon_save = new ImageIcon("src/icons/save.png")
-  var icon_save_pressed = new ImageIcon("src/icons/save_done.png")
-  var icon_exit = new ImageIcon("src/icons/exit.png")
-  var icon_find = new ImageIcon("src/icons/find.png")
-  var icon_back = new ImageIcon("src/icons/back.png")
-  var icon_tick = new ImageIcon("src/icons/tick.png")
+  var iconSelected = new ImageIcon("src/icons/selected.png")
+  var iconFree = new ImageIcon("src/icons/free.png")
+  var iconButton = new ImageIcon("src/icons/button.png")
+  var iconSave = new ImageIcon("src/icons/save.png")
+  var iconSavePressed = new ImageIcon("src/icons/save_done.png")
+  var iconExit = new ImageIcon("src/icons/exit.png")
+  var iconFind = new ImageIcon("src/icons/find.png")
+  var iconBack = new ImageIcon("src/icons/back.png")
+  var iconTick = new ImageIcon("src/icons/tick.png")
 
   // Left Welcome Label
-  left_welcome.horizontalAlignment = Left
-  left_welcome.font = new Font("Arial", 0, scaleTo(80))
-  left_info_section.contents += VStrut(scaleTo(20))
-  left_info_section.contents += left_welcome
+  leftWelcome.horizontalAlignment = Left
+  leftWelcome.font = new Font("Arial", 0, scaleTo(80))
+  leftInfoSection.contents += VStrut(scaleTo(20))
+  leftInfoSection.contents += leftWelcome
 
   // Left Info Box
-  left_info_section.background = WHITE
-  left_info_section.border = EmptyBorder(scaleTo(30), scaleTo(30), scaleTo(30), scaleTo(30))
+  leftInfoSection.background = WHITE
+  leftInfoSection.border = EmptyBorder(scaleTo(30), scaleTo(30), scaleTo(30), scaleTo(30))
 
   // Left Menu Box ScrollPane Frame
-  left_menu_scroll.preferredSize = new Dimension(scaleTo(1440), scaleTo(600))
-  left_info_section.contents += VStrut(scaleTo(20))
-  left_info_section.contents += left_menu_scroll
+  leftMenuScroll.preferredSize = new Dimension(scaleTo(1440), scaleTo(600))
+  leftInfoSection.contents += VStrut(scaleTo(20))
+  leftInfoSection.contents += leftMenuScroll
 
   // Left Menu BoxPanel Normal
-  refresh_menu_box()
-  left_menu_scroll.contents = left_normal_menu_box
+  refreshMenuBox()
+  leftMenuScroll.contents = leftNormalMenuBox
 
   // Left Search Area
-  left_search_area.preferredSize = new Dimension(scaleTo(1440), scaleTo(100))
-  left_search_area.background = WHITE
-  left_info_section.contents += VStrut(scaleTo(10))
+  leftSearchArea.preferredSize = new Dimension(scaleTo(1440), scaleTo(100))
+  leftSearchArea.background = WHITE
+  leftInfoSection.contents += VStrut(scaleTo(10))
 
   // Left Search Prevention TextField (Avoiding cursor move to search box after clicking "MAKE")
-  search_prevention_box.font = new Font("Arial", 0, scaleTo(1))
-  search_prevention_box.border = BorderFactory.createEmptyBorder()
-  left_info_section.contents += search_prevention_box
+  searchPreventionBox.font = new Font("Arial", 0, scaleTo(1))
+  searchPreventionBox.border = createEmptyBorder()
+  leftInfoSection.contents += searchPreventionBox
 
   // Left Search TextField
-  search_box.font = new Font("Arial", 0, scaleTo(50))
-  search_box.foreground = GRAY
-  search_box.border = BorderFactory.createLineBorder(myColor, scaleTo(5))
-  listenTo(search_box)
+  searchBox.font = new Font("Arial", 0, scaleTo(50))
+  searchBox.foreground = GRAY
+  searchBox.border = createLineBorder(myColor, scaleTo(5))
+  listenTo(searchBox)
   reactions += {
     case e: FocusGained => {
       p("Notice: Search box gained focus")
-      search_box.text = ""
-      search_box.foreground = BLACK
-      outer_box.repaint()
+      searchBox.text = ""
+      searchBox.foreground = BLACK
+      outerBox.repaint()
     }
   }
-  search_button.background = WHITE
-  search_button.font = new Font("Arial", 0, scaleTo(50))
-  search_button.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
-  search_button.border = BorderFactory.createLineBorder(myColor, scaleTo(5))
-  search_button.icon = icon_find
-  back_button.background = WHITE
-  back_button.font = new Font("Arial", 0, scaleTo(50))
-  back_button.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
-  back_button.border = BorderFactory.createLineBorder(myColor, scaleTo(5))
-  back_button.icon = icon_back
-  left_search_area.contents += search_box
-  left_search_area.contents += search_button
-  left_search_area.contents += back_button
-  left_info_section.contents += left_search_area
-  left_info_section.contents += VStrut(scaleTo(20))
+  searchButton.background = WHITE
+  searchButton.font = new Font("Arial", 0, scaleTo(50))
+  searchButton.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
+  searchButton.border = createLineBorder(myColor, scaleTo(5))
+  searchButton.icon = iconFind
+  backButton.background = WHITE
+  backButton.font = new Font("Arial", 0, scaleTo(50))
+  backButton.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
+  backButton.border = createLineBorder(myColor, scaleTo(5))
+  backButton.icon = iconBack
+  leftSearchArea.contents += searchBox
+  leftSearchArea.contents += searchButton
+  leftSearchArea.contents += backButton
+  leftInfoSection.contents += leftSearchArea
+  leftInfoSection.contents += VStrut(scaleTo(20))
 
   // Left Real-time feedback TextField
-  left_feedback.preferredSize = new Dimension(scaleTo(200), scaleTo(40))
-  left_feedback.font = new Font("Arial", 0, scaleTo(34))
-  left_feedback.border = BorderFactory.createEmptyBorder()
-  left_feedback.editable = false
-  left_feedback.background = WHITE
-  left_info_section.contents += left_feedback
-  left_info_section.contents += VStrut(scaleTo(20))
+  leftFeedback.preferredSize = new Dimension(scaleTo(200), scaleTo(40))
+  leftFeedback.font = new Font("Arial", 0, scaleTo(34))
+  leftFeedback.border = createEmptyBorder()
+  leftFeedback.editable = false
+  leftFeedback.background = WHITE
+  leftInfoSection.contents += leftFeedback
+  leftInfoSection.contents += VStrut(scaleTo(20))
 
   // Left Multi-usage Testfield
-  left_multi_text.editable = false
-  left_multi_text.background = WHITE
-  left_multi_text.preferredSize = new Dimension(scaleTo(1300), scaleTo(30))
-  left_multi_text.font = new Font("Arial", 0, scaleTo(30))
-  left_multi_text.border = BorderFactory.createEmptyBorder()
+  leftMultifunctionalText.editable = false
+  leftMultifunctionalText.background = WHITE
+  leftMultifunctionalText.preferredSize = new Dimension(scaleTo(1300), scaleTo(30))
+  leftMultifunctionalText.font = new Font("Arial", 0, scaleTo(30))
+  leftMultifunctionalText.border = createEmptyBorder()
 
   // Left Muti-usage Button
-  left_multi_button.font = new Font("Arial", 0, scaleTo(30))
-  left_multi_button.border = BorderFactory.createEmptyBorder()
-  left_multi_button.preferredSize = new Dimension(scaleTo(50), scaleTo(50))
-  left_multi_button.background = WHITE
-  left_multi_button.visible = false
-  left_multi_button.icon = icon_tick
-  listenTo(left_multi_button)
+  leftMultifunctionalButton.font = new Font("Arial", 0, scaleTo(30))
+  leftMultifunctionalButton.border = createEmptyBorder()
+  leftMultifunctionalButton.preferredSize = new Dimension(scaleTo(50), scaleTo(50))
+  leftMultifunctionalButton.background = WHITE
+  leftMultifunctionalButton.visible = false
+  leftMultifunctionalButton.icon = iconTick
+  listenTo(leftMultifunctionalButton)
   reactions += {
     case e: ButtonClicked => {
       p("Notice: Complete button pressed")
-      left_multi_button.visible = false
-      right_checkbox_list.foreach(_.visible = true)
-      button_save.visible = true
-      left_multi_button.repaint()
-      left_multi_button.revalidate()
-      outer_box.repaint()
-      outer_box.revalidate()
+      leftMultifunctionalButton.visible = false
+      rightCheckboxList.foreach(_.visible = true)
+      buttonSave.visible = true
+      leftMultifunctionalButton.repaint()
+      leftMultifunctionalButton.revalidate()
+      outerBox.repaint()
+      outerBox.revalidate()
     }
   }
 
   // Left multi-usage box
-  left_multi_box.background = WHITE
-  left_multi_box.contents += left_multi_text
-  left_multi_box.contents += HStrut(scaleTo(10))
-  left_multi_box.contents += left_multi_button
+  leftMultifunctionalBox.background = WHITE
+  leftMultifunctionalBox.contents += leftMultifunctionalText
+  leftMultifunctionalBox.contents += HStrut(scaleTo(10))
+  leftMultifunctionalBox.contents += leftMultifunctionalButton
 
   // Left multi-usage frame
-  left_multi_frame.preferredSize = new Dimension(scaleTo(1440), scaleTo(50))
-  left_multi_frame.background = WHITE
-  left_multi_frame.layout(left_multi_box) = West
-  left_info_section.contents += left_multi_frame
+  leftMultifunctionalFrame.preferredSize = new Dimension(scaleTo(1440), scaleTo(50))
+  leftMultifunctionalFrame.background = WHITE
+  leftMultifunctionalFrame.layout(leftMultifunctionalBox) = West
+  leftInfoSection.contents += leftMultifunctionalFrame
 
   // Right Welcome Label
-  right_welcome.horizontalAlignment = Left
-  right_welcome.font = new Font("Arial", 0, scaleTo(64))
-  right_welcome.foreground = WHITE
-  right_welcome.opaque = false
+  rightWelcome.horizontalAlignment = Left
+  rightWelcome.font = new Font("Arial", 0, scaleTo(64))
+  rightWelcome.foreground = WHITE
+  rightWelcome.opaque = false
 
   // Right Checkboxes
   var i = 0
@@ -334,74 +334,74 @@ class UI extends MainFrame {
     current.opaque = false
     current.foreground = WHITE
     current.font = new Font("Arial", 0, scaleTo(50))
-    current.selectedIcon = icon_selected
-    current.icon = icon_free
+    current.selectedIcon = iconSelected
+    current.icon = iconFree
     current.iconTextGap = scaleTo(10)
-    right_checkbox_list += current
+    rightCheckboxList += current
     i += 1
   }
-  right_checkbox_list.map(listenTo(_))
+  rightCheckboxList.map(listenTo(_))
   reactions += {
     case e: ButtonClicked => {
-      var allergies = (settings.all_abbri zip right_checkbox_list.map(_.selected)).filter(_._2).map(_._1)
+      var allergies = (settings.all_abbri zip rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
       p("Notice: Checkbox(es) selection changed, new allergen list is: " + allergies.mkString(""))
       if (!changed) {
-        search_box.text = " Search for recipes or ingredients here..."
-        search_box.foreground = GRAY
-        refresh_menu_box()
+        searchBox.text = " Search for recipes or ingredients here..."
+        searchBox.foreground = GRAY
+        refreshMenuBox()
       } else {
-        search_box.text = temp_search_text
-        change_box(search_box.text)
+        searchBox.text = tempSearchText
+        changeBox(searchBox.text)
       }
-      left_multi_box.repaint()
-      left_multi_box.revalidate()
-      outer_box.repaint()
-      outer_box.revalidate()
+      leftMultifunctionalBox.repaint()
+      leftMultifunctionalBox.revalidate()
+      outerBox.repaint()
+      outerBox.revalidate()
     }
   }
 
   // Right Save Button
-  button_save.icon = icon_save
-  button_save.background = WHITE
-  button_save.opaque = false
-  button_save.border = BorderFactory.createEmptyBorder()
-  button_save.icon = icon_save
-  button_save.pressedIcon = icon_save_pressed
+  buttonSave.icon = iconSave
+  buttonSave.background = WHITE
+  buttonSave.opaque = false
+  buttonSave.border = createEmptyBorder()
+  buttonSave.icon = iconSave
+  buttonSave.pressedIcon = iconSavePressed
 
   // Right Exit Button (Shows only with IOError)
-  button_exit.icon = icon_exit
-  button_exit.pressedIcon = icon_exit
-  button_exit.background = WHITE
-  button_exit.opaque = false
-  button_exit.border = BorderFactory.createEmptyBorder()
-  button_exit.icon = icon_exit
+  buttonExit.icon = iconExit
+  buttonExit.pressedIcon = iconExit
+  buttonExit.background = WHITE
+  buttonExit.opaque = false
+  buttonExit.border = createEmptyBorder()
+  buttonExit.icon = iconExit
 
   // Right Info Box
-  right_info_section.contents += right_welcome
-  right_info_section.contents += VStrut(scaleTo(30))
-  for (checkbox <- right_checkbox_list) {
-    right_info_section.contents += checkbox
-    right_info_section.contents += VStrut(scaleTo(20))
+  rightInfoSection.contents += rightWelcome
+  rightInfoSection.contents += VStrut(scaleTo(30))
+  for (checkbox <- rightCheckboxList) {
+    rightInfoSection.contents += checkbox
+    rightInfoSection.contents += VStrut(scaleTo(20))
   }
-  right_info_section.contents += VStrut(scaleTo(200))
-  right_info_section.contents += button_save
-  right_info_section.background = myColor
-  right_info_section.border = EmptyBorder(scaleTo(20), scaleTo(20), scaleTo(20), scaleTo(20))
+  rightInfoSection.contents += VStrut(scaleTo(200))
+  rightInfoSection.contents += buttonSave
+  rightInfoSection.background = myColor
+  rightInfoSection.border = EmptyBorder(scaleTo(20), scaleTo(20), scaleTo(20), scaleTo(20))
 
   // Frame Section
-  outer_box.contents += left_box
-  outer_box.contents += right_box
+  outerBox.contents += leftBox
+  outerBox.contents += rightBox
 
   // Left Panel Section
-  left_box.preferredSize = new Dimension(scaleTo(1440), scaleTo(1080))
-  left_box.layout(left_info_section) = North
-  left_box.background = WHITE
-  contents = outer_box
+  leftBox.preferredSize = new Dimension(scaleTo(1440), scaleTo(1080))
+  leftBox.layout(leftInfoSection) = North
+  leftBox.background = WHITE
+  contents = outerBox
 
   // Right Panel Section
-  right_box.preferredSize = new Dimension(scaleTo(480), scaleTo(1080))
-  right_box.layout(right_info_section) = North
-  right_box.background = myColor
+  rightBox.preferredSize = new Dimension(scaleTo(480), scaleTo(1080))
+  rightBox.layout(rightInfoSection) = North
+  rightBox.background = myColor
 
   // Load file
   fileProcessor.loadFromIO()

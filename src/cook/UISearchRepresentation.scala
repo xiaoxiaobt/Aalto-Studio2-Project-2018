@@ -26,25 +26,13 @@ class UISearchRepresentation(ui: UI, keyword: String) {
     case e: NumberFormatException =>
   }
 
-  def allergies_remove(map: Map[Food, Double]): Map[Food, Double] = {
+  def allergiesRemove(map: Map[Food, Double]): Map[Food, Double] = {
     var allergies = (Settings.all_abbri zip ui.rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
     map.filter(x => allergies.forall(y => x._1.tag.contains(y)))
   }
 
   var headline = new Label(" Search Results: You have searched \"" + key + "\"")
   var headlineBorder = new BorderPanel
-  var line1 = new Label("  >Search by Name")
-  var line1Border = new BorderPanel
-  var box1Border = new BorderPanel
-  var box1 = new BoxPanel(Vertical)
-  var line2 = new Label("  >Search by Ingredients")
-  var line2Border = new BorderPanel
-  var box2Border = new BorderPanel
-  var box2 = new BoxPanel(Vertical)
-  var line3 = new Label("  >Search by Amount")
-  var line3Border = new BorderPanel
-  var box3Border = new BorderPanel
-  var box3 = new BoxPanel(Vertical)
 
   // Headline
   headline.horizontalAlignment = Left
@@ -53,67 +41,39 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   // Headline frame
   headlineBorder.layout(headline) = West
 
-  // Line 1
-  line1.horizontalAlignment = Left
-  line1.font = new Font("Arial", 0, scaleTo(40))
-  line1.foreground = myColor
+  def addSubFrame(labelName: String, result: Map[Food, Double]): BorderPanel = {
+    var line = new Label("  >Search by Name")
+    var lineBorder = new BorderPanel
+    var boxBorder = new BorderPanel
+    var box = new BoxPanel(Vertical)
+    line.horizontalAlignment = Left
+    line.font = new Font("Arial", 0, scaleTo(40))
+    line.foreground = myColor
 
-  // Box 1
-  var result1 = allergies_remove(fridge.getByName(key))
-  line1Border.layout(line1) = West
-  box1.contents += line1Border
-  for ((item_food, item_amount) <- result1) box1.contents += new UISectionBox(item_food, ui).default_box
-  if (box1.contents.size == 1) {
-    var label_no_1 = new Label("  No matches")
-    label_no_1.font = new Font("Arial", 0, scaleTo(36))
-    var border_no_1 = new BorderPanel
-    border_no_1.layout(label_no_1) = West
-    box1.contents += border_no_1
+    // Box
+    lineBorder.layout(line) = West
+    box.contents += lineBorder
+    for ((item_food, item_amount) <- result) box.contents += new UISectionBox(item_food, ui).defaultBox
+    if (box.contents.size == 1) {
+      var label = new Label("  No matches")
+      label.font = new Font("Arial", 0, scaleTo(36))
+      var border = new BorderPanel
+      border.layout(label) = West
+      box.contents += border
+    }
+
+    // Add Frame
+    boxBorder.layout(box) = West
+    boxBorder
+
   }
-
-  // Frame 1 + Add
-  box1Border.layout(box1) = West
-
-  // Line 2
-  line2.horizontalAlignment = Left
-  line2.font = new Font("Arial", 0, scaleTo(40))
-  line2.foreground = myColor
-
-  // Box 2
-  var result2 = allergies_remove(fridge.getByIngredients(key))
-  line2Border.layout(line2) = West
-  box2.contents += line2Border
-  for ((item_food, item_amount) <- result2) box2.contents += new UISectionBox(item_food, ui).default_box
-  if (box2.contents.size == 1) {
-    var label_no_2 = new Label("  No matches")
-    label_no_2.font = new Font("Arial", 0, scaleTo(36))
-    var border_no_2 = new BorderPanel
-    border_no_2.layout(label_no_2) = West
-    box2.contents += border_no_2
-  }
-
-  // Frame 2
-  box2Border.layout(box2) = West
-
-  // Line 3
-  line3.horizontalAlignment = Left
-  line3.font = new Font("Arial", 0, scaleTo(40))
-  line3.foreground = myColor
-
-  // Box 3
-  var result3 = allergies_remove(fridge.getByAvailability(keyDouble))
-  line3Border.layout(line3) = West
-  box3.contents += line3Border
-  for ((item_food, item_amount) <- result3) box3.contents += new UISectionBox(item_food, ui).default_box
-
-  if (box3.contents.size == 1) {
-    var label_no_3 = new Label("  No matches")
-    label_no_3.font = new Font("Arial", 0, scaleTo(36))
-    var border_no_3 = new BorderPanel
-    border_no_3.layout(label_no_3) = West
-    box3.contents += border_no_3
-  }
-
-  // Frame 3
-  box3Border.layout(box3) = West
+  var title1 = "  >Search by Name"
+  var title2 = "  >Search by Ingredients"
+  var title3 = "  >Search by Amount"
+  var result1 = allergiesRemove(fridge.getByName(key))
+  var result2 = allergiesRemove(fridge.getByIngredients(key))
+  var result3 = allergiesRemove(fridge.getByAvailability(keyDouble))
+  var box1Border = addSubFrame(title1, result1)
+  var box2Border = addSubFrame(title2, result2)
+  var box3Border = addSubFrame(title3, result3)
 }

@@ -15,17 +15,17 @@ class UISectionBox(food: Food, ui: UI) {
   var menu = ui.menu
   var my_color = Settings.color
   def p[T](a: T) = if (menu.settings.diagnosis) println(a.toString)
-  var default_box = new BoxPanel(Vertical)
-  var first_row = new BoxPanel(Horizontal)
-  var label_name = new Label(" " + food.name + " " * (28 - food.name.length))
-  var first_row_iconset = new BoxPanel(Horizontal)
-  var icon_boxes = ArrayBuffer.fill[Button](6)(Button("") {})
-  var button_del = Button(" x ") {
+  var defaultBox = new BoxPanel(Vertical)
+  var firstRow = new BoxPanel(Horizontal)
+  var labelName = new Label(" " + food.name + " " * (28 - food.name.length))
+  var firstRowIconset = new BoxPanel(Horizontal)
+  var iconBoxes = ArrayBuffer.fill[Button](6)(Button("") {})
+  var buttonDelete = Button(" x ") {
     menu.fridge.foodList -= food
     p("Notice: " + food.name + " has been removed from the list")
-    ui.revalidateWindow(default_box)
+    ui.revalidateWindow(defaultBox)
   }
-  var button_add = Button(" + ") {
+  var buttonAdd = Button(" + ") {
     ui.rightCheckboxList.foreach(_.visible = false)
     ui.buttonSave.visible = false
     ui.leftMultifunctionalButton.visible = true
@@ -40,7 +40,7 @@ class UISectionBox(food: Food, ui: UI) {
     ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
     ui.leftFeedback.text = "> Edit menu in given format (Example below), press green Complete button when finished"
   }
-  var button_mod = Button("") {
+  var buttonModify = Button("") {
     ui.rightCheckboxList.foreach(_.visible = false)
     ui.buttonSave.visible = false
     ui.rightBox.revalidate()
@@ -63,8 +63,8 @@ class UISectionBox(food: Food, ui: UI) {
     ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
     ui.leftFeedback.text = "> Edit menu in given format in the box below, press green Complete button when finished"
   }
-  var edit_icon = new ImageIcon("src/icons/edit.png")
-  button_mod.icon = edit_icon
+  var editIcon = new ImageIcon("src/icons/edit.png")
+  buttonModify.icon = editIcon
   var label_des = new Label("   Description: " + food.description)
   def d2i(num: Double) = if (num.toInt.toDouble == num) num.toInt.toString else num.toString
   var label_ingre = new Label("   Ingredients: " + food.ingredients.toList.map(x => x._1.name + "×" + d2i(x._2) + x._1.main_unit).mkString(", "))
@@ -82,52 +82,52 @@ class UISectionBox(food: Food, ui: UI) {
     menu.makeDish(food, 1)
     p("Notice: 1 " + food.name + " has been made/consumed")
     if (!ui.changed) ui.refreshMenuBox() else ui.changeBox(ui.searchBox.text)
-    ui.leftNormalMenuBox.contents -= default_box
+    ui.leftNormalMenuBox.contents -= defaultBox
     ui.outerBox.revalidate()
   }
   if (food.ingredients.isEmpty) button_make.text = "       Use       "
 
   //first_row
-  label_name.font = new Font("Consolas", 0, scaleTo(48))
-  label_name.foreground = my_color
-  label_name.horizontalAlignment = Left
-  label_name.preferredSize = new Dimension(scaleTo(1330), scaleTo(60))
-  for (x <- icon_boxes) {
-    first_row_iconset.contents += x
+  labelName.font = new Font("Consolas", 0, scaleTo(48))
+  labelName.foreground = my_color
+  labelName.horizontalAlignment = Left
+  labelName.preferredSize = new Dimension(scaleTo(1330), scaleTo(60))
+  for (x <- iconBoxes) {
+    firstRowIconset.contents += x
     x.border = BorderFactory.createEmptyBorder()
     x.background = WHITE
     x.preferredSize = new Dimension(scaleTo(30), scaleTo(30))
   }
-  button_add.font = new Font("Arial", 0, scaleTo(40))
-  button_add.border = BorderFactory.createEmptyBorder()
-  button_add.opaque = false
-  button_add.background = WHITE
-  button_add.foreground = GREEN
-  button_mod.font = new Font("Arial", 0, scaleTo(40))
-  button_mod.border = BorderFactory.createEmptyBorder()
-  button_mod.opaque = false
-  button_mod.background = WHITE
-  button_mod.foreground = BLUE
-  button_del.font = new Font("Arial", 0, scaleTo(40))
-  button_del.border = BorderFactory.createEmptyBorder()
-  button_del.opaque = false
-  button_del.background = WHITE
-  button_del.foreground = RED
-  first_row.contents += label_name
-  first_row.contents += first_row_iconset
-  first_row.contents += HStrut(scaleTo(280))
-  first_row.contents += button_add
-  first_row.contents += button_mod
-  first_row.contents += button_del
+  buttonAdd.font = new Font("Arial", 0, scaleTo(40))
+  buttonAdd.border = BorderFactory.createEmptyBorder()
+  buttonAdd.opaque = false
+  buttonAdd.background = WHITE
+  buttonAdd.foreground = GREEN
+  buttonModify.font = new Font("Arial", 0, scaleTo(40))
+  buttonModify.border = BorderFactory.createEmptyBorder()
+  buttonModify.opaque = false
+  buttonModify.background = WHITE
+  buttonModify.foreground = BLUE
+  buttonDelete.font = new Font("Arial", 0, scaleTo(40))
+  buttonDelete.border = BorderFactory.createEmptyBorder()
+  buttonDelete.opaque = false
+  buttonDelete.background = WHITE
+  buttonDelete.foreground = RED
+  firstRow.contents += labelName
+  firstRow.contents += firstRowIconset
+  firstRow.contents += HStrut(scaleTo(280))
+  firstRow.contents += buttonAdd
+  firstRow.contents += buttonModify
+  firstRow.contents += buttonDelete
 
   var foodTag = food.tag.toUpperCase
   var tagPair = "AGLMVW".zipWithIndex
   // Icon A/G/L/M/V/W
   for ((letter, index) <- tagPair) {
     if (foodTag.contains(letter)) {
-      icon_boxes(index).icon = new ImageIcon("src/icons/B_" + letter + ".png")
+      iconBoxes(index).icon = new ImageIcon("src/icons/B_" + letter + ".png")
     } else {
-      icon_boxes(index).icon = new ImageIcon("src/icons/W_" + letter + ".png")
+      iconBoxes(index).icon = new ImageIcon("src/icons/W_" + letter + ".png")
     }
   }
 
@@ -160,16 +160,16 @@ class UISectionBox(food: Food, ui: UI) {
   last_row.contents += button_make
   last_row.contents += HStrut(scaleTo(10))
 
-  first_part.layout(first_row) = West
+  first_part.layout(firstRow) = West
   second_part.layout(label_des) = West
   third_part.layout(label_ingre) = West
   last_part.layout(last_row) = East
 
-  default_box.contents += first_part
-  default_box.contents += second_part
-  default_box.contents += third_part
-  default_box.contents += last_part
-  default_box.preferredSize = new Dimension(scaleTo(1330), scaleTo(200))
-  default_box.border = BorderFactory.createLineBorder(my_color, scaleTo(1))
+  defaultBox.contents += first_part
+  defaultBox.contents += second_part
+  defaultBox.contents += third_part
+  defaultBox.contents += last_part
+  defaultBox.preferredSize = new Dimension(scaleTo(1330), scaleTo(200))
+  defaultBox.border = BorderFactory.createLineBorder(my_color, scaleTo(1))
 
 }

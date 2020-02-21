@@ -107,7 +107,7 @@ class UI extends MainFrame {
     if (allergies.isEmpty) allergies = List[String]()
     var food_list_menu_allergies = food_list_menu.filter(x => allergies.forall(y => x._1.tag.contains(y)))
     for ((item_food, item_amount) <- food_list_menu_allergies) {
-      leftNormalMenuBox.contents += new UISectionBox(item_food, this).default_box
+      leftNormalMenuBox.contents += new UISectionBox(item_food, this).defaultBox
     }
     outerBox.repaint()
     outerBox.revalidate()

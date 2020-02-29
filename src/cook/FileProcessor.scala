@@ -6,18 +6,6 @@ import scala.util.control.Breaks._
 import java.awt.Color.RED
 import javax.swing.{ ImageIcon, BorderFactory }
 
-class Holder(name_add: String, ingre_map: Map[String, Double], first_unit_add: String, second_unit_add: String, density_add: Double, alleriges_add: String, description_add: String, isMenu_add: Boolean, amount_add: Double) {
-  var name = name_add
-  var ingre = ingre_map
-  var first_u = first_unit_add
-  var second_u = second_unit_add
-  var density = density_add
-  var aller = alleriges_add
-  var description = description_add
-  var boo = isMenu_add
-  var amount = amount_add
-}
-
 class FileProcessor(ui: UI) {
   var menu = ui.menu
   var fridge = ui.fridge
@@ -49,12 +37,12 @@ class FileProcessor(ui: UI) {
     } finally {
       ui.leftFeedback.repaint()
       if (!lines.next().startsWith("RecipeBook")) throw new IOException
-      var temp = lines.next()
+      var temp = lines.next() // Read header
     }
     lines
   }
 
-  def lineProcessor(line: String, container: ArrayBuffer[Holder]): Unit = {
+  def lineProcessor(line: String, container: ArrayBuffer[Array[Any]]): Unit = {
     var splitted = line.split("\t").map(_.trim)
     if (splitted.size != 9) throw new IOException
     var name_add: String = splitted(0)
@@ -100,28 +88,37 @@ class FileProcessor(ui: UI) {
         }
         (name_list zip amount_list).toMap
       }
-      container += new Holder(name_add, ingre_map, first_unit_add, second_unit_add, density_add, alleriges_add, description_add, isMenu_add, amount_add)
+      container += Array[Any](name_add, ingre_map, first_unit_add, second_unit_add, density_add, alleriges_add, description_add, isMenu_add, amount_add)
     }
   }
 
   def loadFromIO() = {
     var lines = IOReadlines()
     try {
-      var buffer = ArrayBuffer[Holder]()
+      var buffer = ArrayBuffer[Array[Any]]()
       for (line <- lines) lineProcessor(line, buffer)
       var accumulator = 0
       var threshold = 100
       while (buffer.nonEmpty) {
         try {
           for (data <- buffer) {
-            var pre_ingre_list = data.ingre.map(_._1)
-            if (pre_ingre_list.forall(menu.returnFoodWithName(_).isDefined)) {
-              var ingre_mapped = data.ingre.map(x => (menu.returnFoodWithName(x._1).get, x._2))
+            var name = data(0).asInstanceOf[String]
+            var ingredients = data(1).asInstanceOf[Map[String, Double]]
+            var firstUnit = data(2).asInstanceOf[String]
+            var secondUnit = data(3).asInstanceOf[String]
+            var density = data(4).asInstanceOf[Double]
+            var allergies = data(5).asInstanceOf[String]
+            var description = data(6).asInstanceOf[String]
+            var isMenu = data(7).asInstanceOf[Boolean]
+            var amount = data(8).asInstanceOf[Double]
+            var ingredgentNames = ingredients.map(_._1)
+            if (menu.allIngredientsExist(ingredgentNames)) {
+              var ingre_mapped = ingredients.map(x => (menu.returnFoodWithName(x._1).get, x._2))
               var ingre = collection.mutable.Map(ingre_mapped.toSeq: _*)
               //var tag_ingre = (ingre.keys.map(_.tag).mkString("").toUpperCase+data.aller).distinct
-              var food_add = new Food(data.name, ingre, data.first_u, data.second_u, data.density, data.aller, data.description)
-              if (data.boo) food_add.setToMenu()
-              fridge.addFood(food_add, data.amount)
+              var foodToBeAdd = new Food(name, ingre, firstUnit, secondUnit, density, allergies, description)
+              if (isMenu) foodToBeAdd.setToMenu()
+              fridge.addFood(foodToBeAdd, amount)
               buffer -= data
             }
           }

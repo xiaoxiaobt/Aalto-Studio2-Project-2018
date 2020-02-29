@@ -127,7 +127,7 @@ class UI extends MainFrame {
   }
   def addMenuToUI(str: String) = {
     try {
-      var str_list = str.split("\t").map(_.trim())
+      var str_list = str.split("\t").map(_.trim)
       p("Input string: " + str_list.mkString("\t"))
       if (str_list.size != 9) throw new Exception
       var name_add: String = str_list(0)
@@ -261,7 +261,11 @@ class UI extends MainFrame {
   backButton.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
   backButton.border = createLineBorder(myColor, scaleTo(5))
   backButton.icon = iconBack
-  leftSearchArea.contents ++= Array(searchBox, searchButton, backButton, leftSearchArea, VStrut(scaleTo(20)))
+  leftSearchArea.contents += searchBox
+  leftSearchArea.contents += searchButton
+  leftSearchArea.contents += backButton
+  leftInfoSection.contents += leftSearchArea
+  leftInfoSection.contents += VStrut(scaleTo(20))
 
   // Left Real-time feedback TextField
   leftFeedback.preferredSize = new Dimension(scaleTo(200), scaleTo(40))

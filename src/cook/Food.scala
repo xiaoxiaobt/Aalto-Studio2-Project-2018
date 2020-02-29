@@ -11,4 +11,6 @@ class Food(val name: String, var ingredients: Map[Food, Double],
 
   def isMenu: Boolean = menu_type
 
+  def hasNoIngredients = ingredients.isEmpty
+
 }

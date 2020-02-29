@@ -30,7 +30,7 @@ class FileProcessor(ui: UI) {
     for ((food, num) <- fridge.foodList) {
       var boo = if (food.isMenu) "1" else "0"
       var ingredientsString = ""
-      if (food.ingredients.nonEmpty) {
+      if (!food.hasNoIngredients) {
         ingredientsString = food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
       }
       pw.write(food.name + "\t" + ingredientsString + "\t" + food.main_unit + "\t" + food.second_unit + "\t" + food.density.toString + "\t" + food.tag + "\t" + food.description + "\t" + boo + "\t" + num.toString + "\n")

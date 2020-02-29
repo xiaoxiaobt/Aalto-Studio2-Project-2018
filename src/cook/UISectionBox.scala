@@ -13,15 +13,16 @@ import Settings.scaleTo
 
 class UISectionBox(food: Food, ui: UI) {
   var menu = ui.menu
+  var fridge = menu.fridge
   var my_color = Settings.color
-  def p[T](a: T) = if (menu.settings.diagnosis) println(a.toString)
+  def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
   var defaultBox = new BoxPanel(Vertical)
   var firstRow = new BoxPanel(Horizontal)
   var labelName = new Label(" " + food.name + " " * (28 - food.name.length))
   var firstRowIconset = new BoxPanel(Horizontal)
   var iconBoxes = ArrayBuffer.fill[Button](6)(Button("") {})
   var buttonDelete = Button(" x ") {
-    menu.fridge.foodList -= food
+    fridge.foodList -= food
     p("Notice: " + food.name + " has been removed from the list")
     ui.revalidateWindow(defaultBox)
   }
@@ -49,43 +50,43 @@ class UISectionBox(food: Food, ui: UI) {
     ui.editing = food
     ui.deafTo(ui.searchBox)
     var boo = if (food.isMenu) "1" else "0"
-    var ingredients_string = {
-      if (food.ingredients.isEmpty) {
+    var ingredientsString = {
+      if (food.hasNoIngredients) {
         ""
       } else {
         food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
       }
     }
-    var edit_string = food.name + ":" + ingredients_string + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + menu.fridge.foodList(food).toString
-    p("Editing string: " + edit_string)
-    ui.leftMultifunctionalText.text = edit_string
+    var editString = food.name + ":" + ingredientsString + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + fridge.foodList(food).toString
+    p("Editing string: " + editString)
+    ui.leftMultifunctionalText.text = editString
     ui.leftMultifunctionalText.editable = true
     ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
     ui.leftFeedback.text = "> Edit menu in given format in the box below, press green Complete button when finished"
   }
   var editIcon = new ImageIcon("src/icons/edit.png")
   buttonModify.icon = editIcon
-  var label_des = new Label("   Description: " + food.description)
+  var labelDescription = new Label("   Description: " + food.description)
   def d2i(num: Double) = if (num.toInt.toDouble == num) num.toInt.toString else num.toString
-  var label_ingre = new Label("   Ingredients: " + food.ingredients.toList.map(x => x._1.name + "×" + d2i(x._2) + x._1.main_unit).mkString(", "))
-  if (food.ingredients.isEmpty) label_ingre.text = "   " + food.name + " is an ingredient. "
+  var labelIngredient = new Label("   Ingredients: " + food.ingredients.toList.map(x => x._1.name + "×" + d2i(x._2) + x._1.main_unit).mkString(", "))
+  if (food.hasNoIngredients) labelIngredient.text = "   " + food.name + " is an ingredient. "
   var first_part = new BorderPanel
   var second_part = new BorderPanel
   var third_part = new BorderPanel
   var last_part = new BorderPanel
-  var last_row = new BoxPanel(Horizontal)
-  var label_ready = new Label("Ready to eat: " + menu.fridge.foodList(food).toInt.toString)
-  if (food.ingredients.isEmpty) label_ready.text = "Amount: " + menu.fridge.foodList(food).toInt.toString
-  var label_cookable = new Label("Cookable: " + (menu.checkAvailability(food) - menu.fridge.foodList(food).toInt).toString)
-  if (food.ingredients.isEmpty) label_cookable.visible = false
-  var button_make = Button("  Use/Make  ") {
+  var lastRow = new BoxPanel(Horizontal)
+  var labelReady = new Label("Ready to eat: " + fridge.foodList(food).toInt.toString)
+  if (food.hasNoIngredients) labelReady.text = "Amount: " + fridge.foodList(food).toInt.toString
+  var labelCookable = new Label("Cookable: " + (menu.checkAvailability(food) - fridge.foodList(food).toInt).toString)
+  if (food.hasNoIngredients) labelCookable.visible = false
+  var buttonMake = Button("  Use/Make  ") {
     menu.makeDish(food, 1)
     p("Notice: 1 " + food.name + " has been made/consumed")
     if (!ui.changed) ui.refreshMenuBox() else ui.changeBox(ui.searchBox.text)
     ui.leftNormalMenuBox.contents -= defaultBox
     ui.outerBox.revalidate()
   }
-  if (food.ingredients.isEmpty) button_make.text = "       Use       "
+  if (food.hasNoIngredients) buttonMake.text = "       Use       "
 
   //first_row
   labelName.font = new Font("Consolas", 0, scaleTo(48))
@@ -132,38 +133,38 @@ class UISectionBox(food: Food, ui: UI) {
   }
 
   // Second row: Description
-  label_des.font = new Font("Arial", 0, scaleTo(36))
+  labelDescription.font = new Font("Arial", 0, scaleTo(36))
   // Third row: Ingredients
-  label_ingre.font = new Font("Arial", 0, scaleTo(36))
+  labelIngredient.font = new Font("Arial", 0, scaleTo(36))
   // Last row: Cooked, Cookable & Make
-  label_ready.font = new Font("Arial", 0, scaleTo(30))
-  label_cookable.font = new Font("Arial", 0, scaleTo(30))
-  if (menu.fridge.foodList(food) > 0) {
-    label_ready.foreground = ORANGE
+  labelReady.font = new Font("Arial", 0, scaleTo(30))
+  labelCookable.font = new Font("Arial", 0, scaleTo(30))
+  if (fridge.foodList(food) > 0) {
+    labelReady.foreground = ORANGE
   } else {
-    label_ready.visible = false
+    labelReady.visible = false
   }
   if (menu.checkAvailability(food) > 0) {
-    label_cookable.foreground = GREEN
+    labelCookable.foreground = GREEN
   } else {
-    label_cookable.foreground = RED
-    label_cookable.text = "Available: 0"
-    button_make.enabled = false
+    labelCookable.foreground = RED
+    labelCookable.text = "Available: 0"
+    buttonMake.enabled = false
   }
-  button_make.font = new Font("Arial", 0, scaleTo(32))
-  button_make.background = WHITE
-  button_make.border = BorderFactory.createLineBorder(my_color, scaleTo(2))
-  last_row.contents += label_ready
-  last_row.contents += HStrut(scaleTo(20))
-  last_row.contents += label_cookable
-  last_row.contents += HStrut(scaleTo(20))
-  last_row.contents += button_make
-  last_row.contents += HStrut(scaleTo(10))
+  buttonMake.font = new Font("Arial", 0, scaleTo(32))
+  buttonMake.background = WHITE
+  buttonMake.border = BorderFactory.createLineBorder(my_color, scaleTo(2))
+  lastRow.contents += labelReady
+  lastRow.contents += HStrut(scaleTo(20))
+  lastRow.contents += labelCookable
+  lastRow.contents += HStrut(scaleTo(20))
+  lastRow.contents += buttonMake
+  lastRow.contents += HStrut(scaleTo(10))
 
   first_part.layout(firstRow) = West
-  second_part.layout(label_des) = West
-  third_part.layout(label_ingre) = West
-  last_part.layout(last_row) = East
+  second_part.layout(labelDescription) = West
+  third_part.layout(labelIngredient) = West
+  last_part.layout(lastRow) = East
 
   defaultBox.contents += first_part
   defaultBox.contents += second_part

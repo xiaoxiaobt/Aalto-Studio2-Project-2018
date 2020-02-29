@@ -27,7 +27,7 @@ class UI extends MainFrame {
   var changed = false
   var edit = false
   var editing: Food = null
-  var tempSearchText = ""
+  private var tempSearchText = ""
   var fileProcessor = new FileProcessor(this)
 
   // Frames, boxes and buttons (Almost all boxes)
@@ -113,17 +113,12 @@ class UI extends MainFrame {
     outerBox.revalidate()
   }
   def changeBox(keyword: String) = {
-    var sub_ui = new UISearchRepresentation(this, keyword)
+    var subUI = new UISearchRepresentation(this, keyword)
     while (leftNormalMenuBox.contents.nonEmpty) {
       leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
     }
-    leftNormalMenuBox.contents += sub_ui.headlineBorder
-    leftNormalMenuBox.contents += VStrut(scaleTo(40))
-    leftNormalMenuBox.contents += sub_ui.box1Border
-    leftNormalMenuBox.contents += VStrut(scaleTo(20))
-    leftNormalMenuBox.contents += sub_ui.box2Border
-    leftNormalMenuBox.contents += VStrut(scaleTo(20))
-    if (!sub_ui.keyDouble.isNaN) leftNormalMenuBox.contents += sub_ui.box3Border
+    leftNormalMenuBox.contents ++= Array(subUI.headlineBorder, VStrut(scaleTo(40)), subUI.box1Border, VStrut(scaleTo(20)), subUI.box2Border, VStrut(scaleTo(20)))
+    if (!subUI.keyDouble.isNaN) leftNormalMenuBox.contents += subUI.box3Border
     listenTo(searchBox)
     leftNormalMenuBox.repaint()
     leftMenuScroll.revalidate()
@@ -266,11 +261,7 @@ class UI extends MainFrame {
   backButton.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
   backButton.border = createLineBorder(myColor, scaleTo(5))
   backButton.icon = iconBack
-  leftSearchArea.contents += searchBox
-  leftSearchArea.contents += searchButton
-  leftSearchArea.contents += backButton
-  leftInfoSection.contents += leftSearchArea
-  leftInfoSection.contents += VStrut(scaleTo(20))
+  leftSearchArea.contents ++= Array(searchBox, searchButton, backButton, leftSearchArea, VStrut(scaleTo(20)))
 
   // Left Real-time feedback TextField
   leftFeedback.preferredSize = new Dimension(scaleTo(200), scaleTo(40))
@@ -311,9 +302,7 @@ class UI extends MainFrame {
 
   // Left multi-usage box
   leftMultifunctionalBox.background = WHITE
-  leftMultifunctionalBox.contents += leftMultifunctionalText
-  leftMultifunctionalBox.contents += HStrut(scaleTo(10))
-  leftMultifunctionalBox.contents += leftMultifunctionalButton
+  leftMultifunctionalBox.contents ++= Array(leftMultifunctionalText, HStrut(scaleTo(10)), leftMultifunctionalButton)
 
   // Left multi-usage frame
   leftMultifunctionalFrame.preferredSize = new Dimension(scaleTo(1440), scaleTo(50))

@@ -65,8 +65,8 @@ class UISearchRepresentation(ui: UI, keyword: String) {
     // Add Frame
     boxBorder.layout(box) = West
     boxBorder
-
   }
+
   var title1 = "  >Search by Name"
   var title2 = "  >Search by Ingredients"
   var title3 = "  >Search by Amount"

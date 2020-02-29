@@ -1,5 +1,5 @@
 package cook
-import collection.mutable._
+import collection.mutable.Map
 
 class Fridge {
   var foodList = Map[Food, Double]()

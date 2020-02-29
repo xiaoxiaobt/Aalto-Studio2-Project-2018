@@ -1,6 +1,6 @@
 package cook
 
-import collection.mutable._
+import collection.mutable.Map
 
 class Menu {
 
@@ -80,6 +80,10 @@ class Menu {
   def returnFoodWithName(name: String): Option[Food] = {
     var result = fridge.foodList.find(_._1.name == name)
     if (result.isDefined) Some(result.get._1) else None
+  }
+  def allIngredientsExist(names: Iterable[String]): Boolean = {
+    var result = names.map(x => returnFoodWithName(x))
+    if (result.forall(_.isDefined)) true else false
   }
 
   def makeDish(food: Food, num: Double): Unit = {

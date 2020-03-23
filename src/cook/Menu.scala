@@ -4,7 +4,7 @@ import collection.mutable.Map
 
 class Menu {
 
-  var fridge = new Fridge()
+  var fridge = Fridge
   var settings = Settings
   var menu = getMenu()
   var testList = fridge.foodList.clone()

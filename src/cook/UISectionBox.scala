@@ -6,8 +6,7 @@ import scala.swing.Alignment._
 import scala.swing.event._
 import java.awt.Color.{ BLACK, WHITE, GREEN, BLUE, RED, ORANGE, GRAY }
 import Swing._
-import java.io._
-import javax.swing.{ ImageIcon, BorderFactory }
+import javax.swing.BorderFactory
 import scala.collection.mutable.ArrayBuffer
 import Settings.scaleTo
 
@@ -64,7 +63,7 @@ class UISectionBox(food: Food, ui: UI) {
     ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
     ui.leftFeedback.text = "> Edit menu in given format in the box below, press green Complete button when finished"
   }
-  var editIcon = new ImageIcon("src/icons/edit.png")
+  var editIcon = Icon("src/icons/edit.png")
   buttonModify.icon = editIcon
   var labelDescription = new Label("   Description: " + food.description)
   def d2i(num: Double) = if (num.toInt.toDouble == num) num.toInt.toString else num.toString
@@ -126,9 +125,9 @@ class UISectionBox(food: Food, ui: UI) {
   // Icon A/G/L/M/V/W
   for ((letter, index) <- tagPair) {
     if (foodTag.contains(letter)) {
-      iconBoxes(index).icon = new ImageIcon("src/icons/B_" + letter + ".png")
+      iconBoxes(index).icon = Icon("src/icons/B_" + letter + ".png")
     } else {
-      iconBoxes(index).icon = new ImageIcon("src/icons/W_" + letter + ".png")
+      iconBoxes(index).icon = Icon("src/icons/W_" + letter + ".png")
     }
   }
 

@@ -4,19 +4,16 @@ import scala.swing.BorderPanel.Position._
 import scala.swing.Orientation._
 import scala.swing.Alignment._
 import scala.swing.event._
-import scala.collection.mutable.ArrayBuffer
-import java.io._
 import scala.io.Source._
-import scala.util.control.Breaks._
-import javax.swing.{ ImageIcon, BorderFactory }
+import javax.swing.BorderFactory
 import Swing._
 import Settings.scaleTo
 import scala.collection.mutable._
 
 class UISearchRepresentation(ui: UI, keyword: String) {
   var menu = ui.menu
-  var fridge = ui.menu.fridge
-  var myColor = ui.settings.color
+  var fridge = menu.fridge
+  var myColor = Settings.color
   var key = keyword.trim
   var keyDouble: Double = Double.NaN
 
@@ -27,7 +24,8 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   }
 
   def allergiesRemove(map: Map[Food, Double]): Map[Food, Double] = {
-    var allergies = (Settings.all_abbri zip ui.rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
+    //var allergies = (Settings.all_abbri zip ui.rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
+    var allergies = ui.rightCheckboxList.filter(_.selected).map(_.name)
     map.filter(x => allergies.forall(y => x._1.tag.contains(y)))
   }
 
@@ -67,9 +65,9 @@ class UISearchRepresentation(ui: UI, keyword: String) {
     boxBorder
   }
 
-  var title1 = "  >Search by Name"
-  var title2 = "  >Search by Ingredients"
-  var title3 = "  >Search by Amount"
+  val title1 = "  >Search by Name"
+  val title2 = "  >Search by Ingredients"
+  val title3 = "  >Search by Amount"
   var result1 = allergiesRemove(fridge.getByName(key))
   var result2 = allergiesRemove(fridge.getByIngredients(key))
   var result3 = allergiesRemove(fridge.getByAvailability(keyDouble))

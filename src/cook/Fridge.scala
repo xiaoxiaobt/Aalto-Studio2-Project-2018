@@ -1,7 +1,7 @@
 package cook
 import collection.mutable.Map
 
-class Fridge {
+object Fridge {
   var foodList = Map[Food, Double]()
   override def toString() = foodList.toString()
   def foodListRaw = foodList.filter(_._1.ingredients.isEmpty)

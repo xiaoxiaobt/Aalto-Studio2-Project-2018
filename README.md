@@ -1,6 +1,5 @@
 # Recipe book (Smart cookbook)
 [![Build Status](https://travis-ci.com/xiaoxiaobt/Recipe-book---Studio2.svg?token=jweLhMwtk8oGmdXQGBZN&branch=master)](https://travis-ci.com/xiaoxiaobt/Recipe-book---Studio2)
-[![CodeFactor](https://www.codefactor.io/repository/github/xiaoxiaobt/recipe-book---studio2/badge/master?s=26dcc4302d2db03cffbe78d35c8e6aaab285191b)](https://www.codefactor.io/repository/github/xiaoxiaobt/recipe-book---studio2/overview/master)
 
 ## Preface
 
@@ -16,7 +15,7 @@ Keywords: Scala, Swing, Continuous Integration, UI, Algorithm, UML
 ## Requirements
 
 - JDK 8+
-- Scala 2.11+
+- Scala 2.12
 - Git
 
 ## Clone

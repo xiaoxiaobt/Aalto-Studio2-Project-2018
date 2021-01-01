@@ -1,0 +1,75 @@
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] IncrementalCompile -----------[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mIncrementalCompile.incrementalCompile[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mprevious = Stamps for: 16 products, 8 sources, 2 libraries[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mcurrent source = Set(${BASE}/src/main/scala/cook/UISectionBox.scala, ${BASE}/src/main/scala/cook/FileProcessor.scala, ${BASE}/src/main/scala/cook/Settings.scala, ${BASE}/src/main/scala/cook/Food.scala, ${BASE}/src/main/scala/cook/Menu.scala, ${BASE}/src/main/scala/cook/UI.scala, ${BASE}/src/main/scala/cook/UISearchRepresentation.scala, ${BASE}/src/main/scala/cook/Fridge.scala)[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m> initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/src/main/scala/cook/Fridge.scala, ${BASE}/src/main/scala/cook/UI.scala, ${BASE}/src/main/scala/cook/Food.scala, ${BASE}/src/main/scala/cook/FileProcessor.scala), unmodified = ...),Set(),Set(),API Changes: Set())[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInitial source changes:[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	removed: Set()[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	added: Set()[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	modified: Set(${BASE}/src/main/scala/cook/Fridge.scala, ${BASE}/src/main/scala/cook/UI.scala, ${BASE}/src/main/scala/cook/Food.scala, ${BASE}/src/main/scala/cook/FileProcessor.scala)[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated products: Set()[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mExternal API changes: API Changes: Set()[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mModified binary dependencies: Set()[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInitial directly invalidated classes: Set(cook.UI, cook.Fridge, cook.FileProcessor, cook.GUI, cook.Food)[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mSources indirectly invalidated by:[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	product: Set()[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	binary dep: Set()[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	external source: Set()[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated classes: Set(cook.UI, cook.Fridge, cook.FileProcessor, cook.GUI, cook.Food)[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mAll initially invalidated sources:Set(${BASE}/src/main/scala/cook/Fridge.scala, ${BASE}/src/main/scala/cook/UI.scala, ${BASE}/src/main/scala/cook/Food.scala, ${BASE}/src/main/scala/cook/FileProcessor.scala)[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: cook.UI, cook.Fridge, cook.FileProcessor, cook.GUI, cook.Food[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mcompilation cycle 1[0m[0J
+[0m[[0m[0minfo[0m] [0m[0mcompiling 4 Scala sources to C:\Users\xiaox\Desktop\Recipe-book-Studio2\target\scala-2.12\classes ...[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mGetting org.scala-sbt:compiler-bridge_2.12:1.4.1:compile for Scala 2.12.2[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] Running cached compiler 7f373568 for Scala compiler version 2.12.2[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] The Scala compiler is invoked with:[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	-bootclasspath[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Program Files\Java\jdk1.8.0_271\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_271\jre\classes;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.12.2\scala-library-2.12.2.jar[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	-classpath[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\xiaox\Desktop\Recipe-book-Studio2\target\scala-2.12\classes;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scalatest\scalatest_2.12\3.0.3\scalatest_2.12-3.0.3.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\modules\scala-swing_2.12\3.0.0\scala-swing_2.12-3.0.0.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scalactic\scalactic_2.12\3.0.3\scalactic_2.12-3.0.3.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-reflect\2.12.2\scala-reflect-2.12.2.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\modules\scala-xml_2.12\1.0.5\scala-xml_2.12-1.0.5.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\modules\scala-parser-combinators_2.12\1.0.4\scala-parser-combinators_2.12-1.0.4.jar[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInvalidating (transitively) by inheritance from cook.Food...[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: cook.Food[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated by transitive inheritance dependency: Set(cook.Food)[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mThe following modified names cause invalidation of cook.UI: Set(UsedName(Food,[Default]), UsedName(toString,[Default]), UsedName(apply,[Default]), UsedName(asInstanceOf,[Default]), UsedName(ne,[Default]), UsedName(==,[Default]), UsedName(isInstanceOf,[Default]), UsedName(!=,[Default]))[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mThe following modified names cause invalidation of cook.Menu: Set(UsedName(clone,[Default]), UsedName(Food,[Default]), UsedName(toString,[Default]), UsedName(apply,[Default]), UsedName(==,[Default]))[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mThe following modified names cause invalidation of cook.Fridge: Set(UsedName(Food,[Default]), UsedName(toString,[Default]), UsedName(apply,[Default]), UsedName(==,[Default]))[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mThe following modified names cause invalidation of cook.UISectionBox: Set(UsedName(Food,[Default]), UsedName(toString,[Default]), UsedName(apply,[Default]), UsedName(ne,[Default]), UsedName(==,[Default]))[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mThe following modified names cause invalidation of cook.FileProcessor: Set(UsedName(Food,[Default]), UsedName(toString,[Default]), UsedName(apply,[Default]), UsedName(asInstanceOf,[Default]), UsedName(ne,[Default]), UsedName(==,[Default]), UsedName(!=,[Default]))[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mThe following modified names cause invalidation of cook.UISearchRepresentation: Set(UsedName(Food,[Default]), UsedName(ne,[Default]), UsedName(==,[Default]))[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mChange NamesChange(cook.Food,ModifiedNames(changes = UsedName(curried,[Default]), UsedName(copy$default$1,[Default]), UsedName(eq,[Default]), UsedName(copy$default$4,[Default]), UsedName(clone,[Default]), UsedName(productPrefix,[Default]), UsedName($asInstanceOf,[Default]), UsedName(Food,[Default]), UsedName(hashCode,[Default]), UsedName(notifyAll,[Default]), UsedName(toString,[Default]), UsedName(tupled,[Default]), UsedName(getClass,[Default]), UsedName(copy$default$6,[Default]), UsedName(copy$default$3,[Default]), UsedName(productArity,[Default]), UsedName(##,[Default]), UsedName(notify,[Default]), UsedName(synchronized,[Default]), UsedName(apply,[Default]), UsedName(productElement,[Default]), UsedName(wait,[Default]), UsedName(copy,[Default]), UsedName(copy$default$5,[Default]), UsedName(asInstanceOf,[Default]), UsedName(ne,[Default]), UsedName(productIterator,[Default]), UsedName(copy$default$2,[Default]), UsedName(==,[Default]), UsedName($init$,[Default]), UsedName(equals,[Default]), UsedName(finalize,[Default]), UsedName(isInstanceOf,[Default]), UsedName(canEqual,[Default]), UsedName($isInstanceOf,[Default]), UsedName(!=,[Default]), UsedName(unapply,[Default]), UsedName(copy$default$7,[Default]))) invalidates 7 classes due to The cook.Food has the following regular definitions changed:[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	UsedName(curried,[Default]), UsedName(copy$default$1,[Default]), UsedName(eq,[Default]), UsedName(copy$default$4,[Default]), UsedName(clone,[Default]), UsedName(productPrefix,[Default]), UsedName($asInstanceOf,[Default]), UsedName(Food,[Default]), UsedName(hashCode,[Default]), UsedName(notifyAll,[Default]), UsedName(toString,[Default]), UsedName(tupled,[Default]), UsedName(getClass,[Default]), UsedName(copy$default$6,[Default]), UsedName(copy$default$3,[Default]), UsedName(productArity,[Default]), UsedName(##,[Default]), UsedName(notify,[Default]), UsedName(synchronized,[Default]), UsedName(apply,[Default]), UsedName(productElement,[Default]), UsedName(wait,[Default]), UsedName(copy,[Default]), UsedName(copy$default$5,[Default]), UsedName(asInstanceOf,[Default]), UsedName(ne,[Default]), UsedName(productIterator,[Default]), UsedName(copy$default$2,[Default]), UsedName(==,[Default]), UsedName($init$,[Default]), UsedName(equals,[Default]), UsedName(finalize,[Default]), UsedName(isInstanceOf,[Default]), UsedName(canEqual,[Default]), UsedName($isInstanceOf,[Default]), UsedName(!=,[Default]), UsedName(unapply,[Default]), UsedName(copy$default$7,[Default]).[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m  > by transitive inheritance: Set(cook.Food)[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m  > [0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m  > by member reference: Set(cook.UI, cook.Menu, cook.Fridge, cook.UISectionBox, cook.FileProcessor, cook.UISearchRepresentation)[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m        [0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mNew invalidations:[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	cook.UI[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	cook.Menu[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	cook.Fridge[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	cook.UISectionBox[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	cook.FileProcessor[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	cook.UISearchRepresentation[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: cook.UI, cook.Menu, cook.Fridge, cook.UISectionBox, cook.FileProcessor, cook.UISearchRepresentation[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mIncluding cook.FileProcessor by cook.UI[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mIncluding cook.UISectionBox by cook.UI[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mIncluding cook.UISearchRepresentation by cook.UISectionBox[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mPreviously invalidated, but (transitively) depend on new invalidations:[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mFinal step, transitive dependencies:[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	Set(cook.UI, cook.Menu, cook.Fridge, cook.UISectionBox, cook.FileProcessor, cook.UISearchRepresentation)[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInvalidated classes: cook.UI, cook.Menu, cook.Fridge, cook.UISectionBox, cook.FileProcessor, cook.UISearchRepresentation[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mScala compilation took 13.6388273 s[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mdone compiling[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mInitial set of included nodes: cook.UI, cook.Menu, cook.Fridge, cook.UISectionBox, cook.FileProcessor, cook.UISearchRepresentation[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mRecompiling all sources: number of invalidated sources > 50.0% of all sources[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mcompilation cycle 2[0m[0J
+[0m[[0m[0minfo[0m] [0m[0mcompiling 8 Scala sources to C:\Users\xiaox\Desktop\Recipe-book-Studio2\target\scala-2.12\classes ...[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mGetting org.scala-sbt:compiler-bridge_2.12:1.4.1:compile for Scala 2.12.2[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] Running cached compiler 76ec95af for Scala compiler version 2.12.2[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m[zinc] The Scala compiler is invoked with:[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	-bootclasspath[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Program Files\Java\jdk1.8.0_271\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_271\jre\classes;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.12.2\scala-library-2.12.2.jar[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	-classpath[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0m	C:\Users\xiaox\Desktop\Recipe-book-Studio2\target\scala-2.12\classes;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scalatest\scalatest_2.12\3.0.3\scalatest_2.12-3.0.3.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\modules\scala-swing_2.12\3.0.0\scala-swing_2.12-3.0.0.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scalactic\scalactic_2.12\3.0.3\scalactic_2.12-3.0.3.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-reflect\2.12.2\scala-reflect-2.12.2.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\modules\scala-xml_2.12\1.0.5\scala-xml_2.12-1.0.5.jar;C:\Users\xiaox\AppData\Local\Coursier\cache\v1\https\repo1.maven.org\maven2\org\scala-lang\modules\scala-parser-combinators_2.12\1.0.4\scala-parser-combinators_2.12-1.0.4.jar[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mScala compilation took 8.1046079 s[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mdone compiling[0m[0J

@@ -31,9 +31,9 @@ object Fridge {
   def getByTags(tag: String): Map[Food, Double] = {
     var map = Map[Food, Double]()
     var tagList = tag.toUpperCase.trim.split("").distinct
-    if (tag.trim.isEmpty) {
+    if (tag.trim.isEmpty)
       foodList
-    } else {
+    else {
       for (item <- foodList.keys) {
         var uniqueTags = item.tag.toUpperCase.trim.split("").distinct
         if (tagList.intersect(uniqueTags).size == tagList.size) {

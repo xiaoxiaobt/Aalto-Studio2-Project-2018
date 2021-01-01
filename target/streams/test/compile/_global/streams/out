@@ -1,0 +1,157 @@
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:2:12: object junit is not a member of package org[0m[0J
+[0m[[0m[31merror[0m] [0m[0mimport org.junit.Test[0m[0J
+[0m[[0m[31merror[0m] [0m[0m           ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:3:12: object junit is not a member of package org[0m[0J
+[0m[[0m[31merror[0m] [0m[0mimport org.junit.Assert._[0m[0J
+[0m[[0m[31merror[0m] [0m[0m           ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:12:4: not found: type Test[0m[0J
+[0m[[0m[31merror[0m] [0m[0m  @Test def test1() {[0m[0J
+[0m[[0m[31merror[0m] [0m[0m   ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:20:5: not found: value assertFalse[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertFalse(test_fridge.addFood(food1, -10))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:22:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue("addFood", 2.0 == test_fridge.foodList(food1))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:24:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue("addFood", 2.0 == test_fridge.foodList(food2))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:26:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue("addFood", 25.0 == test_fridge.foodList(food2))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:29:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue("rawTest", 1 == test_fridge.foodListRaw.size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:32:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue("cookedTest", 1 == test_fridge.foodListCooked.size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:35:5: not found: value assertFalse[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertFalse(test_fridge.removeFood(food2, 26))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:36:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue("removeFood", 25.0 == test_fridge.foodList(food2))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:38:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue("removeFood", 2.0 == test_fridge.foodList(food2))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:40:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue("removeFood", 0.0 == test_fridge.foodList(food2))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:47:4: not found: type Test[0m[0J
+[0m[[0m[31merror[0m] [0m[0m  @Test def test2() {[0m[0J
+[0m[[0m[31merror[0m] [0m[0m   ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:58:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("tag", 3, test_fridge.getByTags("").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:59:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("tag", 1, test_fridge.getByTags("A1").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:60:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("tag", 2, test_fridge.getByTags("A").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:61:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("tag", 0, test_fridge.getByTags("8").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:62:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("tag", 1, test_fridge.getByTags("gl").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:63:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("tag", 3, test_fridge.getByTags(" ").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:66:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 2, test_fridge.getByName("foo").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:67:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 2, test_fridge.getByName("fOod  ").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:68:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 3, test_fridge.getByName("").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:69:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 3, test_fridge.getByName(" ").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:70:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 0, test_fridge.getByName("jfdnsdj").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:71:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 2, test_fridge.getByName("s").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:72:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 0, test_fridge.getByName("cookies food").size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:75:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 0, test_fridge.getByAvailability(4).size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:76:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 1, test_fridge.getByAvailability(3).size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:77:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 2, test_fridge.getByAvailability(2).size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:78:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 3, test_fridge.getByAvailability(1).size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:79:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals("name", 3, test_fridge.getByAvailability(0).size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:85:4: not found: type Test[0m[0J
+[0m[[0m[31merror[0m] [0m[0m  @Test def test3() {[0m[0J
+[0m[[0m[31merror[0m] [0m[0m   ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:90:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals(0, test_menu.getMenu().size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:101:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals(2, test_menu.getMenu().size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:105:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue(food1.isMenu)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:106:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue(food2.isMenu)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:107:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue(food3.isMenu)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:108:5: not found: value assertFalse[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertFalse(food4.isMenu)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:113:5: not found: value assertFalse[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertFalse(food1.isMenu)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:114:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue(food2.isMenu)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:115:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue(food3.isMenu)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:116:5: not found: value assertFalse[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertFalse(food4.isMenu)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:122:4: not found: type Test[0m[0J
+[0m[[0m[31merror[0m] [0m[0m  @Test def test4() {[0m[0J
+[0m[[0m[31merror[0m] [0m[0m   ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:127:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals(0, test_menu.getMenu().size)[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:140:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue(26.0 == test_menu.exisitingAmount(food1))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:141:5: not found: value assertTrue[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertTrue(5.0 == test_menu.exisitingAmount(food4))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:144:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals(13, test_menu.checkAvailability(food4))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:145:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals(7, test_menu.checkAvailability(food3))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:146:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals(26, test_menu.checkAvailability(food1))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:147:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals(8, test_menu.checkAvailability(food2))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0mC:\Users\xiaox\Desktop\Recipe-book-Studio2\src\test\scala\UITest.scala:148:5: not found: value assertEquals[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    assertEquals(11, test_menu.checkAvailability(food5))[0m[0J
+[0m[[0m[31merror[0m] [0m[0m    ^[0m[0J
+[0m[[0m[31merror[0m] [0m[0m52 errors found[0m[0J

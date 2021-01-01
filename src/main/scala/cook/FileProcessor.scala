@@ -66,7 +66,7 @@ class FileProcessor(ui: UI) {
       println("Notice: Density cannot be negative. System changed it to the default value: 0")
     }
     if (ingredients_add.isEmpty) {
-      var food_add = new Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
+      var food_add = Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
       if (isMenu_add) food_add.setToMenu()
       fridge.addFood(food_add, amount_add)
     } else {
@@ -116,7 +116,7 @@ class FileProcessor(ui: UI) {
               var ingre_mapped = ingredients.map(x => (menu.returnFoodWithName(x._1).get, x._2))
               var ingre = collection.mutable.Map(ingre_mapped.toSeq: _*)
               //var tag_ingre = (ingre.keys.map(_.tag).mkString("").toUpperCase+data.aller).distinct
-              var foodToBeAdd = new Food(name, ingre, firstUnit, secondUnit, density, allergies, description)
+              var foodToBeAdd = Food(name, ingre, firstUnit, secondUnit, density, allergies, description)
               if (isMenu) foodToBeAdd.setToMenu()
               fridge.addFood(foodToBeAdd, amount)
               buffer -= data

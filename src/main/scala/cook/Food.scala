@@ -1,7 +1,7 @@
 package cook
 import collection.mutable._
 
-class Food(val name: String, var ingredients: Map[Food, Double],
+case class Food(val name: String, var ingredients: Map[Food, Double],
   val main_unit: String, val second_unit: String, val density: Double, var tag: String, var description: String) {
   private var menu_type: Boolean = false
 

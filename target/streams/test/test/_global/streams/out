@@ -1,0 +1,14 @@
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(UnitTests, com.novocode.junit.JUnitFingerprint@280b1f5, false, [SuiteSelector])[0m[0J
+[0m[[0m[31merror[0m] [0m[0mTest [33mUnitTests[0m.[31mtest2[0m failed: tag expected:<3> but was:<5>, took 0.094 sec[0m[0J
+[0m[[0m[31merror[0m] [0m[0mTest [33mUnitTests[0m.[31mtest4[0m failed: expected:<0> but was:<2>, took 0.007 sec[0m[0J
+[0m[[0m[0minfo[0m] [0m[0mScalaTest[0m[0J
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 1 second, 752 milliseconds.[0m[0m[0J
+[0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 0[0m[0m[0J
+[0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 0, aborted 0[0m[0m[0J
+[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 0, failed 0, canceled 0, ignored 0, pending 0[0m[0m[0J
+[0m[[0m[0minfo[0m] [0m[0m[33mNo tests were executed.[0m[0m[0J
+[0m[[0m[0mdebug[0m] [0m[0mSummary for JUnit not available.[0m[0J
+[0m[[0m[31merror[0m] [0m[0mFailed: Total 4, Failed 2, Errors 0, Passed 2[0m[0J
+[0m[[0m[31merror[0m] [0m[0mFailed tests:[0m[0J
+[0m[[0m[31merror[0m] [0m[0m	UnitTests[0m[0J
+[0m[[0m[31merror[0m] [0m[0m(Test / [31mtest[0m) sbt.TestsFailedException: Tests unsuccessful[0m[0J

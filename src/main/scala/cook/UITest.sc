@@ -152,7 +152,7 @@ class UITest extends MainFrame {
         println("Notice: Density cannot be negative. System changed it to the default value: 0")
       }
       if (ingredients_add.isEmpty) {
-        var food_add = new Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
+        var food_add = Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
         if (isMenu_add) food_add.setToMenu()
         fridge.addFood(food_add, amount_add)
       } else {
@@ -175,7 +175,7 @@ class UITest extends MainFrame {
           var temp = (name_list zip amount_list).toMap
           collection.mutable.Map(temp.toSeq: _*)
         }
-        var food_add = new Food(name_add, ingre_map, first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
+        var food_add = Food(name_add, ingre_map, first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
         if (isMenu_add) food_add.setToMenu()
         fridge.addFood(food_add, amount_add)
       }

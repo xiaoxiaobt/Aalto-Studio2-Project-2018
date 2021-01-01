@@ -1,4 +1,3 @@
-package cook.tests
 import cook._
 import org.junit.Test
 import org.junit.Assert._

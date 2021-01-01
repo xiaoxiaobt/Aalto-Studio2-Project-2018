@@ -11,7 +11,7 @@ class FileProcessor(ui: UI) {
   var fridge = ui.fridge
   /**IO Write Function*/
   def IOWrite() = {
-    var file = new File("src/saved_data/data.txt")
+    var file = new File("src/main/scala/saved_data/data.txt")
     val pw = new PrintWriter(file)
     pw.write("RecipeBook v0.1 data\n")
     pw.write("name \t ingredients \t main_unit \t second_unit \t density \t tag \t description \t isMenu \t amount\n")
@@ -28,9 +28,9 @@ class FileProcessor(ui: UI) {
 
   /**IO Read Function*/
   def IOReadlines(): Iterator[String] = {
-    var lines = fromFile("src/saved_data/default.txt").getLines.filter(_.nonEmpty)
+    var lines = fromFile("src/main/scala/saved_data/default.txt").getLines.filter(_.nonEmpty)
     try {
-      lines = fromFile("src/saved_data/data.txt").getLines.filter(_.nonEmpty)
+      lines = fromFile("src/main/scala/saved_data/data.txt").getLines.filter(_.nonEmpty)
       ui.leftFeedback.text = "> User-saved file loaded successfully. "
     } catch {
       case e: FileNotFoundException => ui.leftFeedback.text = "> User-saved file not found. Loaded from default. "

@@ -7,12 +7,14 @@ import scala.swing.event._
 import scala.collection.mutable.ArrayBuffer
 import java.io._
 import scala.io.Source._
+import scala.util.control.Breaks._
 import java.awt.Color.{ BLACK, WHITE, GRAY, RED }
+import javax.swing.ImageIcon
 import javax.swing.BorderFactory.{ createEmptyBorder, createLineBorder }
 import Swing._
 import Settings.scaleTo
 
-class UI extends MainFrame {
+class UITest extends MainFrame {
   title = "Smart Cookbook"
   preferredSize = new Dimension(scaleTo(1920), scaleTo(1080))
 
@@ -33,7 +35,6 @@ class UI extends MainFrame {
   var leftBox = new BorderPanel
   var leftInfoSection = new BoxPanel(Vertical)
   var leftWelcome = new Label("What would you like to eat today? ")
-  leftWelcome.horizontalAlignment = Left
   var leftMenuScroll = new ScrollPane()
   var leftNormalMenuBox = new BoxPanel(Vertical)
   var leftSearchArea = new BoxPanel(Horizontal)
@@ -198,15 +199,15 @@ class UI extends MainFrame {
   }
 
   // Icons
-  var iconSelected = Icon("src/icons/selected.png")
-  var iconFree = Icon("src/icons/free.png")
-  var iconButton = Icon("src/icons/button.png")
-  var iconSave = Icon("src/icons/save.png")
-  var iconSavePressed = Icon("src/icons/save_done.png")
-  var iconExit = Icon("src/icons/exit.png")
-  var iconFind = Icon("src/icons/find.png")
-  var iconBack = Icon("src/icons/back.png")
-  var iconTick = Icon("src/icons/tick.png")
+  var iconSelected = new ImageIcon("src/icons/selected.png")
+  var iconFree = new ImageIcon("src/icons/free.png")
+  var iconButton = new ImageIcon("src/icons/button.png")
+  var iconSave = new ImageIcon("src/icons/save.png")
+  var iconSavePressed = new ImageIcon("src/icons/save_done.png")
+  var iconExit = new ImageIcon("src/icons/exit.png")
+  var iconFind = new ImageIcon("src/icons/find.png")
+  var iconBack = new ImageIcon("src/icons/back.png")
+  var iconTick = new ImageIcon("src/icons/tick.png")
 
   // Left Welcome Label
   leftWelcome.horizontalAlignment = Left
@@ -302,6 +303,7 @@ class UI extends MainFrame {
       outerBox.revalidate()
     }
   }
+
   // Left multi-usage box
   leftMultifunctionalBox.background = WHITE
   leftMultifunctionalBox.contents ++= Array(leftMultifunctionalText, HStrut(scaleTo(10)), leftMultifunctionalButton)
@@ -398,9 +400,9 @@ class UI extends MainFrame {
   fileProcessor.loadFromIO()
 }
 
-object UI extends App {
+object UITest extends App {
   private def main() {
-    val ui = new UI
+    val ui = new UITest
     ui.visible = true
   }
   this.main()

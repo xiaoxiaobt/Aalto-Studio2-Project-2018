@@ -7,9 +7,7 @@ import scala.swing.event._
 import scala.collection.mutable.ArrayBuffer
 import java.io._
 import scala.io.Source._
-import scala.util.control.Breaks._
 import java.awt.Color.{ BLACK, WHITE, GRAY, RED }
-import javax.swing.ImageIcon
 import javax.swing.BorderFactory.{ createEmptyBorder, createLineBorder }
 import Swing._
 import Settings.scaleTo
@@ -35,6 +33,7 @@ class UI extends MainFrame {
   var leftBox = new BorderPanel
   var leftInfoSection = new BoxPanel(Vertical)
   var leftWelcome = new Label("What would you like to eat today? ")
+  leftWelcome.horizontalAlignment = Left
   var leftMenuScroll = new ScrollPane()
   var leftNormalMenuBox = new BoxPanel(Vertical)
   var leftSearchArea = new BoxPanel(Horizontal)
@@ -76,7 +75,7 @@ class UI extends MainFrame {
   var buttonSave = Button("") {
     fileProcessor.IOWrite()
     p("Notice: Saved")
-    leftFeedback.text = "> All changes are saved to src/saved_data/data.txt "
+    leftFeedback.text = "> All changes are saved to saved_data/data.txt "
     leftFeedback.repaint()
   }
   var buttonExit = Button("") { sys.exit(0) }
@@ -89,6 +88,7 @@ class UI extends MainFrame {
   def updateAllergiesString() = {
     settings.allergiesString = returnStatus().filter(_._2).map(_._1).mkString
   }
+
   def revalidateWindow(box: BoxPanel) = {
     leftNormalMenuBox.contents -= box
     if (changed) changeBox(searchBox.text)
@@ -97,6 +97,7 @@ class UI extends MainFrame {
     outerBox.repaint()
     outerBox.revalidate()
   }
+
   def refreshMenuBox() = {
     listenTo(searchBox)
     while (leftNormalMenuBox.contents.nonEmpty) {
@@ -199,15 +200,15 @@ class UI extends MainFrame {
   }
 
   // Icons
-  var iconSelected = new ImageIcon("src/icons/selected.png")
-  var iconFree = new ImageIcon("src/icons/free.png")
-  var iconButton = new ImageIcon("src/icons/button.png")
-  var iconSave = new ImageIcon("src/icons/save.png")
-  var iconSavePressed = new ImageIcon("src/icons/save_done.png")
-  var iconExit = new ImageIcon("src/icons/exit.png")
-  var iconFind = new ImageIcon("src/icons/find.png")
-  var iconBack = new ImageIcon("src/icons/back.png")
-  var iconTick = new ImageIcon("src/icons/tick.png")
+  var iconSelected = Icon("src/main/scala/icons/selected.png")
+  var iconFree = Icon("src/main/scala/icons/free.png")
+  var iconButton = Icon("src/main/scala/icons/button.png")
+  var iconSave = Icon("src/main/scala/icons/save.png")
+  var iconSavePressed = Icon("src/main/scala/icons/save_done.png")
+  var iconExit = Icon("src/main/scala/icons/exit.png")
+  var iconFind = Icon("src/main/scala/icons/find.png")
+  var iconBack = Icon("src/main/scala/icons/back.png")
+  var iconTick = Icon("src/main/scala/icons/tick.png")
 
   // Left Welcome Label
   leftWelcome.horizontalAlignment = Left
@@ -303,7 +304,6 @@ class UI extends MainFrame {
       outerBox.revalidate()
     }
   }
-
   // Left multi-usage box
   leftMultifunctionalBox.background = WHITE
   leftMultifunctionalBox.contents ++= Array(leftMultifunctionalText, HStrut(scaleTo(10)), leftMultifunctionalButton)
@@ -400,7 +400,7 @@ class UI extends MainFrame {
   fileProcessor.loadFromIO()
 }
 
-object UI extends App {
+object GUI extends App {
   private def main() {
     val ui = new UI
     ui.visible = true

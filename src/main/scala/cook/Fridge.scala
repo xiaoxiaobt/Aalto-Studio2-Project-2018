@@ -16,6 +16,7 @@ object Fridge {
       false
     }
   }
+
   def addFood(food: Food, amount: Double): Boolean = {
     if (amount > 0) {
       if (foodList.contains(food)) {
@@ -28,6 +29,7 @@ object Fridge {
       false
     }
   }
+  
   def getByTags(tag: String): Map[Food, Double] = {
     var map = Map[Food, Double]()
     var tagList = tag.toUpperCase.trim.split("").distinct
@@ -43,6 +45,7 @@ object Fridge {
       map
     }
   }
+
   def getByName(name: String): Map[Food, Double] = {
     var map = Map[Food, Double]()
     var nameList = name.toUpperCase.trim

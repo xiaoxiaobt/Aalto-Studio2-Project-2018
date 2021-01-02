@@ -10,7 +10,7 @@ object Settings {
   val allergies = List[String]("With Allergens", "Gluten free", "Lactose free", "Milk free", "Vegan", "Vegeterian")
   val all_abbri = List[String]("A", "G", "L", "M", "V", "W")
   var allergiesString = ""
-  //  Color
+  // Color
   val color = new Color(120, 200, 220)
   // Scaling factor
   var scale: Double = 0.5

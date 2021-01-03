@@ -1,5 +1,4 @@
 # Recipe book (Smart cookbook)
-[![Build Status](https://travis-ci.com/xiaoxiaobt/Recipe-book---Studio2.svg?token=jweLhMwtk8oGmdXQGBZN&branch=master)](https://travis-ci.com/xiaoxiaobt/Recipe-book---Studio2)
 
 ## Preface
 

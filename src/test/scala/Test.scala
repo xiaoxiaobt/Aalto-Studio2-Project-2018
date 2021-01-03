@@ -1,8 +1,10 @@
 import cook._
 import org.scalatest._
+import matchers.should._
+import org.scalatest.flatspec.AnyFlatSpec
 import scala.collection.mutable.Map
 
-class UnitTests extends FlatSpec with Matchers {
+class UnitTests extends AnyFlatSpec with Matchers {
 
   /** Unit test 1 */
   "Fridge add/remove functions" should "work correctly" in {
@@ -21,12 +23,12 @@ class UnitTests extends FlatSpec with Matchers {
     testFridge.addFood(food2, 23)
     testFridge.foodList(food2) should be (25.0)
 
-    testFridge.foodListRaw.size should be (1)
+    testFridge.foodListRaw should have size (1)
 
-    testFridge.foodListCooked.size should be (1)
+    testFridge.foodListCooked should have size (1)
 
     assert(!testFridge.removeFood(food2, 26))
-    testFridge.foodList(food2) should be (25.0)
+    testFridge.foodList(food2) should equal (25.0)
     testFridge.removeFood(food2, 23)
     testFridge.foodList(food2) should be (2.0)
     testFridge.removeFood(food2, 2)
@@ -46,26 +48,26 @@ class UnitTests extends FlatSpec with Matchers {
     testFridge.addFood(food2, 2)
     testFridge.addFood(food3, 3)
 
-    testFridge.getByTags("").size should be (3)
-    testFridge.getByTags("A1").size should be (1)
-    testFridge.getByTags("A").size should be (2)
-    testFridge.getByTags("8").size should be (0)
-    testFridge.getByTags("gl").size should be (1)
-    testFridge.getByTags(" ").size should be (3)
+    testFridge.getByTags("") should have size (3)
+    testFridge.getByTags("A1") should have size (1)
+    testFridge.getByTags("A") should have size (2)
+    testFridge.getByTags("8") should have size (0)
+    testFridge.getByTags("gl") should have size (1)
+    testFridge.getByTags(" ") should have size (3)
     
-    testFridge.getByName("foo").size should be (2)
-    testFridge.getByName("fOod  ").size should be (2)
-    testFridge.getByName("").size should be (3)
-    testFridge.getByName(" ").size should be (3)
-    testFridge.getByName("jfdnsdj").size should be (0)
-    testFridge.getByName("s").size should be (2)
-    testFridge.getByName("cookies food").size should be (0)
+    testFridge.getByName("foo") should have size (2)
+    testFridge.getByName("fOod  ") should have size (2)
+    testFridge.getByName("") should have size (3)
+    testFridge.getByName(" ") should have size (3)
+    testFridge.getByName("jfdnsdj") should have size (0)
+    testFridge.getByName("s") should have size (2)
+    testFridge.getByName("cookies food") should have size (0)
 
-    testFridge.getByAvailability(4).size should be (0)
-    testFridge.getByAvailability(3).size should be (1)
-    testFridge.getByAvailability(2).size should be (2)
-    testFridge.getByAvailability(1).size should be (3)
-    testFridge.getByAvailability(0).size should be (3)
+    testFridge.getByAvailability(4) should have size (0)
+    testFridge.getByAvailability(3) should have size (1)
+    testFridge.getByAvailability(2) should have size (2)
+    testFridge.getByAvailability(1) should have size (3)
+    testFridge.getByAvailability(0) should have size (3)
   }
 
   /** Unit test 3 */
@@ -73,7 +75,7 @@ class UnitTests extends FlatSpec with Matchers {
     val testMenu = new Menu()
     val testFridge = testMenu.fridge
     testFridge.foodList.clear()
-    testMenu.getMenu().size should be (0)
+    testMenu.getMenu() should have size (0)
     val food1 = Food("Cookies", Map[Food, Double](), "pcs", "g", 3, "Good", "")
     val food2 = Food("Eggs", Map[Food, Double]((food1 -> 2)), "pcs", "g", 8, "Good", "")
     val food3 = Food("Unknown", Map[Food, Double]((food1 -> 2)), "pcs", "g", 8, "Good", "")
@@ -84,7 +86,7 @@ class UnitTests extends FlatSpec with Matchers {
     testFridge.addFood(food3, 5)
     food3.setToMenu()
     food1.setToMenu()
-    testMenu.getMenu().size should be (2)
+    testMenu.getMenu() should have size (2)
 
     testMenu.addMenu(food2)
     assert(food1.isMenu)
@@ -105,7 +107,7 @@ class UnitTests extends FlatSpec with Matchers {
     val testMenu = new Menu()
     val testFridge = testMenu.fridge
     testFridge.foodList.clear()
-    testMenu.getMenu().size should be (0)
+    testMenu.getMenu() should have size (0)
     val food1 = Food("Cookies", Map[Food, Double](), "pcs", "g", 26, "Good", "")
     val food2 = Food("Eggs", Map[Food, Double](), "pcs", "g", 0, "Good", "")
     val food3 = Food("Unknown", Map[Food, Double](food1 -> 2, food2 -> 2), "pcs", "g", 8, "Good", "")

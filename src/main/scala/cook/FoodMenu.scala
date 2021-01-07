@@ -80,7 +80,7 @@ class FoodMenu {
   }
   
   def allIngredientsExist(names: Iterable[String]): Boolean = {
-    names.map(returnFoodWithName).forall(_.isDefined))
+    names.map(returnFoodWithName).forall(_.isDefined)
   }
 
   def makeDish(food: Food, num: Double): Unit = {

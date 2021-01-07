@@ -107,7 +107,7 @@ class UI extends MainFrame {
     var allergies = (settings.allAbbreviations zip rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
     if (allergies.isEmpty) allergies = List[String]()
     val food_list_menu_allergies = food_list_menu.filter(x => allergies.forall(y => x._1.tag.contains(y)))
-    for ((item_food, item_amount) <- food_list_menu_allergies) 
+    for ((item_food, item_amount) <- food_list_menu_allergies)
       leftNormalMenuBox.contents += new UISectionBox(item_food, this).defaultBox
     outerBox.repaint()
     outerBox.revalidate()

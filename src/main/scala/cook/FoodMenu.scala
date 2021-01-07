@@ -31,7 +31,7 @@ class FoodMenu {
     if (foodList.contains(food)) {
       food.setToRaw()
       true
-    } else 
+    } else
       false
   }
 
@@ -65,12 +65,12 @@ class FoodMenu {
         testList = testList updated (food, 0)
         checkAmount(food, num - current_amount)
       } else {
-        if (food.ingredients.isEmpty) 
+        if (food.ingredients.isEmpty)
           testState = false
         else
           food.ingredients.foreach(x => checkAmount(x._1, x._2))
       }
-    } else 
+    } else
       testState = false
   }
 
@@ -80,8 +80,7 @@ class FoodMenu {
   }
   
   def allIngredientsExist(names: Iterable[String]): Boolean = {
-    val result = names.map(x => returnFoodWithName(x))
-    if (result.forall(_.isDefined)) true else false
+    names.map(returnFoodWithName).forall(_.isDefined))
   }
 
   def makeDish(food: Food, num: Double): Unit = {
@@ -91,7 +90,7 @@ class FoodMenu {
       val temp = num - foodList(food)
       foodList(food) = 0
       makeDish(food, temp)
-    } else 
+    } else
       food.ingredients.foreach(x => makeDish(x._1, x._2 * num))
   }
 

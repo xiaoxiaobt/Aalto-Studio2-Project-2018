@@ -123,7 +123,7 @@ class UISectionBox(food: Food, ui: UI) {
   for ((letter, index) <- tagPair) {
     if (foodTag.contains(letter))
       iconBoxes(index).icon = Icon("src/main/scala/icons/B_" + letter + ".png")
-    else 
+    else
       iconBoxes(index).icon = Icon("src/main/scala/icons/W_" + letter + ".png")
   }
 
@@ -134,12 +134,12 @@ class UISectionBox(food: Food, ui: UI) {
   // Last row: Cooked, Cookable & Make
   labelReady.font = new Font("Arial", 0, scaleTo(30))
   labelCookable.font = new Font("Arial", 0, scaleTo(30))
-  if (menu.foodList(food) > 0) 
+  if (menu.foodList(food) > 0)
     labelReady.foreground = ORANGE
-  else 
+  else
     labelReady.visible = false
   
-  if (menu.checkAvailability(food) > 0) 
+  if (menu.checkAvailability(food) > 0)
     labelCookable.foreground = GREEN
   else {
     labelCookable.foreground = RED

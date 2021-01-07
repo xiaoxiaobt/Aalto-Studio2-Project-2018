@@ -395,7 +395,7 @@ class UI extends MainFrame {
 }
 
 object GUI extends App {
-  private def main() {
+  private def main(): Unit = {
     val ui = new UI
     ui.visible = true
   }

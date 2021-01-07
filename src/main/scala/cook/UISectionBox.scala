@@ -3,28 +3,27 @@ import scala.swing._
 import scala.swing.BorderPanel.Position._
 import scala.swing.Orientation._
 import scala.swing.Alignment._
-import scala.swing.event._
-import java.awt.Color.{ BLACK, WHITE, GREEN, BLUE, RED, ORANGE, GRAY }
+import java.awt.Color.{ WHITE, GREEN, BLUE, RED, ORANGE }
 import Swing._
 import javax.swing.BorderFactory
 import scala.collection.mutable.ArrayBuffer
 import Settings.scaleTo
 
 class UISectionBox(food: Food, ui: UI) {
-  var menu = ui.menu
-  var my_color = Settings.color
+  var menu: Menu = ui.menu
+  var myColor: Color = Settings.color
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
   var defaultBox = new BoxPanel(Vertical)
   var firstRow = new BoxPanel(Horizontal)
   var labelName = new Label(" " + food.name + " " * (28 - food.name.length))
   var firstRowIconset = new BoxPanel(Horizontal)
   var iconBoxes = ArrayBuffer.fill[Button](6)(Button("") {})
-  var buttonDelete = Button(" x ") {
+  var buttonDelete: Button = Button(" x ") {
     menu.foodList -= food
     p("Notice: " + food.name + " has been removed from the list")
     ui.revalidateWindow(defaultBox)
   }
-  var buttonAdd = Button(" + ") {
+  var buttonAdd: Button = Button(" + ") {
     ui.rightCheckboxList.foreach(_.visible = false)
     ui.buttonSave.visible = false
     ui.leftMultifunctionalButton.visible = true
@@ -32,14 +31,14 @@ class UISectionBox(food: Food, ui: UI) {
     ui.deafTo(ui.searchBox)
     if (!ui.changed) ui.refreshMenuBox() else ui.changeBox(ui.searchBox.text)
     ui.leftMenuScroll.revalidate()
-    var edit_string = "Example_name:Ingredient_a=1,Ingredient_b=2:unit_1:unit_2:0:Allengens:Description:isMenudigit (1=yes, 0=no):amount"
+    val edit_string = "Example_name:Ingredient_a=1,Ingredient_b=2:unit_1:unit_2:0:Allengens:Description:isMenudigit (1=yes, 0=no):amount"
     p("Adding string: " + edit_string)
     ui.leftMultifunctionalText.editable = true
     ui.leftMultifunctionalText.text = edit_string
-    ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
+    ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(myColor, scaleTo(5))
     ui.leftFeedback.text = "> Edit menu in given format (Example below), press green Complete button when finished"
   }
-  var buttonModify = Button("") {
+  var buttonModify: Button = Button("") {
     ui.rightCheckboxList.foreach(_.visible = false)
     ui.buttonSave.visible = false
     ui.rightBox.revalidate()
@@ -47,19 +46,18 @@ class UISectionBox(food: Food, ui: UI) {
     ui.edit = true
     ui.editing = food
     ui.deafTo(ui.searchBox)
-    var boo = if (food.isMenu) "1" else "0"
-    var ingredientsString = {
-      if (food.hasNoIngredients) {
-        ""
-      } else {
+    val boo = if (food.isMenu) "1" else "0"
+    val ingredientsString = {
+      if (food.hasNoIngredients) ""
+      else {
         food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
       }
     }
-    var editString = food.name + ":" + ingredientsString + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + menu.foodList(food).toString
+    val editString = food.name + ":" + ingredientsString + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + menu.foodList(food).toString
     p("Editing string: " + editString)
     ui.leftMultifunctionalText.text = editString
     ui.leftMultifunctionalText.editable = true
-    ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(my_color, scaleTo(5))
+    ui.leftMultifunctionalText.border = BorderFactory.createLineBorder(myColor, scaleTo(5))
     ui.leftFeedback.text = "> Edit menu in given format in the box below, press green Complete button when finished"
   }
   var editIcon = Icon("src/main/scala/icons/edit.png")
@@ -86,9 +84,9 @@ class UISectionBox(food: Food, ui: UI) {
   }
   if (food.hasNoIngredients) buttonMake.text = "       Use       "
 
-  //first_row
+  // First row
   labelName.font = new Font("Consolas", 0, scaleTo(48))
-  labelName.foreground = my_color
+  labelName.foreground = myColor
   labelName.horizontalAlignment = Left
   labelName.preferredSize = new Dimension(scaleTo(1330), scaleTo(60))
   for (x <- iconBoxes) {
@@ -119,8 +117,8 @@ class UISectionBox(food: Food, ui: UI) {
   firstRow.contents += buttonModify
   firstRow.contents += buttonDelete
 
-  var foodTag = food.tag.toUpperCase
-  var tagPair = "AGLMVW".zipWithIndex
+  var foodTag: String = food.tag.toUpperCase
+  var tagPair: Seq[(Char, Int)] = "AGLMVW".zipWithIndex
   // Icon A/G/L/M/V/W
   for ((letter, index) <- tagPair) {
     if (foodTag.contains(letter))
@@ -136,21 +134,21 @@ class UISectionBox(food: Food, ui: UI) {
   // Last row: Cooked, Cookable & Make
   labelReady.font = new Font("Arial", 0, scaleTo(30))
   labelCookable.font = new Font("Arial", 0, scaleTo(30))
-  if (menu.foodList(food) > 0) {
+  if (menu.foodList(food) > 0) 
     labelReady.foreground = ORANGE
-  } else {
+  else 
     labelReady.visible = false
-  }
-  if (menu.checkAvailability(food) > 0) {
+  
+  if (menu.checkAvailability(food) > 0) 
     labelCookable.foreground = GREEN
-  } else {
+  else {
     labelCookable.foreground = RED
     labelCookable.text = "Available: 0"
     buttonMake.enabled = false
   }
   buttonMake.font = new Font("Arial", 0, scaleTo(32))
   buttonMake.background = WHITE
-  buttonMake.border = BorderFactory.createLineBorder(my_color, scaleTo(2))
+  buttonMake.border = BorderFactory.createLineBorder(myColor, scaleTo(2))
   lastRow.contents += labelReady
   lastRow.contents += HStrut(scaleTo(20))
   lastRow.contents += labelCookable
@@ -168,6 +166,5 @@ class UISectionBox(food: Food, ui: UI) {
   defaultBox.contents += third_part
   defaultBox.contents += last_part
   defaultBox.preferredSize = new Dimension(scaleTo(1330), scaleTo(200))
-  defaultBox.border = BorderFactory.createLineBorder(my_color, scaleTo(1))
-
+  defaultBox.border = BorderFactory.createLineBorder(myColor, scaleTo(1))
 }

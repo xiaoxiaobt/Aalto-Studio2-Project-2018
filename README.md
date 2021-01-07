@@ -1,4 +1,4 @@
-# Recipe book (Smart cookbook)
+# Recipe book (Smart cookbook) (ARCHIVED)
 
 ## Preface
 
@@ -7,9 +7,7 @@ This project is an implementation of Aalto Programming Studio 2 course, Smart co
 Detailed description can be found in this link: 
 https://plus.cs.hut.fi/studio_2/k2019/studioprojekti/232/
 
-USING THIS PROJECT IN ANY SCHOOLWORK IS STRICTLY FORBIDDEN.
-
-Keywords: Scala, Swing, Continuous Integration, UI, Algorithm, UML
+Keywords: Scala, Swing, Continuous Integration, GUI, UML
 
 ## Requirements
 
@@ -22,7 +20,7 @@ Keywords: Scala, Swing, Continuous Integration, UI, Algorithm, UML
 - Clone this repo to your local machine using 
 
 ```shell
-$ git clone https://github.com/xiaoxiaobt/Recipe-book-Studio2.git
+git clone https://github.com/xiaoxiaobt/Recipe-book-Studio2.git
 ```
 ## Setup
 
@@ -30,7 +28,7 @@ $ git clone https://github.com/xiaoxiaobt/Recipe-book-Studio2.git
 ```shell
 cd Recipe-book-Studio2
 ```
-- Run UI.scala as an application
+- Run `UI.scala` as an application
 ```shell
 sbt run
 ```

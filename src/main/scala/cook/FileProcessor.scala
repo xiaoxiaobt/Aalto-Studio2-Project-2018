@@ -8,14 +8,13 @@ import javax.swing.{ ImageIcon, BorderFactory }
 
 class FileProcessor(ui: UI) {
   var menu = ui.menu
-  var fridge = ui.fridge
   /**IO Write Function*/
   def IOWrite() = {
     var file = new File("src/main/scala/saved_data/data.txt")
     val pw = new PrintWriter(file)
     pw.write("RecipeBook v0.1 data\n")
     pw.write("name \t ingredients \t main_unit \t second_unit \t density \t tag \t description \t isMenu \t amount\n")
-    for ((food, num) <- fridge.foodList) {
+    for ((food, num) <- menu.foodList) {
       var boo = if (food.isMenu) "1" else "0"
       var ingredientsString = ""
       if (!food.hasNoIngredients) {
@@ -68,7 +67,7 @@ class FileProcessor(ui: UI) {
     if (ingredients_add.isEmpty) {
       var food_add = Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
       if (isMenu_add) food_add.setToMenu()
-      fridge.addFood(food_add, amount_add)
+      menu.addFood(food_add, amount_add)
     } else {
       var ingre_map: Map[String, Double] = {
         var item_list = ingredients_add.split(",")
@@ -118,7 +117,7 @@ class FileProcessor(ui: UI) {
               //var tag_ingre = (ingre.keys.map(_.tag).mkString("").toUpperCase+data.aller).distinct
               var foodToBeAdd = Food(name, ingre, firstUnit, secondUnit, density, allergies, description)
               if (isMenu) foodToBeAdd.setToMenu()
-              fridge.addFood(foodToBeAdd, amount)
+              menu.addFood(foodToBeAdd, amount)
               buffer -= data
             }
           }

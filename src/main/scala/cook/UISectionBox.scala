@@ -12,7 +12,6 @@ import Settings.scaleTo
 
 class UISectionBox(food: Food, ui: UI) {
   var menu = ui.menu
-  var fridge = menu.fridge
   var my_color = Settings.color
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
   var defaultBox = new BoxPanel(Vertical)
@@ -21,7 +20,7 @@ class UISectionBox(food: Food, ui: UI) {
   var firstRowIconset = new BoxPanel(Horizontal)
   var iconBoxes = ArrayBuffer.fill[Button](6)(Button("") {})
   var buttonDelete = Button(" x ") {
-    fridge.foodList -= food
+    menu.foodList -= food
     p("Notice: " + food.name + " has been removed from the list")
     ui.revalidateWindow(defaultBox)
   }
@@ -56,7 +55,7 @@ class UISectionBox(food: Food, ui: UI) {
         food.ingredients.toList.map(x => x._1.name + "=" + x._2.toString).mkString(",")
       }
     }
-    var editString = food.name + ":" + ingredientsString + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + fridge.foodList(food).toString
+    var editString = food.name + ":" + ingredientsString + ":" + food.main_unit + ":" + food.second_unit + ":" + food.density.toString + ":" + food.tag + ":" + food.description + ":" + boo + ":" + menu.foodList(food).toString
     p("Editing string: " + editString)
     ui.leftMultifunctionalText.text = editString
     ui.leftMultifunctionalText.editable = true
@@ -74,9 +73,9 @@ class UISectionBox(food: Food, ui: UI) {
   var third_part = new BorderPanel
   var last_part = new BorderPanel
   var lastRow = new BoxPanel(Horizontal)
-  var labelReady = new Label("Ready to eat: " + fridge.foodList(food).toInt.toString)
-  if (food.hasNoIngredients) labelReady.text = "Amount: " + fridge.foodList(food).toInt.toString
-  var labelCookable = new Label("Cookable: " + (menu.checkAvailability(food) - fridge.foodList(food).toInt).toString)
+  var labelReady = new Label("Ready to eat: " + menu.foodList(food).toInt.toString)
+  if (food.hasNoIngredients) labelReady.text = "Amount: " + menu.foodList(food).toInt.toString
+  var labelCookable = new Label("Cookable: " + (menu.checkAvailability(food) - menu.foodList(food).toInt).toString)
   if (food.hasNoIngredients) labelCookable.visible = false
   var buttonMake = Button("  Use/Make  ") {
     menu.makeDish(food, 1)
@@ -137,7 +136,7 @@ class UISectionBox(food: Food, ui: UI) {
   // Last row: Cooked, Cookable & Make
   labelReady.font = new Font("Arial", 0, scaleTo(30))
   labelCookable.font = new Font("Arial", 0, scaleTo(30))
-  if (fridge.foodList(food) > 0) {
+  if (menu.foodList(food) > 0) {
     labelReady.foreground = ORANGE
   } else {
     labelReady.visible = false

@@ -18,9 +18,8 @@ class UI extends MainFrame {
 
   // Initialize
   var menu = new Menu()
-  var fridge = menu.fridge
   var settings = Settings
-  def foodList = fridge.foodList
+  def foodList = menu.foodList
   var myColor = settings.color
   var changed = false
   var edit = false
@@ -155,7 +154,7 @@ class UI extends MainFrame {
       if (ingredients_add.isEmpty) {
         var food_add = Food(name_add, scala.collection.mutable.Map[Food, Double](), first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
         if (isMenu_add) food_add.setToMenu()
-        fridge.addFood(food_add, amount_add)
+        menu.addFood(food_add, amount_add)
       } else {
         var ingre_map: collection.mutable.Map[Food, Double] = {
           var item_list = ingredients_add.split(",")
@@ -178,9 +177,9 @@ class UI extends MainFrame {
         }
         var food_add = Food(name_add, ingre_map, first_unit_add, second_unit_add, density_add, alleriges_add, description_add)
         if (isMenu_add) food_add.setToMenu()
-        fridge.addFood(food_add, amount_add)
+        menu.addFood(food_add, amount_add)
       }
-      if (edit) fridge.foodList -= editing
+      if (edit) menu.foodList -= editing
       leftFeedback.text = "> Added/Modified successfully!"
     } catch {
       case e: IOException => {

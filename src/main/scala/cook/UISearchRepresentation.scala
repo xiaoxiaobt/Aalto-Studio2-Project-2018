@@ -12,7 +12,6 @@ import scala.collection.mutable._
 
 class UISearchRepresentation(ui: UI, keyword: String) {
   var menu = ui.menu
-  var fridge = menu.fridge
   var myColor = Settings.color
   var key = keyword.trim
   var keyDouble: Double = Double.NaN
@@ -68,9 +67,9 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   val title1 = "  >Search by Name"
   val title2 = "  >Search by Ingredients"
   val title3 = "  >Search by Amount"
-  var result1 = allergiesRemove(fridge.getByName(key))
-  var result2 = allergiesRemove(fridge.getByIngredients(key))
-  var result3 = allergiesRemove(fridge.getByAvailability(keyDouble))
+  var result1 = allergiesRemove(menu.getByName(key))
+  var result2 = allergiesRemove(menu.getByIngredients(key))
+  var result3 = allergiesRemove(menu.getByAvailability(keyDouble))
   var box1Border = addSubFrame(title1, result1)
   var box2Border = addSubFrame(title2, result2)
   var box3Border = addSubFrame(title3, result3)

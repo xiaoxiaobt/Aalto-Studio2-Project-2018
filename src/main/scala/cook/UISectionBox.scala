@@ -10,7 +10,7 @@ import scala.collection.mutable.ArrayBuffer
 import Settings.scaleTo
 
 class UISectionBox(food: Food, ui: UI) {
-  var menu: Menu = ui.menu
+  var menu: FoodMenu = ui.menu
   var myColor: Color = Settings.color
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
   var defaultBox = new BoxPanel(Vertical)

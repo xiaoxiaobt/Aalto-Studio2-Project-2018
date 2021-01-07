@@ -8,7 +8,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
 
   /** Unit test 1 */
   "Fridge add/remove functions" should "work correctly" in {
-    val testMenu = new Menu()
+    val testMenu = new FoodMenu()
     testMenu.menu should have size (0)
     val food1 = Food("Cookies", Map[Food, Double](), "pcs", "g", 3, "Good", "")
     val food2 = Food("Eggs", Map[Food, Double]((food1 -> 2)), "pcs", "g", 8, "Good", "")
@@ -37,7 +37,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
 
   /** Unit test 2 */
   "Fridge get_by functions" should "work correctly" in {
-    val testMenu = new Menu()
+    val testMenu = new FoodMenu()
     testMenu.menu should have size (0)
     val food1 = Food("Food Cookies", Map[Food, Double](), "pcs", "g", 3, "LG1a", "")
     val food2 = Food("Food Eggs", Map[Food, Double]((food1 -> 2)), "pcs", "g", 8, "", "")
@@ -71,7 +71,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
 
   /** Unit test 3 */
   "Menu get/add/del functions" should "work correctly" in {
-    val testMenu = new Menu()
+    val testMenu = new FoodMenu()
     testMenu.menu should have size (0)
     val food1 = Food("Cookies", Map[Food, Double](), "pcs", "g", 3, "Good", "")
     val food2 = Food("Eggs", Map[Food, Double]((food1 -> 2)), "pcs", "g", 8, "Good", "")
@@ -101,7 +101,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
 
   /** Unit test 4 */
   "Menu availability" should "work correctly" in {
-    val testMenu = new Menu()
+    val testMenu = new FoodMenu()
     testMenu.menu should have size (0)
     val food1 = Food("Cookies", Map[Food, Double](), "pcs", "g", 26, "Good", "")
     val food2 = Food("Eggs", Map[Food, Double](), "pcs", "g", 0, "Good", "")

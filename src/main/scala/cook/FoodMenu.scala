@@ -2,7 +2,7 @@ package cook
 
 import collection.mutable.Map
 
-class Menu {
+class FoodMenu {
 
   var foodList = Map[Food, Double]()
 

@@ -6,7 +6,7 @@ import java.awt.Color.RED
 
 class FileProcessor(ui: UI) {
   var menu: FoodMenu = ui.menu
-  /**IO Write Function*/
+  /** IO Write Function */
   def IOWrite() = {
     val file = new File("src/main/scala/saved_data/data.txt")
     val pw = new PrintWriter(file)
@@ -23,11 +23,11 @@ class FileProcessor(ui: UI) {
     pw.close()
   }
 
-  /**IO Read Function*/
+  /** IO Read Function */
   def IOReadlines(): Iterator[String] = {
-    var lines = fromFile("src/main/scala/saved_data/default.txt").getLines.filter(_.nonEmpty)
+    var lines = fromFile("src/main/scala/saved_data/default.txt").getLines().filter(_.nonEmpty)
     try {
-      lines = fromFile("src/main/scala/saved_data/data.txt").getLines.filter(_.nonEmpty)
+      lines = fromFile("src/main/scala/saved_data/data.txt").getLines().filter(_.nonEmpty)
       ui.leftFeedback.text = "> User-saved file loaded successfully. "
     } catch {
       case _: FileNotFoundException => ui.leftFeedback.text = "> User-saved file not found. Loaded from default. "

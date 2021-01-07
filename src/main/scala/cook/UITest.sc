@@ -84,7 +84,7 @@ class UITest extends MainFrame {
   // Definitions
   def p[T](a: T) = if (settings.diagnosis) println(a.toString)
 
-  def returnStatus() = (settings.all_abbri zip rightCheckboxList.map(_.selected))
+  def returnStatus() = (settings.allAbbreviations zip rightCheckboxList.map(_.selected))
 
   def updateAllergiesString() = {
     settings.allergiesString = returnStatus().filter(_._2).map(_._1).mkString
@@ -103,7 +103,7 @@ class UITest extends MainFrame {
       leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
     }
     var food_list_menu = foodList.filter(_._1.isMenu).toSeq.sortBy(x => menu.checkAvailability(x._1)).reverse.toMap
-    var allergies = (settings.all_abbri zip rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
+    var allergies = (settings.allAbbreviations zip rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
     if (allergies.isEmpty) allergies = List[String]()
     var food_list_menu_allergies = food_list_menu.filter(x => allergies.forall(y => x._1.tag.contains(y)))
     for ((item_food, item_amount) <- food_list_menu_allergies) {
@@ -336,7 +336,7 @@ class UITest extends MainFrame {
   rightCheckboxList.map(listenTo(_))
   reactions += {
     case e: ButtonClicked => {
-      var allergies = (settings.all_abbri zip rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
+      var allergies = (settings.allAbbreviations zip rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
       p("Notice: Checkbox(es) selection changed, new allergen list is: " + allergies.mkString(""))
       if (!changed) {
         searchBox.text = " Search for recipes or ingredients here..."

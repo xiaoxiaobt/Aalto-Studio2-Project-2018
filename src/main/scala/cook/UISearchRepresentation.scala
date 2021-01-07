@@ -11,7 +11,7 @@ import Settings.scaleTo
 import scala.collection.mutable._
 
 class UISearchRepresentation(ui: UI, keyword: String) {
-  var menu: Menu = ui.menu
+  var menu: FoodMenu = ui.menu
   var myColor: Color = Settings.color
   var key: String = keyword.trim
   var keyDouble: Double = Double.NaN

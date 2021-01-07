@@ -5,7 +5,7 @@ import java.io._
 import java.awt.Color.RED
 
 class FileProcessor(ui: UI) {
-  var menu: Menu = ui.menu
+  var menu: FoodMenu = ui.menu
   /**IO Write Function*/
   def IOWrite() = {
     val file = new File("src/main/scala/saved_data/data.txt")

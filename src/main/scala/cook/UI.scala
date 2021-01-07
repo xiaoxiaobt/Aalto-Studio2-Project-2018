@@ -19,7 +19,7 @@ class UI extends MainFrame {
   preferredSize = new Dimension(scaleTo(1920), scaleTo(1080))
 
   // Initialize
-  var menu = new Menu()
+  var menu: FoodMenu = new FoodMenu()
   var settings = Settings
   def foodList = menu.foodList
   var myColor = settings.color

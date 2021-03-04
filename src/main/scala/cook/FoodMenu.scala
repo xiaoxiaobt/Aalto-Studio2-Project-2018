@@ -132,8 +132,8 @@ class FoodMenu {
     var map = Map[Food, Double]()
     val nameList = name.toUpperCase.trim
     for (item <- foodList.keys) {
-      val item_name_list = item.name.toUpperCase.trim
-      if (item_name_list matches ".*" + nameList + ".*")
+      val itemNameList = item.name.toUpperCase.trim
+      if (itemNameList matches ".*" + nameList + ".*")
         map += (item -> foodList(item))
     }
     map

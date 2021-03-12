@@ -6,7 +6,6 @@ import scala.collection.mutable.Map
 
 class UnitTests extends AnyFlatSpec with Matchers {
 
-  /** Unit test 1 */
   "Fridge add/remove functions" should "work correctly" in {
     val testMenu = new FoodMenu()
     testMenu.menu should have size (0)
@@ -35,8 +34,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.removeFood(food3, 5)
   }
 
-  /** Unit test 2 */
-  "Fridge get_by functions" should "work correctly" in {
+  "Fridge getBy functions" should "work correctly" in {
     val testMenu = new FoodMenu()
     testMenu.menu should have size (0)
     val food1 = Food("Food Cookies", Map[Food, Double](), "pcs", "g", 3, "LG1a", "")
@@ -69,7 +67,6 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.getByAvailability(0) should have size (3)
   }
 
-  /** Unit test 3 */
   "Menu get/add/del functions" should "work correctly" in {
     val testMenu = new FoodMenu()
     testMenu.menu should have size (0)
@@ -99,7 +96,6 @@ class UnitTests extends AnyFlatSpec with Matchers {
     assert(!food4.isMenu)
   }
 
-  /** Unit test 4 */
   "Menu availability" should "work correctly" in {
     val testMenu = new FoodMenu()
     testMenu.menu should have size (0)

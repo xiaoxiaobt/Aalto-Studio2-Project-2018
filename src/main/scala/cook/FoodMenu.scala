@@ -130,10 +130,10 @@ class FoodMenu {
 
   def getByName(name: String): Map[Food, Double] = {
     var map = Map[Food, Double]()
-    val nameList = name.toUpperCase.trim
+    val nameList = ".*" + name.toUpperCase.trim + ".*"
     for (item <- foodList.keys) {
       val itemNameList = item.name.toUpperCase.trim
-      if (itemNameList matches ".*" + nameList + ".*")
+      if (itemNameList matches nameList)
         map += (item -> foodList(item))
     }
     map

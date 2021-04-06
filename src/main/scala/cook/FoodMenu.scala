@@ -1,5 +1,4 @@
 package cook
-
 import collection.mutable.Map
 
 class FoodMenu {
@@ -60,9 +59,9 @@ class FoodMenu {
     if (foodList.keys.toArray.contains(food)) {
       val current_amount = testList(food)
       if (current_amount >= num)
-        testList = testList updated (food, testList(food) - num)
+        testList += (food -> (testList(food) - num))
       else if (current_amount > 0) {
-        testList = testList updated (food, 0)
+        testList += (food -> 0)
         checkAmount(food, num - current_amount)
       } else {
         if (food.ingredients.isEmpty)
@@ -78,7 +77,7 @@ class FoodMenu {
     val result = foodList.find(_._1.name == name)
     if (result.isDefined) Some(result.get._1) else None
   }
-  
+
   def allIngredientsExist(names: Iterable[String]): Boolean = {
     names.map(returnFoodWithName).forall(_.isDefined)
   }
@@ -96,7 +95,7 @@ class FoodMenu {
 
   def removeFood(food: Food, amount: Double): Boolean = {
     if (foodList.contains(food) && amount >= 0 && foodList(food) >= amount) {
-      foodList = foodList updated (food, foodList(food) - amount)
+      foodList += (food -> (foodList(food) - amount))
       true
     } else
       false
@@ -105,14 +104,14 @@ class FoodMenu {
   def addFood(food: Food, amount: Double): Boolean = {
     if (amount > 0) {
       if (foodList.contains(food))
-        foodList = foodList updated (food, foodList(food) + amount)
+        foodList += (food -> (foodList(food) + amount))
       else
         foodList += (food -> amount)
       true
     } else
       false
   }
-  
+
   def getByTags(tag: String): Map[Food, Double] = {
     var map = Map[Food, Double]()
     val tagList = tag.toUpperCase.trim.split("").distinct
@@ -143,7 +142,8 @@ class FoodMenu {
     var map = Map[Food, Double]()
     val nameList = name.toUpperCase.trim
     for (item <- foodList.keys) {
-      val ingredients = item.ingredients.keys.map(_.name.toUpperCase.trim).mkString(" ")
+      val ingredients =
+        item.ingredients.keys.map(_.name.toUpperCase.trim).mkString(" ")
       if (ingredients.contains(nameList)) map += (item -> foodList(item))
     }
     map

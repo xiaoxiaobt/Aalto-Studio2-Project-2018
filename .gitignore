@@ -4,3 +4,6 @@ project
 .cache-main
 .bsp
 .idea
+.bloop
+.metals
+.vscode

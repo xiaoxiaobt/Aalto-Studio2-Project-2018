@@ -50,7 +50,8 @@ class UISearchRepresentation(ui: UI, keyword: String) {
     // Box
     lineBorder.layout(line) = West
     box.contents += lineBorder
-    for ((itemFood, itemAmount) <- result) box.contents += new UISectionBox(itemFood, ui).defaultBox
+    for ((itemFood, itemAmount) <- result)
+      box.contents += new UISectionBox(itemFood, ui).defaultBox
     if (box.contents.size == 1) {
       val label = new Label("  No matches")
       label.font = new Font("Arial", 0, scaleTo(36))

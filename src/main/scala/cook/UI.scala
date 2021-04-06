@@ -9,10 +9,9 @@ import java.io._
 import scala.io.Source._
 import java.awt.Color.{BLACK, GRAY, RED, WHITE}
 import javax.swing.BorderFactory.{createEmptyBorder, createLineBorder}
+import javax.swing.ImageIcon
 import Swing._
 import Settings.scaleTo
-
-import javax.swing.ImageIcon
 
 class UI extends MainFrame {
   title = "Smart Cookbook"
@@ -41,7 +40,8 @@ class UI extends MainFrame {
   var searchPreventionBox = new TextField("")
   var searchBox = new TextField(" Search for recipes or ingredients here...")
   var searchButton: Button = Button("") {
-    if (searchBox.text == " Search for recipes or ingredients here...") searchBox.text = ""
+    if (searchBox.text == " Search for recipes or ingredients here...")
+      searchBox.text = ""
     p("Notice: Searched: \"" + searchBox.text + "\"")
     changed = true
     leftFeedback.text = "> Return to the previous page, click Back button"
@@ -51,7 +51,8 @@ class UI extends MainFrame {
   var backButton: Button = Button("") {
     changed = false
     refreshMenuBox()
-    leftFeedback.text = "> To perform search, type in the box above and click Search button"
+    leftFeedback.text =
+      "> To perform search, type in the box above and click Search button"
     searchBox.text = " Search for recipes or ingredients here..."
     searchBox.foreground = GRAY
     p("Notice: Returned to the main interface")
@@ -84,7 +85,8 @@ class UI extends MainFrame {
   // Definitions
   def p[T](a: T) = if (settings.diagnosis) println(a.toString)
 
-  def returnStatus() = settings.allAbbreviations zip rightCheckboxList.map(_.selected)
+  def returnStatus() =
+    settings.allAbbreviations zip rightCheckboxList.map(_.selected)
 
   def updateAllergiesString(): Unit = {
     settings.allergiesString = returnStatus().filter(_._2).map(_._1).mkString
@@ -103,10 +105,18 @@ class UI extends MainFrame {
     listenTo(searchBox)
     while (leftNormalMenuBox.contents.nonEmpty)
       leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
-    val food_list_menu = foodList.filter(_._1.isMenu).toSeq.sortBy(x => menu.checkAvailability(x._1)).reverse.toMap
-    var allergies = (settings.allAbbreviations zip rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
+    val food_list_menu = foodList
+      .filter(_._1.isMenu)
+      .toSeq
+      .sortBy(x => menu.checkAvailability(x._1))
+      .reverse
+      .toMap
+    var allergies = (settings.allAbbreviations zip rightCheckboxList.map(
+      _.selected
+    )).filter(_._2).map(_._1)
     if (allergies.isEmpty) allergies = List[String]()
-    val food_list_menu_allergies = food_list_menu.filter(x => allergies.forall(y => x._1.tag.contains(y)))
+    val food_list_menu_allergies =
+      food_list_menu.filter(x => allergies.forall(y => x._1.tag.contains(y)))
     for ((item_food, item_amount) <- food_list_menu_allergies)
       leftNormalMenuBox.contents += new UISectionBox(item_food, this).defaultBox
     outerBox.repaint()
@@ -115,9 +125,16 @@ class UI extends MainFrame {
 
   def changeBox(keyword: String): Unit = {
     val subUI = new UISearchRepresentation(this, keyword)
-    while (leftNormalMenuBox.contents.nonEmpty) 
+    while (leftNormalMenuBox.contents.nonEmpty)
       leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
-    leftNormalMenuBox.contents ++= Array(subUI.headlineBorder, VStrut(scaleTo(40)), subUI.box1Border, VStrut(scaleTo(20)), subUI.box2Border, VStrut(scaleTo(20)))
+    leftNormalMenuBox.contents ++= Array(
+      subUI.headlineBorder,
+      VStrut(scaleTo(40)),
+      subUI.box1Border,
+      VStrut(scaleTo(20)),
+      subUI.box2Border,
+      VStrut(scaleTo(20))
+    )
     if (!subUI.keyDouble.isNaN) leftNormalMenuBox.contents += subUI.box3Border
     listenTo(searchBox)
     leftNormalMenuBox.repaint()
@@ -138,22 +155,40 @@ class UI extends MainFrame {
       var densityAdd: Double = strList(4).toDouble
       val allergiesAdd: String = strList(5).toUpperCase
       val description_add: String = strList(6)
-      val isMenuAdd: Boolean = if (strList(7) == "1") true else if (strList(7) == "0") false else throw new Exception
+      val isMenuAdd: Boolean =
+        if (strList(7) == "1") true
+        else if (strList(7) == "0") false
+        else throw new Exception
       var amountAdd: Double = strList(8).toDouble
-      if ((!edit) && (menu.returnFoodWithName(nameAdd) != None)) throw new IOException
+      if ((!edit) && (menu.returnFoodWithName(nameAdd) != None))
+        throw new IOException
       if (amountAdd > 1000) {
         amountAdd = 1000
-        println("Notice: The maximum amount allowed in this system is 1000. Your input has been changed to 1000.")
+        println(
+          "Notice: The maximum amount allowed in this system is 1000. Your input has been changed to 1000."
+        )
       } else if (amountAdd < 0) {
         amountAdd = 0
-        println("Notice: The amount cannot be negative. Your input has been changed to 0.")
+        println(
+          "Notice: The amount cannot be negative. Your input has been changed to 0."
+        )
       }
       if (densityAdd < 0) {
         densityAdd = 0
-        println("Notice: Density cannot be negative. System changed it to the default value: 0")
+        println(
+          "Notice: Density cannot be negative. System changed it to the default value: 0"
+        )
       }
       if (ingredientsAdd.isEmpty) {
-        val food_add = Food(nameAdd, scala.collection.mutable.Map[Food, Double](), firstUnitAdd, secondUnitAdd, densityAdd, allergiesAdd, description_add)
+        val food_add = Food(
+          nameAdd,
+          scala.collection.mutable.Map[Food, Double](),
+          firstUnitAdd,
+          secondUnitAdd,
+          densityAdd,
+          allergiesAdd,
+          description_add
+        )
         if (isMenuAdd) food_add.setToMenu()
         menu.addFood(food_add, amountAdd)
       } else {
@@ -166,17 +201,35 @@ class UI extends MainFrame {
             var tempAmount = item.split("=").last.trim.toDouble
             if (tempAmount > 1000) {
               tempAmount = 1000
-              println("Notice: The maximum amount allowed in this system is 1000. The amount of " + item.split("=").head.trim + "has been changed to 1000.")
+              println(
+                "Notice: The maximum amount allowed in this system is 1000. The amount of " + item
+                  .split("=")
+                  .head
+                  .trim + "has been changed to 1000."
+              )
             } else if (tempAmount < 0) {
               tempAmount = 0
-              println("Notice: The amount cannot be negative. The amount of " + item.split("=").head.trim + "has been changed to 0.")
+              println(
+                "Notice: The amount cannot be negative. The amount of " + item
+                  .split("=")
+                  .head
+                  .trim + "has been changed to 0."
+              )
             }
             amountList += tempAmount
           }
           val temp = (nameList zip amountList).toMap
           collection.mutable.Map(temp.toSeq: _*)
         }
-        val food_add = Food(nameAdd, ingreMap, firstUnitAdd, secondUnitAdd, densityAdd, allergiesAdd, description_add)
+        val food_add = Food(
+          nameAdd,
+          ingreMap,
+          firstUnitAdd,
+          secondUnitAdd,
+          densityAdd,
+          allergiesAdd,
+          description_add
+        )
         if (isMenuAdd) food_add.setToMenu()
         menu.addFood(food_add, amountAdd)
       }
@@ -184,15 +237,19 @@ class UI extends MainFrame {
       leftFeedback.text = "> Added/Modified successfully!"
     } catch {
       case _: IOException =>
-        leftFeedback.text = "> Failed. The menu with the same name already exists"
+        leftFeedback.text =
+          "> Failed. The menu with the same name already exists"
       case _: NoSuchElementException =>
-        leftFeedback.text = "> Failed. One or more ingredients is missing. Please add ingredients first"
+        leftFeedback.text =
+          "> Failed. One or more ingredients is missing. Please add ingredients first"
       case _: Exception =>
         leftFeedback.text = "> Failed. Wrong format"
     } finally {
       leftFeedback.repaint()
     }
-    searchBox.text = if (tempSearchText.isEmpty) " Search for recipes or ingredients here..." else tempSearchText
+    searchBox.text =
+      if (tempSearchText.isEmpty) " Search for recipes or ingredients here..."
+      else tempSearchText
     searchBox.foreground = GRAY
   }
 
@@ -215,7 +272,8 @@ class UI extends MainFrame {
 
   // Left Info Box
   leftInfoSection.background = WHITE
-  leftInfoSection.border = EmptyBorder(scaleTo(30), scaleTo(30), scaleTo(30), scaleTo(30))
+  leftInfoSection.border =
+    EmptyBorder(scaleTo(30), scaleTo(30), scaleTo(30), scaleTo(30))
 
   // Left Menu Box ScrollPane Frame
   leftMenuScroll.preferredSize = new Dimension(scaleTo(1440), scaleTo(600))
@@ -241,12 +299,11 @@ class UI extends MainFrame {
   searchBox.foreground = GRAY
   searchBox.border = createLineBorder(myColor, scaleTo(5))
   listenTo(searchBox)
-  reactions += {
-    case _: FocusGained =>
-      p("Notice: Search box gained focus")
-      searchBox.text = ""
-      searchBox.foreground = BLACK
-      outerBox.repaint()
+  reactions += { case _: FocusGained =>
+    p("Notice: Search box gained focus")
+    searchBox.text = ""
+    searchBox.foreground = BLACK
+    outerBox.repaint()
   }
   searchButton.background = WHITE
   searchButton.font = new Font("Arial", 0, scaleTo(50))
@@ -276,35 +333,41 @@ class UI extends MainFrame {
   // Left Multi-usage Testfield
   leftMultifunctionalText.editable = false
   leftMultifunctionalText.background = WHITE
-  leftMultifunctionalText.preferredSize = new Dimension(scaleTo(1300), scaleTo(30))
+  leftMultifunctionalText.preferredSize =
+    new Dimension(scaleTo(1300), scaleTo(30))
   leftMultifunctionalText.font = new Font("Arial", 0, scaleTo(30))
   leftMultifunctionalText.border = createEmptyBorder()
 
   // Left Multi-usage Button
   leftMultifunctionalButton.font = new Font("Arial", 0, scaleTo(30))
   leftMultifunctionalButton.border = createEmptyBorder()
-  leftMultifunctionalButton.preferredSize = new Dimension(scaleTo(50), scaleTo(50))
+  leftMultifunctionalButton.preferredSize =
+    new Dimension(scaleTo(50), scaleTo(50))
   leftMultifunctionalButton.background = WHITE
   leftMultifunctionalButton.visible = false
   leftMultifunctionalButton.icon = iconTick
   listenTo(leftMultifunctionalButton)
-  reactions += {
-    case _: ButtonClicked =>
-      p("Notice: Complete button pressed")
-      leftMultifunctionalButton.visible = false
-      rightCheckboxList.foreach(_.visible = true)
-      buttonSave.visible = true
-      leftMultifunctionalButton.repaint()
-      leftMultifunctionalButton.revalidate()
-      outerBox.repaint()
-      outerBox.revalidate()
+  reactions += { case _: ButtonClicked =>
+    p("Notice: Complete button pressed")
+    leftMultifunctionalButton.visible = false
+    rightCheckboxList.foreach(_.visible = true)
+    buttonSave.visible = true
+    leftMultifunctionalButton.repaint()
+    leftMultifunctionalButton.revalidate()
+    outerBox.repaint()
+    outerBox.revalidate()
   }
   // Left multi-usage box
   leftMultifunctionalBox.background = WHITE
-  leftMultifunctionalBox.contents ++= Array(leftMultifunctionalText, HStrut(scaleTo(10)), leftMultifunctionalButton)
+  leftMultifunctionalBox.contents ++= Array(
+    leftMultifunctionalText,
+    HStrut(scaleTo(10)),
+    leftMultifunctionalButton
+  )
 
   // Left multi-usage frame
-  leftMultifunctionalFrame.preferredSize = new Dimension(scaleTo(1440), scaleTo(50))
+  leftMultifunctionalFrame.preferredSize =
+    new Dimension(scaleTo(1440), scaleTo(50))
   leftMultifunctionalFrame.background = WHITE
   leftMultifunctionalFrame.layout(leftMultifunctionalBox) = West
   leftInfoSection.contents += leftMultifunctionalFrame
@@ -329,22 +392,26 @@ class UI extends MainFrame {
     i += 1
   }
   rightCheckboxList.map(listenTo(_))
-  reactions += {
-    case _: ButtonClicked =>
-      val allergies = (settings.allAbbreviations zip rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
-      p("Notice: Checkbox(es) selection changed, new allergen list is: " + allergies.mkString(""))
-      if (!changed) {
-        searchBox.text = " Search for recipes or ingredients here..."
-        searchBox.foreground = GRAY
-        refreshMenuBox()
-      } else {
-        searchBox.text = tempSearchText
-        changeBox(searchBox.text)
-      }
-      leftMultifunctionalBox.repaint()
-      leftMultifunctionalBox.revalidate()
-      outerBox.repaint()
-      outerBox.revalidate()
+  reactions += { case _: ButtonClicked =>
+    val allergies = (settings.allAbbreviations zip rightCheckboxList.map(
+      _.selected
+    )).filter(_._2).map(_._1)
+    p(
+      "Notice: Checkbox(es) selection changed, new allergen list is: " + allergies
+        .mkString("")
+    )
+    if (!changed) {
+      searchBox.text = " Search for recipes or ingredients here..."
+      searchBox.foreground = GRAY
+      refreshMenuBox()
+    } else {
+      searchBox.text = tempSearchText
+      changeBox(searchBox.text)
+    }
+    leftMultifunctionalBox.repaint()
+    leftMultifunctionalBox.revalidate()
+    outerBox.repaint()
+    outerBox.revalidate()
   }
 
   // Right Save Button
@@ -373,7 +440,8 @@ class UI extends MainFrame {
   rightInfoSection.contents += VStrut(scaleTo(200))
   rightInfoSection.contents += buttonSave
   rightInfoSection.background = myColor
-  rightInfoSection.border = EmptyBorder(scaleTo(20), scaleTo(20), scaleTo(20), scaleTo(20))
+  rightInfoSection.border =
+    EmptyBorder(scaleTo(20), scaleTo(20), scaleTo(20), scaleTo(20))
 
   // Frame Section
   outerBox.contents += leftBox

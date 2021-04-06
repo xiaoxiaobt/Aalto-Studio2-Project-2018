@@ -1,13 +1,19 @@
 package cook
 import java.awt.Color
-import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Map
 
 object Settings {
   // System Settings
   val diagnosis = true
   // Allergies Settings (default)
-  val allergies: List[String] = List("With Allergens", "Gluten free", "Lactose free", "Milk free", "Vegan", "Vegetarian")
+  val allergies: List[String] = List(
+    "With Allergens",
+    "Gluten free",
+    "Lactose free",
+    "Milk free",
+    "Vegan",
+    "Vegetarian"
+  )
   val allAbbreviations: List[String] = List("A", "G", "L", "M", "V", "W")
   var allergiesString = ""
   // Color

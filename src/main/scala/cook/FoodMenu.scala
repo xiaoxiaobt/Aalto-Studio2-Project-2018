@@ -46,12 +46,11 @@ class FoodMenu {
     testList = foodList ++ Map()
     testState = true
     var i = 0
-    if (foodList.keys.toList.contains(food)) {
+    if (foodList.keys.toList.contains(food))
       while (testState) {
         checkAmount(food, 1)
         if (testState) i += 1
       }
-    }
     i
   }
 
@@ -103,7 +102,10 @@ class FoodMenu {
 
   def addFood(food: Food, amount: Double): Boolean = {
     if (amount > 0) {
-      foodList += (food -> (foodList.getOrElse(food, 0) + amount))
+      if (foodList.contains(food))
+        foodList += (food -> (foodList(food) + amount))
+      else
+        foodList += (food -> amount)
       true
     } else
       false

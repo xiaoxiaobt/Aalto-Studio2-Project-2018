@@ -103,10 +103,7 @@ class FoodMenu {
 
   def addFood(food: Food, amount: Double): Boolean = {
     if (amount > 0) {
-      if (foodList.contains(food))
-        foodList += (food -> (foodList(food) + amount))
-      else
-        foodList += (food -> amount)
+      foodList += (food -> (foodList.getOrElse(food, 0) + amount))
       true
     } else
       false

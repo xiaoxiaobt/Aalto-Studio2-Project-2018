@@ -11,10 +11,10 @@ Keywords: Scala, Swing, Continuous Integration, GUI
 
 ## Requirements
 
-- JDK 8+
-- Scala 2.13
+- JDK 8/11
+- Scala 3
 - Git
-- sbt
+- sbt 1.5.0+
 
 ## Clone
 

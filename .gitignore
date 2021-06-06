@@ -1,9 +1,11 @@
 bin
 target
-project
+project/**
 .cache-main
 .bsp
 .idea
 .bloop
 .metals
 .vscode
+.DS_Store
+!project/build.properties

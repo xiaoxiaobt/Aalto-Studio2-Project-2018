@@ -6,6 +6,7 @@ lazy val root = (project in file(".")).settings(
   scalacOptions := Seq("-unchecked", "-deprecation"),
   libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "3.2.10" % Test,
-    "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
+    "org.scala-lang.modules" %% "scala-swing" % "3.0.0",
+    "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
   )
 )

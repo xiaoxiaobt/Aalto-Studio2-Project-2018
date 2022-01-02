@@ -1,9 +1,11 @@
 package cook
 import collection.mutable.Map
+import scala.collection.parallel.mutable.ParHashMap
+import scala.collection.parallel.CollectionsHaveToParArray
 
 class FoodMenu {
 
-  var foodList = Map[Food, Double]()
+  var foodList = ParHashMap[Food, Double]()
 
   private var testList = foodList.clone()
   private var testState = true
@@ -16,7 +18,7 @@ class FoodMenu {
   def menuFoodlist = foodList.filter(_._1.isMenu)
   def nonMenuFoodlist = foodList.filter(!_._1.isMenu)
 
-  def menu: Vector[Food] = menuFoodlist.keys.toVector
+  def menu = menuFoodlist.keys.toParArray
 
   def addMenu(food: Food): Boolean = {
     if (foodList.contains(food)) {
@@ -104,12 +106,12 @@ class FoodMenu {
       false
   }
 
-  def getByTags(tag: String): Map[Food, Double] = {
-    var map = Map[Food, Double]()
+  def getByTags(tag: String): ParHashMap[Food, Double] = {
     val tagList = tag.toUpperCase.trim.split("").distinct
     if (tag.trim.isEmpty)
       foodList
     else {
+      var map = ParHashMap[Food, Double]()
       for (item <- foodList.keys) {
         val uniqueTags = item.tag
         // if (tagList.intersect(uniqueTags).length == tagList.length)
@@ -119,8 +121,8 @@ class FoodMenu {
     }
   }
 
-  def getByName(name: String): Map[Food, Double] = {
-    var map = Map[Food, Double]()
+  def getByName(name: String): ParHashMap[Food, Double] = {
+    var map = ParHashMap[Food, Double]()
     val nameList = ".*" + name.toUpperCase.trim + ".*"
     for (item <- foodList.keys) {
       val itemNameList = item.name.toUpperCase.trim
@@ -130,8 +132,8 @@ class FoodMenu {
     map
   }
 
-  def getByIngredients(name: String): Map[Food, Double] = {
-    var map = Map[Food, Double]()
+  def getByIngredients(name: String): ParHashMap[Food, Double] = {
+    var map = ParHashMap[Food, Double]()
     val nameList = name.toUpperCase.trim
     for (item <- foodList.keys) {
       val ingredients =
@@ -141,7 +143,7 @@ class FoodMenu {
     map
   }
 
-  def getByAvailability(num: Double): Map[Food, Double] = {
+  def getByAvailability(num: Double): ParHashMap[Food, Double] = {
     foodList.filter(_._2 >= num)
   }
 

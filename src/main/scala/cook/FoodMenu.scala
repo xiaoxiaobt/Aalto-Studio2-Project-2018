@@ -5,71 +5,68 @@ import scala.collection.parallel.CollectionsHaveToParArray
 
 class FoodMenu {
 
-  var foodList = ParHashMap[Food, Double]()
-
-  private var testList = foodList.clone()
-  private var testState = true
+  var foodMap = ParHashMap[Food, Double]()
 
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
 
-  def foodListRaw = foodList.filter(_._1.ingredients.isEmpty)
-  def foodListCooked = foodList.filter(_._1.ingredients.nonEmpty)
-
-  def menuFoodlist = foodList.filter(_._1.isMenu)
-  def nonMenuFoodlist = foodList.filter(!_._1.isMenu)
-
-  def menu = menuFoodlist.keys.toParArray
+  def getFoodArray = foodMap.keys.toParArray
 
   def addMenu(food: Food): Boolean = {
-    if (foodList.contains(food)) {
+    if (foodMap.contains(food)) {
       food.setToMenu()
       true
-    } else
-      false
+    } else false
   }
 
   def deleteMenu(food: Food): Boolean = {
-    if (foodList.contains(food)) {
+    if (foodMap.contains(food)) {
       food.setToRaw()
       true
-    } else
-      false
+    } else false
   }
 
   /** Returns the amount of food as an integer */
   def checkAvailability(food: Food): Int = {
-    testList = foodList ++ Map()
-    testState = true
+    val testMap = foodMap.clone()
+    var testState = true
     var i = 0
-    if (foodList.keys.toList.contains(food))
+    if (foodMap.contains(food))
       while (testState) {
-        checkAmount(food, 1)
+        testState = checkAmount(food, 1, testMap)
         if (testState) i += 1
       }
     i
   }
 
-  def checkAmount(food: Food, num: Double): Unit = {
-    if (foodList.keys.toArray.contains(food)) {
-      val currentAmount = testList(food)
+  def checkAmount(
+      food: Food,
+      num: Double,
+      testMap: ParHashMap[Food, Double]
+  ): Boolean = {
+    if (foodMap.contains(food)) {
+      val currentAmount = testMap(food)
       if (currentAmount >= num)
-        testList += (food -> (testList(food) - num))
+        testMap += (food -> (testMap(food) - num))
+        true
       else if (currentAmount > 0) {
-        testList += (food -> 0)
-        checkAmount(food, num - currentAmount)
+        testMap += (food -> 0)
+        checkAmount(food, num - currentAmount, testMap)
       } else {
-        if (food.ingredients.isEmpty)
-          testState = false
-        else
-          food.ingredients.foreach(x => checkAmount(x._1, x._2))
+        if (food.ingredients.isEmpty) false
+        else {
+          for ((name, amount) <- food.ingredients) {
+            if (!checkAmount(name, amount, testMap))
+              return false
+          }
+          return true
+        }
       }
-    } else
-      testState = false
+    } else false
   }
 
   def returnFoodWithName(name: String): Option[Food] = {
-    val result = foodList.find(_._1.name == name)
-    if (result.isDefined) Some(result.get._1) else None
+    val result = getFoodArray.find(_.name == name)
+    if (result.isDefined) Some(result.get) else None
   }
 
   def allIngredientsExist(names: Iterable[String]): Boolean = {
@@ -77,45 +74,40 @@ class FoodMenu {
   }
 
   def makeDish(food: Food, num: Double): Unit = {
-    if (foodList(food) >= num)
-      foodList(food) -= num
-    else if (foodList(food) > 0) {
-      val temp = num - foodList(food)
-      foodList(food) = 0
+    if (foodMap(food) >= num) foodMap(food) -= num
+    else if (foodMap(food) > 0) {
+      val temp = num - foodMap(food)
+      foodMap(food) = 0
       makeDish(food, temp)
-    } else
-      food.ingredients.foreach(x => makeDish(x._1, x._2 * num))
+    } else food.ingredients.foreach(x => makeDish(x._1, x._2 * num))
   }
 
   def removeFood(food: Food, amount: Double): Boolean = {
-    if (foodList.contains(food) && amount >= 0 && foodList(food) >= amount) {
-      foodList += (food -> (foodList(food) - amount))
+    if (foodMap.contains(food) && amount >= 0 && foodMap(food) >= amount) {
+      foodMap += (food -> (foodMap(food) - amount))
       true
-    } else
-      false
+    } else false
   }
 
   def addFood(food: Food, amount: Double): Boolean = {
     if (amount > 0) {
-      if (foodList.contains(food))
-        foodList += (food -> (foodList(food) + amount))
+      if (foodMap.contains(food))
+        foodMap += (food -> (foodMap(food) + amount))
       else
-        foodList += (food -> amount)
+        foodMap += (food -> amount)
       true
-    } else
-      false
+    } else false
   }
 
   def getByTags(tag: String): ParHashMap[Food, Double] = {
     val tagList = tag.toUpperCase.trim.split("").distinct
-    if (tag.trim.isEmpty)
-      foodList
+    if (tag.trim.isEmpty) foodMap
     else {
       var map = ParHashMap[Food, Double]()
-      for (item <- foodList.keys) {
+      for ((item, amount) <- foodMap) {
         val uniqueTags = item.tag
         // if (tagList.intersect(uniqueTags).length == tagList.length)
-        map += (item -> foodList(item))
+        map += (item -> amount)
       }
       map
     }
@@ -124,10 +116,10 @@ class FoodMenu {
   def getByName(name: String): ParHashMap[Food, Double] = {
     var map = ParHashMap[Food, Double]()
     val nameList = ".*" + name.toUpperCase.trim + ".*"
-    for (item <- foodList.keys) {
+    for ((item, amount) <- foodMap) {
       val itemNameList = item.name.toUpperCase.trim
       if (itemNameList matches nameList)
-        map += (item -> foodList(item))
+        map += (item -> amount)
     }
     map
   }
@@ -135,16 +127,16 @@ class FoodMenu {
   def getByIngredients(name: String): ParHashMap[Food, Double] = {
     var map = ParHashMap[Food, Double]()
     val nameList = name.toUpperCase.trim
-    for (item <- foodList.keys) {
+    for ((item, amount) <- foodMap) {
       val ingredients =
         item.ingredients.keys.map(_.name.toUpperCase.trim).mkString(" ")
-      if (ingredients.contains(nameList)) map += (item -> foodList(item))
+      if (ingredients.contains(nameList)) map += (item -> amount)
     }
     map
   }
 
   def getByAvailability(num: Double): ParHashMap[Food, Double] = {
-    foodList.filter(_._2 >= num)
+    foodMap.filter(_._2 >= num)
   }
 
 }

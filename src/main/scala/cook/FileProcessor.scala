@@ -1,7 +1,9 @@
 package cook
 import scala.collection.mutable.ArrayBuffer
-import scala.io.Source._
-import java.io._
+import scala.collection.parallel.mutable.ParHashMap
+import scala.io.Source.fromFile
+import scala.util.Using
+import java.io.{File, PrintWriter, FileNotFoundException}
 import java.awt.Color.RED
 
 case class Holder(
@@ -21,7 +23,7 @@ class FileProcessor(ui: UI) {
     val file = new File("src/main/scala/saved_data/data.tsv")
     val pw = new PrintWriter(file)
     pw.write("name\tingredients\ttag\tdescription\tisMenu\tamount\n")
-    for ((food, num) <- menu.foodList) {
+    for ((food, num) <- menu.foodMap) {
       var ingredientsString = ""
       if (!food.hasNoIngredients) {
         ingredientsString = food.ingredients.toList
@@ -36,13 +38,15 @@ class FileProcessor(ui: UI) {
   }
 
   def IOReadlines(): Array[String] = {
-    var lines = fromFile("src/main/scala/saved_data/default.tsv")
-      .getLines()
-      .filter(_.nonEmpty)
+    var lines = Array[String]()
+    Using(fromFile("src/main/scala/saved_data/default.tsv")) { source =>
+      lines = source.getLines().filter(_.nonEmpty).toArray
+    }
+
     try {
-      lines = fromFile("src/main/scala/saved_data/data.tsv")
-        .getLines()
-        .filter(_.nonEmpty)
+      Using(fromFile("src/main/scala/saved_data/data.tsv")) { source =>
+        lines = source.getLines().filter(_.nonEmpty).toArray
+      }
       ui.leftFeedback.text = "> User-saved file loaded successfully. "
     } catch {
       case _: FileNotFoundException =>
@@ -51,8 +55,8 @@ class FileProcessor(ui: UI) {
     } finally {
       ui.leftFeedback.repaint()
     }
-    lines.next()
-    lines.toArray
+
+    lines.tail
   }
 
   def lineParser(line: String): Option[Holder] = {
@@ -60,6 +64,10 @@ class FileProcessor(ui: UI) {
     if (lineArray.length != 6) {
       throw new Exception("Invalid line length")
     }
+    val tooManyLinesMessage =
+      "The maximum amount allowed in this system is 1000. Your input has been changed to 1000."
+    val negativeAmountMessage =
+      "The amount cannot be negative. Your input has been changed to 0."
     try {
       val name = lineArray(0)
       val ingredients = if (lineArray(1).nonEmpty) {
@@ -71,14 +79,10 @@ class FileProcessor(ui: UI) {
             var ingredientAmount = ingredient(1).toDouble
             if (ingredientAmount > 1000) {
               ingredientAmount = 1000
-              println(
-                "Notice: The maximum amount allowed in this system is 1000. Your input has been changed to 1000."
-              )
+              println("Notice: " + tooManyLinesMessage)
             } else if (ingredientAmount < 0) {
               ingredientAmount = 0
-              println(
-                "Notice: The amount cannot be negative. Your input has been changed to 0."
-              )
+              println("Notice: " + negativeAmountMessage)
             }
             ingredientName -> ingredientAmount
           })
@@ -90,14 +94,10 @@ class FileProcessor(ui: UI) {
       var amount = lineArray(5).toDouble
       if (amount > 1000) {
         amount = 1000
-        println(
-          "Notice: The maximum amount allowed in this system is 1000. Your input has been changed to 1000."
-        )
+        println("Notice: " + tooManyLinesMessage)
       } else if (amount < 0) {
         amount = 0
-        println(
-          "Notice: The amount cannot be negative. Your input has been changed to 0."
-        )
+        println("Notice: " + negativeAmountMessage)
       }
       Some(Holder(name, ingredients, tag, description, isMenu, amount))
     } catch {
@@ -117,7 +117,7 @@ class FileProcessor(ui: UI) {
         if (holder.ingredients.isEmpty) {
           val food = Food(
             holder.name,
-            scala.collection.mutable.Map[Food, Double](),
+            ParHashMap[Food, Double](),
             holder.allergies,
             holder.description
           )
@@ -125,12 +125,13 @@ class FileProcessor(ui: UI) {
           menu.addFood(food, holder.amount)
         } else {
           val allIngredientsFound = holder.ingredients.forall(x =>
-            menu.menu.exists(y => y.name == x._1)
+            menu.getFoodArray.exists(_.name == x._1)
           )
           if (allIngredientsFound) {
-            var ingredients = scala.collection.mutable.Map[Food, Double]()
+            var ingredients = ParHashMap[Food, Double]()
             for (ingredient <- holder.ingredients) {
-              val food = menu.menu.find(x => x.name == ingredient._1).get
+              val food =
+                menu.getFoodArray.find(x => x.name == ingredient._1).get
               ingredients += (food -> ingredient._2)
             }
             val food = Food(
@@ -146,10 +147,12 @@ class FileProcessor(ui: UI) {
           }
         }
       }
+
       if (toBeAdded.length == holders.length) {
         continue = false
       } else {
         holders = toBeAdded.toArray
+        toBeAdded.clear()
       }
     }
   }

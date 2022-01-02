@@ -1,9 +1,9 @@
 package cook
-import scala.collection.mutable.Map
+import scala.collection.parallel.mutable.ParHashMap
 
 case class Food(
     val name: String,
-    val ingredients: Map[Food, Double],
+    val ingredients: ParHashMap[Food, Double],
     val tag: Set[Char],
     val description: String
 ) {

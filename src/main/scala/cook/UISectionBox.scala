@@ -1,10 +1,10 @@
 package cook
 import scala.swing._
-import scala.swing.BorderPanel.Position._
-import scala.swing.Orientation._
-import scala.swing.Alignment._
+import scala.swing.BorderPanel.Position.{West, East}
+import scala.swing.Orientation.{Horizontal, Vertical}
+import scala.swing.Alignment.Left
 import java.awt.Color.{WHITE, GREEN, BLUE, RED, ORANGE}
-import Swing._
+import Swing.{Icon, HStrut}
 import javax.swing.BorderFactory
 import scala.collection.mutable.ArrayBuffer
 
@@ -20,7 +20,7 @@ class UISectionBox(food: Food, ui: UI) {
   val iconBoxes = ArrayBuffer.fill[Button](6)(Button("") {})
 
   val buttonDelete: Button = Button(" x ") {
-    menu.foodList -= food
+    menu.foodMap -= food
     p("Notice: " + food.name + " has been removed from the list")
     ui.revalidateWindow(defaultBox)
   }
@@ -57,7 +57,7 @@ class UISectionBox(food: Food, ui: UI) {
     }
     val editString =
       food.name + "\t" + ingredientsString + "\t" + food.tag.mkString + "\t" + food.description + "\t" + food.isMenu + "\t" + menu
-        .foodList(food)
+        .foodMap(food)
         .toString
     p("Editing string: " + editString)
     ui.leftMultifunctionalText.text = editString
@@ -85,13 +85,13 @@ class UISectionBox(food: Food, ui: UI) {
   val lastPart = new BorderPanel
   val lastRow = new BoxPanel(Horizontal)
   val labelReady = new Label(
-    "Ready to eat: " + menu.foodList(food).toInt.toString
+    "Ready to eat: " + menu.foodMap(food).toInt.toString
   )
   if (food.hasNoIngredients)
-    labelReady.text = "Amount: " + menu.foodList(food).toInt.toString
+    labelReady.text = "Amount: " + menu.foodMap(food).toInt.toString
   val labelCookable = new Label(
     "Cookable: " + (menu
-      .checkAvailability(food) - menu.foodList(food).toInt).toString
+      .checkAvailability(food) - menu.foodMap(food).toInt).toString
   )
   if (food.hasNoIngredients) labelCookable.visible = false
   val buttonMake =
@@ -151,13 +151,12 @@ class UISectionBox(food: Food, ui: UI) {
   // Last row: Cooked, Cookable & Make
   labelReady.font = new Font("Arial", 0, 30)
   labelCookable.font = new Font("Arial", 0, 30)
-  if (menu.foodList(food) > 0)
+  if (menu.foodMap(food) > 0)
     labelReady.foreground = ORANGE
   else
     labelReady.visible = false
 
-  if (menu.checkAvailability(food) > 0)
-    labelCookable.foreground = GREEN
+  if (menu.checkAvailability(food) > 0) labelCookable.foreground = GREEN
   else {
     labelCookable.foreground = RED
     labelCookable.text = "Available: 0"

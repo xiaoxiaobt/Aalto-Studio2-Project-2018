@@ -2,54 +2,60 @@ import cook._
 import org.scalatest._
 import matchers.should._
 import org.scalatest.flatspec.AnyFlatSpec
-import scala.collection.mutable.Map
+import scala.collection.parallel.mutable.ParHashMap
 
 class UnitTests extends AnyFlatSpec with Matchers {
 
   "Fridge add/remove functions" should "work correctly" in {
     val testMenu = new FoodMenu()
-    testMenu.menu shouldBe empty
-    val food1 = Food("Cookies", Map[Food, Double](), Set[Char](), "Good")
+    testMenu.getFoodArray shouldBe empty
+    val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")
     val food2 =
-      Food("Eggs", Map[Food, Double]((food1 -> 2)), Set[Char](), "Good")
+      Food("Eggs", ParHashMap[Food, Double]((food1 -> 2)), Set[Char](), "Good")
     val food3 = Food(
       "Unknown",
-      Map[Food, Double]((food1 -> 2)),
+      ParHashMap[Food, Double]((food1 -> 2)),
       Set[Char](),
       "Good"
     )
 
     testMenu.addFood(food1, -10) shouldBe false
     testMenu.addFood(food1, 2)
-    testMenu.foodList(food1) shouldBe 2
+    testMenu.foodMap(food1) shouldBe 2
     testMenu.addFood(food2, 2)
-    testMenu.foodList(food2) shouldBe 2
+    testMenu.foodMap(food2) shouldBe 2
     testMenu.addFood(food2, 23)
-    testMenu.foodList(food2) shouldBe 25
-
-    testMenu.foodListRaw should have size (1)
-
-    testMenu.foodListCooked should have size (1)
+    testMenu.foodMap(food2) shouldBe 25
 
     testMenu.removeFood(food2, 26) shouldBe false
-    testMenu.foodList(food2) shouldBe 25
+    testMenu.foodMap(food2) shouldBe 25
     testMenu.removeFood(food2, 23)
-    testMenu.foodList(food2) shouldBe 2
+    testMenu.foodMap(food2) shouldBe 2
     testMenu.removeFood(food2, 2)
-    testMenu.foodList(food2) shouldBe 0
+    testMenu.foodMap(food2) shouldBe 0
     testMenu.removeFood(food3, 5)
   }
 
   "Fridge getBy functions" should "work correctly" in {
     val testMenu = new FoodMenu()
-    testMenu.menu shouldBe empty
+    testMenu.getFoodArray shouldBe empty
     val food1 =
-      Food("Food Cookies", Map[Food, Double](), "LG1a".toCharArray.toSet, "")
+      Food(
+        "Food Cookies",
+        ParHashMap[Food, Double](),
+        "LG1a".toCharArray.toSet,
+        ""
+      )
     val food2 =
-      Food("Food Eggs", Map[Food, Double]((food1 -> 2)), Set[Char](), "")
+      Food("Food Eggs", ParHashMap[Food, Double]((food1 -> 2)), Set[Char](), "")
     val food3 =
-      Food("", Map[Food, Double]((food1 -> 2)), "AAA".toCharArray.toSet, "")
-    testMenu.foodList.clear()
+      Food(
+        "",
+        ParHashMap[Food, Double]((food1 -> 2)),
+        "AAA".toCharArray.toSet,
+        ""
+      )
+    testMenu.foodMap.clear()
     testMenu.addFood(food1, 1)
     testMenu.addFood(food2, 2)
     testMenu.addFood(food3, 3)
@@ -78,19 +84,19 @@ class UnitTests extends AnyFlatSpec with Matchers {
 
   "Menu get/add/del functions" should "work correctly" in {
     val testMenu = new FoodMenu()
-    testMenu.menu shouldBe empty
-    val food1 = Food("Cookies", Map[Food, Double](), Set[Char](), "Good")
+    testMenu.getFoodArray shouldBe empty
+    val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")
     val food2 =
-      Food("Eggs", Map[Food, Double]((food1 -> 2)), Set[Char](), "Good")
+      Food("Eggs", ParHashMap[Food, Double]((food1 -> 2)), Set[Char](), "Good")
     val food3 = Food(
       "Unknown",
-      Map[Food, Double]((food1 -> 2)),
+      ParHashMap[Food, Double]((food1 -> 2)),
       Set[Char](),
       "Good"
     )
     val food4 = Food(
       "Unknown",
-      Map[Food, Double]((food1 -> 2)),
+      ParHashMap[Food, Double]((food1 -> 2)),
       Set[Char](),
       "Good"
     )
@@ -98,40 +104,37 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.addFood(food2, 2)
     testMenu.addFood(food3, 3)
     testMenu.addFood(food3, 5)
-    food3.setToMenu()
-    food1.setToMenu()
-    testMenu.menu should have size (2)
 
     testMenu.addMenu(food2)
-    food1.isMenu shouldBe true
+    food1.isMenu shouldBe false
     food2.isMenu shouldBe true
-    food3.isMenu shouldBe true
+    food3.isMenu shouldBe false
     food4.isMenu shouldBe false
 
     testMenu.deleteMenu(food1)
     testMenu.deleteMenu(food4)
     food1.isMenu shouldBe false
     food2.isMenu shouldBe true
-    food3.isMenu shouldBe true
+    food3.isMenu shouldBe false
     food4.isMenu shouldBe false
   }
 
   "Menu availability" should "work correctly" in {
     val testMenu = new FoodMenu()
-    testMenu.menu shouldBe empty
-    val food1 = Food("Cookies", Map[Food, Double](), Set[Char](), "Good")
-    val food2 = Food("Eggs", Map[Food, Double](), Set[Char](), "Good")
+    testMenu.getFoodArray shouldBe empty
+    val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")
+    val food2 = Food("Eggs", ParHashMap[Food, Double](), Set[Char](), "Good")
     val food3 = Food(
       "Unknown",
-      Map[Food, Double](food1 -> 2, food2 -> 2),
+      ParHashMap[Food, Double](food1 -> 2, food2 -> 2),
       Set[Char](),
       "Good"
     )
     val food4 =
-      Food("Unknown", Map[Food, Double](food1 -> 3), Set[Char](), "Good")
+      Food("Unknown", ParHashMap[Food, Double](food1 -> 3), Set[Char](), "Good")
     val food5 = Food(
       "Unknown",
-      Map[Food, Double](food1 -> 2, food3 -> 2),
+      ParHashMap[Food, Double](food1 -> 2, food3 -> 2),
       Set[Char](),
       "Good"
     )

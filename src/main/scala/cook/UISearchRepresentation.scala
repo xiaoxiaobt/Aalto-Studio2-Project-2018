@@ -1,11 +1,10 @@
 package cook
 import scala.swing._
-import scala.swing.BorderPanel.Position._
-import scala.swing.Orientation._
-import scala.swing.Alignment._
+import scala.swing.BorderPanel.Position.West
+import scala.swing.Orientation.Vertical
+import scala.swing.Alignment.Left
 import scala.swing.event._
 import javax.swing.BorderFactory
-import Swing._
 import scala.collection.parallel.mutable.ParHashMap
 
 class UISearchRepresentation(ui: UI, keyword: String) {

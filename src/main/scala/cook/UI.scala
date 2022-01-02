@@ -1,14 +1,14 @@
 package cook
 import scala.swing._
-import scala.swing.BorderPanel.Position._
-import scala.swing.Orientation._
-import scala.swing.Alignment._
+import scala.swing.BorderPanel.Position.{West, North}
+import scala.swing.Orientation.{Horizontal, Vertical}
+import scala.swing.Alignment.Left
 import scala.swing.event._
 import scala.collection.mutable.ArrayBuffer
 import java.awt.Color.{BLACK, GRAY, RED, WHITE}
 import javax.swing.BorderFactory.{createEmptyBorder, createLineBorder}
 import javax.swing.ImageIcon
-import Swing._
+import Swing.{Icon, VStrut, HStrut, EmptyBorder}
 
 class UI extends MainFrame {
   title = "Smart Cookbook"
@@ -16,8 +16,7 @@ class UI extends MainFrame {
 
   // Initialize
   val menu: FoodMenu = new FoodMenu()
-  val settings = Settings
-  val myColor = settings.color
+  val myColor = Settings.color
   var changed = false
   private var tempSearchText = ""
   private val fileProcessor = new FileProcessor(this)
@@ -77,10 +76,10 @@ class UI extends MainFrame {
   val buttonExit: Button = Button("") { sys.exit(0) }
 
   // Definitions
-  def p[T](a: T) = if (settings.diagnosis) println(a.toString)
+  def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
 
   def returnStatus() =
-    settings.allAbbreviations zip rightCheckboxList.map(_.selected)
+    Settings.allAbbreviations zip rightCheckboxList.map(_.selected)
 
   def revalidateWindow(box: BoxPanel): Unit = {
     leftNormalMenuBox.contents -= box
@@ -95,15 +94,14 @@ class UI extends MainFrame {
     listenTo(searchBox)
     while (leftNormalMenuBox.contents.nonEmpty)
       leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
-    val foodListMenu = menu.foodList
+    val foodListMenu = menu.foodMap
       .filter(_._1.isMenu)
       .toArray
       .sortBy(x => menu.checkAvailability(x._1))
       .reverse
-      .toMap
-    val allergies = (settings.allAbbreviations zip rightCheckboxList.map(
+    val allergies = (Settings.allAbbreviations zip rightCheckboxList.map(
       _.selected
-    )).filter(_._2).map(_._1).toSet
+    )).filter(_._2).map(_._1)
     val foodListMenuAllergies =
       foodListMenu
         .filter(x => allergies.forall(y => x._1.tag.contains(y)))
@@ -138,9 +136,9 @@ class UI extends MainFrame {
   def addMenuToUI(str: String): Unit = {
     val holder = fileProcessor.lineParser(str)
     if (holder.isDefined) {
-      val foodOption = menu.menu.find(x => x.name == holder.get.name)
+      val foodOption = menu.getFoodArray.find(x => x.name == holder.get.name)
       if (foodOption.isDefined) {
-        menu.foodList -= foodOption.get
+        menu.foodMap -= foodOption.get
       }
       fileProcessor.linesToUI(Array(str))
     } else {
@@ -279,7 +277,7 @@ class UI extends MainFrame {
   rightWelcome.opaque = false
 
   // Right Checkboxes
-  for (a <- settings.allergies) {
+  for (a <- Settings.allergies) {
     val current = new CheckBox(a)
     current.opaque = false
     current.foreground = WHITE
@@ -292,7 +290,7 @@ class UI extends MainFrame {
 
   rightCheckboxList.map(listenTo(_))
   reactions += { case _: ButtonClicked =>
-    val allergies = (settings.allAbbreviations zip rightCheckboxList.map(
+    val allergies = (Settings.allAbbreviations zip rightCheckboxList.map(
       _.selected
     )).filter(_._2).map(_._1)
     p(
@@ -358,7 +356,6 @@ class UI extends MainFrame {
 
   // Load file
   fileProcessor.linesToUI()
-
   // Repaint and revalidate
   refreshMenuBox()
 

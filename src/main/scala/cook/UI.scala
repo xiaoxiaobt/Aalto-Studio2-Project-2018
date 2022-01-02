@@ -97,7 +97,7 @@ class UI extends MainFrame {
       leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
     val foodListMenu = menu.foodList
       .filter(_._1.isMenu)
-      .toSeq
+      .toArray
       .sortBy(x => menu.checkAvailability(x._1))
       .reverse
       .toMap

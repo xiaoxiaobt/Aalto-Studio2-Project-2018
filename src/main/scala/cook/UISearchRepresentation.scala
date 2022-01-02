@@ -6,14 +6,14 @@ import scala.swing.Alignment._
 import scala.swing.event._
 import javax.swing.BorderFactory
 import Swing._
-import scala.collection.mutable._
+import scala.collection.parallel.mutable.ParHashMap
 
 class UISearchRepresentation(ui: UI, keyword: String) {
   private val menu: FoodMenu = ui.menu
   private val myColor: Color = Settings.color
   private val key: Double = keyword.toDoubleOption.getOrElse(Double.NaN)
 
-  def allergiesRemove(map: Map[Food, Double]): Map[Food, Double] = {
+  def allergiesRemove(map: ParHashMap[Food, Double]): ParHashMap[Food, Double] = {
     //var allergies = (Settings.all_abbri zip ui.rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
     val allergies = ui.rightCheckboxList.filter(_.selected).map(_.name)
     map //.filter(x => allergies.forall(y => x._1.tag.contains(y)))
@@ -29,7 +29,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   // Headline frame
   headlineBorder.layout(headline) = West
 
-  def addSubFrame(labelName: String, result: Map[Food, Double]): BorderPanel = {
+  def addSubFrame(labelName: String, result: ParHashMap[Food, Double]): BorderPanel = {
     val line = new Label("  >Search by Name")
     val lineBorder = new BorderPanel
     val boxBorder = new BorderPanel

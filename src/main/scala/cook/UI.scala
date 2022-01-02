@@ -5,41 +5,35 @@ import scala.swing.Orientation._
 import scala.swing.Alignment._
 import scala.swing.event._
 import scala.collection.mutable.ArrayBuffer
-import java.io._
-import scala.io.Source._
 import java.awt.Color.{BLACK, GRAY, RED, WHITE}
 import javax.swing.BorderFactory.{createEmptyBorder, createLineBorder}
 import javax.swing.ImageIcon
 import Swing._
-import Settings.scaleTo
 
 class UI extends MainFrame {
   title = "Smart Cookbook"
-  preferredSize = new Dimension(scaleTo(1920), scaleTo(1080))
+  preferredSize = new Dimension(1920, 1080)
 
   // Initialize
-  var menu: FoodMenu = new FoodMenu()
-  var settings = Settings
-  def foodList = menu.foodList
-  var myColor = settings.color
+  val menu: FoodMenu = new FoodMenu()
+  val settings = Settings
+  val myColor = settings.color
   var changed = false
-  var edit = false
-  var editing: Food = null
   private var tempSearchText = ""
-  var fileProcessor = new FileProcessor(this)
+  private val fileProcessor = new FileProcessor(this)
 
   // Frames, boxes and buttons (Almost all boxes)
-  var outerBox = new BoxPanel(Horizontal)
-  var leftBox = new BorderPanel
-  var leftInfoSection = new BoxPanel(Vertical)
-  var leftWelcome = new Label("What would you like to eat today? ")
+  val outerBox = new BoxPanel(Horizontal)
+  val leftBox = new BorderPanel
+  val leftInfoSection = new BoxPanel(Vertical)
+  val leftWelcome = new Label("What would you like to eat today? ")
   leftWelcome.horizontalAlignment = Left
-  var leftMenuScroll = new ScrollPane()
-  var leftNormalMenuBox = new BoxPanel(Vertical)
-  var leftSearchArea = new BoxPanel(Horizontal)
-  var searchPreventionBox = new TextField("")
-  var searchBox = new TextField(" Search for recipes or ingredients here...")
-  var searchButton: Button = Button("") {
+  val leftMenuScroll = new ScrollPane()
+  val leftNormalMenuBox = new BoxPanel(Vertical)
+  val leftSearchArea = new BoxPanel(Horizontal)
+  val searchPreventionBox = new TextField("")
+  val searchBox = new TextField(" Search for recipes or ingredients here...")
+  val searchButton: Button = Button("") {
     if (searchBox.text == " Search for recipes or ingredients here...")
       searchBox.text = ""
     p("Notice: Searched: \"" + searchBox.text + "\"")
@@ -57,11 +51,11 @@ class UI extends MainFrame {
     searchBox.foreground = GRAY
     p("Notice: Returned to the main interface")
   }
-  var leftFeedback = new TextField("")
-  var leftMultifunctionalFrame = new BorderPanel
-  var leftMultifunctionalBox = new BoxPanel(Horizontal)
-  var leftMultifunctionalText = new TextField("")
-  var leftMultifunctionalButton: Button = Button("") {
+  val leftFeedback = new TextField("")
+  val leftMultifunctionalFrame = new BorderPanel
+  val leftMultifunctionalBox = new BoxPanel(Horizontal)
+  val leftMultifunctionalText = new TextField("")
+  val leftMultifunctionalButton: Button = Button("") {
     addMenuToUI(leftMultifunctionalText.text)
     leftMultifunctionalText.border = createEmptyBorder()
     leftMultifunctionalText.editable = false
@@ -70,27 +64,23 @@ class UI extends MainFrame {
     outerBox.repaint()
     outerBox.revalidate()
   }
-  var rightBox = new BorderPanel
-  var rightInfoSection = new BoxPanel(Vertical)
-  var rightWelcome = new Label("Options: ")
-  var rightCheckboxList: ArrayBuffer[CheckBox] = ArrayBuffer()
+  val rightBox = new BorderPanel
+  val rightInfoSection = new BoxPanel(Vertical)
+  val rightWelcome = new Label("Options: ")
+  val rightCheckboxList: ArrayBuffer[CheckBox] = ArrayBuffer()
   var buttonSave: Button = Button("") {
-    fileProcessor.IOWrite()
+    fileProcessor.IOWritelines()
     p("Notice: Saved")
     leftFeedback.text = "> All changes are saved to saved_data/data.txt "
     leftFeedback.repaint()
   }
-  var buttonExit: Button = Button("") { sys.exit(0) }
+  val buttonExit: Button = Button("") { sys.exit(0) }
 
   // Definitions
   def p[T](a: T) = if (settings.diagnosis) println(a.toString)
 
   def returnStatus() =
     settings.allAbbreviations zip rightCheckboxList.map(_.selected)
-
-  def updateAllergiesString(): Unit = {
-    settings.allergiesString = returnStatus().filter(_._2).map(_._1).mkString
-  }
 
   def revalidateWindow(box: BoxPanel): Unit = {
     leftNormalMenuBox.contents -= box
@@ -105,37 +95,39 @@ class UI extends MainFrame {
     listenTo(searchBox)
     while (leftNormalMenuBox.contents.nonEmpty)
       leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
-    val food_list_menu = foodList
+    val foodListMenu = menu.foodList
       .filter(_._1.isMenu)
       .toSeq
       .sortBy(x => menu.checkAvailability(x._1))
       .reverse
       .toMap
-    var allergies = (settings.allAbbreviations zip rightCheckboxList.map(
+    val allergies = (settings.allAbbreviations zip rightCheckboxList.map(
       _.selected
-    )).filter(_._2).map(_._1)
-    if (allergies.isEmpty) allergies = List[String]()
-    val food_list_menu_allergies =
-      food_list_menu.filter(x => allergies.forall(y => x._1.tag.contains(y)))
-    for ((item_food, item_amount) <- food_list_menu_allergies)
-      leftNormalMenuBox.contents += new UISectionBox(item_food, this).defaultBox
+    )).filter(_._2).map(_._1).toSet
+    val foodListMenuAllergies =
+      foodListMenu
+        .filter(x => allergies.forall(y => x._1.tag.contains(y)))
+        .map(_._1)
+    for (food <- foodListMenuAllergies)
+      leftNormalMenuBox.contents += new UISectionBox(food, this).defaultBox
     outerBox.repaint()
     outerBox.revalidate()
   }
 
   def changeBox(keyword: String): Unit = {
-    val subUI = new UISearchRepresentation(this, keyword)
+    val subUI = new UISearchRepresentation(this, keyword.trim)
     while (leftNormalMenuBox.contents.nonEmpty)
       leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
     leftNormalMenuBox.contents ++= Array(
       subUI.headlineBorder,
-      VStrut(scaleTo(40)),
+      VStrut(40),
       subUI.box1Border,
-      VStrut(scaleTo(20)),
+      VStrut(20),
       subUI.box2Border,
-      VStrut(scaleTo(20))
+      VStrut(20)
     )
-    if (!subUI.keyDouble.isNaN) leftNormalMenuBox.contents += subUI.box3Border
+    if (keyword.trim.toDoubleOption.isDefined)
+      leftNormalMenuBox.contents += subUI.box3Border
     listenTo(searchBox)
     leftNormalMenuBox.repaint()
     leftMenuScroll.revalidate()
@@ -144,109 +136,17 @@ class UI extends MainFrame {
   }
 
   def addMenuToUI(str: String): Unit = {
-    try {
-      val strList = str.split("\t").map(_.trim)
-      p("Input string: " + strList.mkString("\t"))
-      if (strList.length != 9) throw new Exception
-      val nameAdd: String = strList(0)
-      val ingredientsAdd: String = strList(1)
-      val firstUnitAdd: String = strList(2).toLowerCase
-      val secondUnitAdd: String = strList(3).toLowerCase
-      var densityAdd: Double = strList(4).toDouble
-      val allergiesAdd: String = strList(5).toUpperCase
-      val description_add: String = strList(6)
-      val isMenuAdd: Boolean =
-        if (strList(7) == "1") true
-        else if (strList(7) == "0") false
-        else throw new Exception
-      var amountAdd: Double = strList(8).toDouble
-      if ((!edit) && (menu.returnFoodWithName(nameAdd) != None))
-        throw new IOException
-      if (amountAdd > 1000) {
-        amountAdd = 1000
-        println(
-          "Notice: The maximum amount allowed in this system is 1000. Your input has been changed to 1000."
-        )
-      } else if (amountAdd < 0) {
-        amountAdd = 0
-        println(
-          "Notice: The amount cannot be negative. Your input has been changed to 0."
-        )
+    val holder = fileProcessor.lineParser(str)
+    if (holder.isDefined) {
+      val foodOption = menu.menu.find(x => x.name == holder.get.name)
+      if (foodOption.isDefined) {
+        menu.foodList -= foodOption.get
       }
-      if (densityAdd < 0) {
-        densityAdd = 0
-        println(
-          "Notice: Density cannot be negative. System changed it to the default value: 0"
-        )
-      }
-      if (ingredientsAdd.isEmpty) {
-        val food_add = Food(
-          nameAdd,
-          scala.collection.mutable.Map[Food, Double](),
-          firstUnitAdd,
-          secondUnitAdd,
-          densityAdd,
-          allergiesAdd,
-          description_add
-        )
-        if (isMenuAdd) food_add.setToMenu()
-        menu.addFood(food_add, amountAdd)
-      } else {
-        val ingreMap: collection.mutable.Map[Food, Double] = {
-          val itemList = ingredientsAdd.split(",")
-          var nameList = ArrayBuffer[Food]()
-          var amountList = ArrayBuffer[Double]()
-          for (item <- itemList) {
-            nameList += menu.returnFoodWithName(item.split("=").head.trim).get
-            var tempAmount = item.split("=").last.trim.toDouble
-            if (tempAmount > 1000) {
-              tempAmount = 1000
-              println(
-                "Notice: The maximum amount allowed in this system is 1000. The amount of " + item
-                  .split("=")
-                  .head
-                  .trim + "has been changed to 1000."
-              )
-            } else if (tempAmount < 0) {
-              tempAmount = 0
-              println(
-                "Notice: The amount cannot be negative. The amount of " + item
-                  .split("=")
-                  .head
-                  .trim + "has been changed to 0."
-              )
-            }
-            amountList += tempAmount
-          }
-          val temp = (nameList zip amountList).toMap
-          collection.mutable.Map(temp.toSeq: _*)
-        }
-        val food_add = Food(
-          nameAdd,
-          ingreMap,
-          firstUnitAdd,
-          secondUnitAdd,
-          densityAdd,
-          allergiesAdd,
-          description_add
-        )
-        if (isMenuAdd) food_add.setToMenu()
-        menu.addFood(food_add, amountAdd)
-      }
-      if (edit) menu.foodList -= editing
-      leftFeedback.text = "> Added/Modified successfully!"
-    } catch {
-      case _: IOException =>
-        leftFeedback.text =
-          "> Failed. The menu with the same name already exists"
-      case _: NoSuchElementException =>
-        leftFeedback.text =
-          "> Failed. One or more ingredients is missing. Please add ingredients first"
-      case _: Exception =>
-        leftFeedback.text = "> Failed. Wrong format"
-    } finally {
-      leftFeedback.repaint()
+      fileProcessor.linesToUI(Array(str))
+    } else {
+      leftFeedback.text = "> Failed. Wrong format"
     }
+    leftFeedback.repaint()
     searchBox.text =
       if (tempSearchText.isEmpty) " Search for recipes or ingredients here..."
       else tempSearchText
@@ -254,30 +154,33 @@ class UI extends MainFrame {
   }
 
   // Icons
-  var iconSelected: ImageIcon = Icon("src/main/scala/icons/selected.png")
-  var iconFree: ImageIcon = Icon("src/main/scala/icons/free.png")
-  var iconButton: ImageIcon = Icon("src/main/scala/icons/button.png")
-  var iconSave: ImageIcon = Icon("src/main/scala/icons/save.png")
-  var iconSavePressed: ImageIcon = Icon("src/main/scala/icons/save_done.png")
-  var iconExit: ImageIcon = Icon("src/main/scala/icons/exit.png")
-  var iconFind: ImageIcon = Icon("src/main/scala/icons/find.png")
-  var iconBack: ImageIcon = Icon("src/main/scala/icons/back.png")
-  var iconTick: ImageIcon = Icon("src/main/scala/icons/tick.png")
+  private val iconSelected: ImageIcon = Icon(
+    "src/main/scala/icons/selected.png"
+  )
+  private val iconFree: ImageIcon = Icon("src/main/scala/icons/free.png")
+  private val iconButton: ImageIcon = Icon("src/main/scala/icons/button.png")
+  private val iconSave: ImageIcon = Icon("src/main/scala/icons/save.png")
+  private val iconSavePressed: ImageIcon = Icon(
+    "src/main/scala/icons/save_done.png"
+  )
+  private val iconExit: ImageIcon = Icon("src/main/scala/icons/exit.png")
+  private val iconFind: ImageIcon = Icon("src/main/scala/icons/find.png")
+  private val iconBack: ImageIcon = Icon("src/main/scala/icons/back.png")
+  private val iconTick: ImageIcon = Icon("src/main/scala/icons/tick.png")
 
   // Left Welcome Label
   leftWelcome.horizontalAlignment = Left
-  leftWelcome.font = new Font("Arial", 0, scaleTo(80))
-  leftInfoSection.contents += VStrut(scaleTo(20))
+  leftWelcome.font = new Font("Arial", 0, 80)
+  leftInfoSection.contents += VStrut(20)
   leftInfoSection.contents += leftWelcome
 
   // Left Info Box
   leftInfoSection.background = WHITE
-  leftInfoSection.border =
-    EmptyBorder(scaleTo(30), scaleTo(30), scaleTo(30), scaleTo(30))
+  leftInfoSection.border = EmptyBorder(30, 0, 30, 30)
 
   // Left Menu Box ScrollPane Frame
-  leftMenuScroll.preferredSize = new Dimension(scaleTo(1440), scaleTo(600))
-  leftInfoSection.contents += VStrut(scaleTo(20))
+  leftMenuScroll.preferredSize = new Dimension(1440, 600)
+  leftInfoSection.contents += VStrut(20)
   leftInfoSection.contents += leftMenuScroll
 
   // Left Menu BoxPanel Normal
@@ -285,19 +188,19 @@ class UI extends MainFrame {
   leftMenuScroll.contents = leftNormalMenuBox
 
   // Left Search Area
-  leftSearchArea.preferredSize = new Dimension(scaleTo(1440), scaleTo(100))
+  leftSearchArea.preferredSize = new Dimension(1440, 100)
   leftSearchArea.background = WHITE
-  leftInfoSection.contents += VStrut(scaleTo(10))
+  leftInfoSection.contents += VStrut(10)
 
   // Left Search Prevention TextField (Avoiding cursor move to search box after clicking "MAKE")
-  searchPreventionBox.font = new Font("Arial", 0, scaleTo(1))
+  searchPreventionBox.font = new Font("Arial", 0, 1)
   searchPreventionBox.border = createEmptyBorder()
   leftInfoSection.contents += searchPreventionBox
 
   // Left Search TextField
-  searchBox.font = new Font("Arial", 0, scaleTo(50))
+  searchBox.font = new Font("Arial", 0, 50)
   searchBox.foreground = GRAY
-  searchBox.border = createLineBorder(myColor, scaleTo(5))
+  searchBox.border = createLineBorder(myColor, 5)
   listenTo(searchBox)
   reactions += { case _: FocusGained =>
     p("Notice: Search box gained focus")
@@ -306,43 +209,41 @@ class UI extends MainFrame {
     outerBox.repaint()
   }
   searchButton.background = WHITE
-  searchButton.font = new Font("Arial", 0, scaleTo(50))
-  searchButton.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
-  searchButton.border = createLineBorder(myColor, scaleTo(5))
+  searchButton.font = new Font("Arial", 0, 50)
+  searchButton.preferredSize = new Dimension(100, 100)
+  searchButton.border = createLineBorder(myColor, 5)
   searchButton.icon = iconFind
   backButton.background = WHITE
-  backButton.font = new Font("Arial", 0, scaleTo(50))
-  backButton.preferredSize = new Dimension(scaleTo(100), scaleTo(100))
-  backButton.border = createLineBorder(myColor, scaleTo(5))
+  backButton.font = new Font("Arial", 0, 50)
+  backButton.preferredSize = new Dimension(100, 100)
+  backButton.border = createLineBorder(myColor, 5)
   backButton.icon = iconBack
   leftSearchArea.contents += searchBox
   leftSearchArea.contents += searchButton
   leftSearchArea.contents += backButton
   leftInfoSection.contents += leftSearchArea
-  leftInfoSection.contents += VStrut(scaleTo(20))
+  leftInfoSection.contents += VStrut(20)
 
   // Left Real-time feedback TextField
-  leftFeedback.preferredSize = new Dimension(scaleTo(200), scaleTo(40))
-  leftFeedback.font = new Font("Arial", 0, scaleTo(34))
+  leftFeedback.preferredSize = new Dimension(200, 40)
+  leftFeedback.font = new Font("Arial", 0, 34)
   leftFeedback.border = createEmptyBorder()
   leftFeedback.editable = false
   leftFeedback.background = WHITE
   leftInfoSection.contents += leftFeedback
-  leftInfoSection.contents += VStrut(scaleTo(20))
+  leftInfoSection.contents += VStrut(20)
 
-  // Left Multi-usage Testfield
+  // Left Multi-usage Textfield
   leftMultifunctionalText.editable = false
   leftMultifunctionalText.background = WHITE
-  leftMultifunctionalText.preferredSize =
-    new Dimension(scaleTo(1300), scaleTo(30))
-  leftMultifunctionalText.font = new Font("Arial", 0, scaleTo(30))
+  leftMultifunctionalText.preferredSize = new Dimension(1300, 30)
+  leftMultifunctionalText.font = new Font("Arial", 0, 30)
   leftMultifunctionalText.border = createEmptyBorder()
 
   // Left Multi-usage Button
-  leftMultifunctionalButton.font = new Font("Arial", 0, scaleTo(30))
+  leftMultifunctionalButton.font = new Font("Arial", 0, 30)
   leftMultifunctionalButton.border = createEmptyBorder()
-  leftMultifunctionalButton.preferredSize =
-    new Dimension(scaleTo(50), scaleTo(50))
+  leftMultifunctionalButton.preferredSize = new Dimension(50, 50)
   leftMultifunctionalButton.background = WHITE
   leftMultifunctionalButton.visible = false
   leftMultifunctionalButton.icon = iconTick
@@ -361,36 +262,34 @@ class UI extends MainFrame {
   leftMultifunctionalBox.background = WHITE
   leftMultifunctionalBox.contents ++= Array(
     leftMultifunctionalText,
-    HStrut(scaleTo(10)),
+    HStrut(10),
     leftMultifunctionalButton
   )
 
   // Left multi-usage frame
-  leftMultifunctionalFrame.preferredSize =
-    new Dimension(scaleTo(1440), scaleTo(50))
+  leftMultifunctionalFrame.preferredSize = new Dimension(1440, 50)
   leftMultifunctionalFrame.background = WHITE
   leftMultifunctionalFrame.layout(leftMultifunctionalBox) = West
   leftInfoSection.contents += leftMultifunctionalFrame
 
   // Right Welcome Label
   rightWelcome.horizontalAlignment = Left
-  rightWelcome.font = new Font("Arial", 0, scaleTo(64))
+  rightWelcome.font = new Font("Arial", 0, 64)
   rightWelcome.foreground = WHITE
   rightWelcome.opaque = false
 
   // Right Checkboxes
-  var i = 0
-  while (i < settings.allergies.size) {
-    var current = new CheckBox(settings.allergies(i))
+  for (a <- settings.allergies) {
+    val current = new CheckBox(a)
     current.opaque = false
     current.foreground = WHITE
-    current.font = new Font("Arial", 0, scaleTo(50))
+    current.font = new Font("Arial", 0, 50)
     current.selectedIcon = iconSelected
     current.icon = iconFree
-    current.iconTextGap = scaleTo(10)
+    current.iconTextGap = 10
     rightCheckboxList += current
-    i += 1
   }
+
   rightCheckboxList.map(listenTo(_))
   reactions += { case _: ButtonClicked =>
     val allergies = (settings.allAbbreviations zip rightCheckboxList.map(
@@ -408,10 +307,10 @@ class UI extends MainFrame {
       searchBox.text = tempSearchText
       changeBox(searchBox.text)
     }
-    leftMultifunctionalBox.repaint()
     leftMultifunctionalBox.revalidate()
-    outerBox.repaint()
+    leftMultifunctionalBox.repaint()
     outerBox.revalidate()
+    outerBox.repaint()
   }
 
   // Right Save Button
@@ -432,40 +331,40 @@ class UI extends MainFrame {
 
   // Right Info Box
   rightInfoSection.contents += rightWelcome
-  rightInfoSection.contents += VStrut(scaleTo(30))
+  rightInfoSection.contents += VStrut(30)
   for (checkbox <- rightCheckboxList) {
     rightInfoSection.contents += checkbox
-    rightInfoSection.contents += VStrut(scaleTo(20))
+    rightInfoSection.contents += VStrut(20)
   }
-  rightInfoSection.contents += VStrut(scaleTo(200))
+  rightInfoSection.contents += VStrut(200)
   rightInfoSection.contents += buttonSave
   rightInfoSection.background = myColor
-  rightInfoSection.border =
-    EmptyBorder(scaleTo(20), scaleTo(20), scaleTo(20), scaleTo(20))
+  rightInfoSection.border = EmptyBorder(20, 20, 20, 20)
 
   // Frame Section
   outerBox.contents += leftBox
   outerBox.contents += rightBox
 
   // Left Panel Section
-  leftBox.preferredSize = new Dimension(scaleTo(1440), scaleTo(1080))
+  leftBox.preferredSize = new Dimension(1440, 1080)
   leftBox.layout(leftInfoSection) = North
   leftBox.background = WHITE
   contents = outerBox
 
   // Right Panel Section
-  rightBox.preferredSize = new Dimension(scaleTo(480), scaleTo(1080))
+  rightBox.preferredSize = new Dimension(480, 1080)
   rightBox.layout(rightInfoSection) = North
   rightBox.background = myColor
 
   // Load file
-  fileProcessor.loadFromIO()
+  fileProcessor.linesToUI()
+
+  // Repaint and revalidate
+  refreshMenuBox()
+
+  this.visible = true
 }
 
-object GUI extends App {
-  private def main(): Unit = {
-    val ui = new UI
-    ui.visible = true
-  }
-  this.main()
+object UI extends App {
+  val ui = new UI
 }

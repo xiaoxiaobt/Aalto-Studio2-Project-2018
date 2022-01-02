@@ -9,17 +9,14 @@ class UnitTests extends AnyFlatSpec with Matchers {
   "Fridge add/remove functions" should "work correctly" in {
     val testMenu = new FoodMenu()
     testMenu.menu shouldBe empty
-    val food1 = Food("Cookies", Map[Food, Double](), "pcs", "g", 3, "Good", "")
+    val food1 = Food("Cookies", Map[Food, Double](), Set[Char](), "Good")
     val food2 =
-      Food("Eggs", Map[Food, Double]((food1 -> 2)), "pcs", "g", 8, "Good", "")
+      Food("Eggs", Map[Food, Double]((food1 -> 2)), Set[Char](), "Good")
     val food3 = Food(
       "Unknown",
       Map[Food, Double]((food1 -> 2)),
-      "pcs",
-      "g",
-      8,
-      "Good",
-      ""
+      Set[Char](),
+      "Good"
     )
 
     testMenu.addFood(food1, -10) shouldBe false
@@ -47,11 +44,11 @@ class UnitTests extends AnyFlatSpec with Matchers {
     val testMenu = new FoodMenu()
     testMenu.menu shouldBe empty
     val food1 =
-      Food("Food Cookies", Map[Food, Double](), "pcs", "g", 3, "LG1a", "")
+      Food("Food Cookies", Map[Food, Double](), "LG1a".toCharArray.toSet, "")
     val food2 =
-      Food("Food Eggs", Map[Food, Double]((food1 -> 2)), "pcs", "g", 8, "", "")
+      Food("Food Eggs", Map[Food, Double]((food1 -> 2)), Set[Char](), "")
     val food3 =
-      Food("", Map[Food, Double]((food1 -> 2)), "pcs", "g", 8, "AAA", "")
+      Food("", Map[Food, Double]((food1 -> 2)), "AAA".toCharArray.toSet, "")
     testMenu.foodList.clear()
     testMenu.addFood(food1, 1)
     testMenu.addFood(food2, 2)
@@ -82,26 +79,20 @@ class UnitTests extends AnyFlatSpec with Matchers {
   "Menu get/add/del functions" should "work correctly" in {
     val testMenu = new FoodMenu()
     testMenu.menu shouldBe empty
-    val food1 = Food("Cookies", Map[Food, Double](), "pcs", "g", 3, "Good", "")
+    val food1 = Food("Cookies", Map[Food, Double](), Set[Char](), "Good")
     val food2 =
-      Food("Eggs", Map[Food, Double]((food1 -> 2)), "pcs", "g", 8, "Good", "")
+      Food("Eggs", Map[Food, Double]((food1 -> 2)), Set[Char](), "Good")
     val food3 = Food(
       "Unknown",
       Map[Food, Double]((food1 -> 2)),
-      "pcs",
-      "g",
-      8,
-      "Good",
-      ""
+      Set[Char](),
+      "Good"
     )
     val food4 = Food(
       "Unknown",
       Map[Food, Double]((food1 -> 2)),
-      "pcs",
-      "g",
-      8,
-      "Good",
-      ""
+      Set[Char](),
+      "Good"
     )
     testMenu.addFood(food1, 1)
     testMenu.addFood(food2, 2)
@@ -128,27 +119,21 @@ class UnitTests extends AnyFlatSpec with Matchers {
   "Menu availability" should "work correctly" in {
     val testMenu = new FoodMenu()
     testMenu.menu shouldBe empty
-    val food1 = Food("Cookies", Map[Food, Double](), "pcs", "g", 26, "Good", "")
-    val food2 = Food("Eggs", Map[Food, Double](), "pcs", "g", 0, "Good", "")
+    val food1 = Food("Cookies", Map[Food, Double](), Set[Char](), "Good")
+    val food2 = Food("Eggs", Map[Food, Double](), Set[Char](), "Good")
     val food3 = Food(
       "Unknown",
       Map[Food, Double](food1 -> 2, food2 -> 2),
-      "pcs",
-      "g",
-      8,
-      "Good",
-      ""
+      Set[Char](),
+      "Good"
     )
     val food4 =
-      Food("Unknown", Map[Food, Double](food1 -> 3), "pcs", "g", 8, "Good", "")
+      Food("Unknown", Map[Food, Double](food1 -> 3), Set[Char](), "Good")
     val food5 = Food(
       "Unknown",
       Map[Food, Double](food1 -> 2, food3 -> 2),
-      "pcs",
-      "g",
-      8,
-      "Good",
-      ""
+      Set[Char](),
+      "Good"
     )
 
     testMenu.addFood(food1, 26)
@@ -156,9 +141,6 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.addFood(food3, 3)
     testMenu.addFood(food4, 5)
     testMenu.addFood(food5, 6)
-
-    testMenu.existingAmount(food1) shouldBe 26
-    testMenu.existingAmount(food4) shouldBe 5
 
     testMenu.checkAvailability(food4) shouldBe 13
     testMenu.checkAvailability(food3) shouldBe 7

@@ -1,23 +1,20 @@
 package cook
-import collection.mutable._
+import scala.collection.mutable.Map
 
 case class Food(
-    name: String,
-    ingredients: Map[Food, Double],
-    main_unit: String,
-    second_unit: String,
-    density: Double,
-    tag: String,
-    description: String
+    val name: String,
+    val ingredients: Map[Food, Double],
+    val tag: Set[Char],
+    val description: String
 ) {
 
-  private var menu_type: Boolean = false
+  private var menuType: Boolean = false
 
-  def setToMenu(): Unit = menu_type = true
+  def setToMenu(): Unit = menuType = true
 
-  def setToRaw(): Unit = menu_type = false
+  def setToRaw(): Unit = menuType = false
 
-  def isMenu: Boolean = menu_type
+  def isMenu: Boolean = menuType
 
   def hasNoIngredients: Boolean = ingredients.isEmpty
 

@@ -5,8 +5,8 @@ class FoodMenu {
 
   var foodList = Map[Food, Double]()
 
-  var testList = foodList.clone()
-  var testState = true
+  private var testList = foodList.clone()
+  private var testState = true
 
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
 
@@ -34,13 +34,6 @@ class FoodMenu {
       false
   }
 
-  def existingAmount(food: Food): Double = foodList(food)
-
-  //def initialize(): Unit = {
-  //  test_list = fridge.food_list ++ Map()
-  //  test_state = true
-  //}
-
   /** Returns the amount of food as an integer */
   def checkAvailability(food: Food): Int = {
     testList = foodList ++ Map()
@@ -56,12 +49,12 @@ class FoodMenu {
 
   def checkAmount(food: Food, num: Double): Unit = {
     if (foodList.keys.toArray.contains(food)) {
-      val current_amount = testList(food)
-      if (current_amount >= num)
+      val currentAmount = testList(food)
+      if (currentAmount >= num)
         testList += (food -> (testList(food) - num))
-      else if (current_amount > 0) {
+      else if (currentAmount > 0) {
         testList += (food -> 0)
-        checkAmount(food, num - current_amount)
+        checkAmount(food, num - currentAmount)
       } else {
         if (food.ingredients.isEmpty)
           testState = false
@@ -118,9 +111,9 @@ class FoodMenu {
       foodList
     else {
       for (item <- foodList.keys) {
-        val uniqueTags = item.tag.toUpperCase.trim.split("").distinct
-        if (tagList.intersect(uniqueTags).length == tagList.length)
-          map += (item -> foodList(item))
+        val uniqueTags = item.tag
+        // if (tagList.intersect(uniqueTags).length == tagList.length)
+        map += (item -> foodList(item))
       }
       map
     }

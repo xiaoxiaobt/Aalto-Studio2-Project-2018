@@ -10,15 +10,14 @@ object Settings {
     "With Allergens",
     "Gluten free",
     "Lactose free",
-    "Milk free",
+    "Diary free",
     "Vegan",
     "Vegetarian"
   )
-  val allAbbreviations: List[String] = List("A", "G", "L", "M", "V", "W")
-  var allergiesString = ""
+  val allAbbreviations: Set[Char] = Set('A', 'G', 'L', 'M', 'V', 'W')
   // Color
   val color = new Color(120, 200, 220)
   // Scaling factor
-  var scale: Double = 0.5
-  def scaleTo(num: Int): Int = (scale * num).toInt
+  // var scale: Double = 0.5
+  // def scaleTo(num: Int): Int = (scale * num).toInt
 }

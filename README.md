@@ -12,7 +12,7 @@ Keywords: Scala, Swing, Continuous Integration, GUI
 ## Requirements
 
 - JDK 8/11
-- Scala 3
+- Scala 3.1.0
 - Git
 - sbt 1.5.0+
 
@@ -21,13 +21,13 @@ Keywords: Scala, Swing, Continuous Integration, GUI
 - Clone this repo to your local machine with 
 
 ```shell
-git clone https://github.com/xiaoxiaobt/Recipe-book-Studio2.git
+git clone https://github.com/xiaoxiaobt/Aalto-Studio2-Project-2018.git
 ```
 ## Setup
 
-- Navigate to `Recipe-book-Studio2` by
+- Navigate to `Aalto-Studio2-Project-2018` by
 ```shell
-cd Recipe-book-Studio2
+cd Aalto-Studio2-Project-2018
 ```
 - Run `UI.scala` as an application
 ```shell

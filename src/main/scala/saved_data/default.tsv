@@ -1,17 +1,15 @@
-RecipeBook v0.2 data
-name 	 ingredients 	 main_unit 	 second_unit 	 density 	 tag 	 description 	 isMenu 	 amount
-Pancake with fruits	Pancake=1.0,Apple=2.0	portion	kg	0.0	GLMWA	Great!	1	1.0
-Beef		kg	/	0.0	AGLM	Beef, wanna have a barbeque?	0	1.0
-Sugar		kg	g	0.0	AGLMVW	Sugar, yes please, ...	0	500.0
-Pork		kg	/	0.0	AGLM	Pork, good for any kind of dishes	0	10.0
-Milk		l	dl	0.0	AGW	Cheap and good.	0	5.0
-Fish		kg	g	0.0	AGLM	Fish	0	8.0
-Flour		kg	g	0.0	LMVW	Cheap and good.	0	5.0
-Spaghetti		kg	/	0.0	LMVW	Spaghetti, bought from supermarket.	0	100.0
-Pancake	Flour=1.0,Egg=5.0	pcs	kg	0.0	LMWAG	I love that.	1	20.0
-Apple		pcs	kg	0.0	GLMVW	Apples, fresh from the farm	0	6.0
-Eggo	Sugar=0.1,Egg=2.0	pcs	kg	0.0	AGLMW	Yummy Eggos!	1	5.0
-Tomato		pcs	kg	0.0	AGLMVW	Raw tomatoes.	0	12.0
-Egg		pcs	kg	0.0	AGLMV	Raw eggs, fresh from the farm	0	6.0
-Pasta	Pork=0.2,Spaghetti=0.25,Tomato=3.0	portion	kg	0.0	LMAG	Tomato pasta with tomato sauce. Still hot.	1	8.0
-Fish fingers	Fish=0.3	portion	kg	0.0	AGLM	Fried Fish Fingers.	1	20.0
+name	ingredients	tag	description	isMenu	amount
+Pancake with fruits	Pancake=1.0,Apple=2.0	GLMWA	Great!	true	1.0
+Sugar		AGLMVW	Sugar, yes please, ...	false	500.0
+Pork		AGLM	Pork, good for any kind of dishes	false	10.0
+Milk		AGW	Cheap and good.	false	5.0
+Fish		AGLM	Fish	false	8.0
+Flour		LMVW	Cheap and good.	false	5.0
+Spaghetti		LMVW	Spaghetti, bought from supermarket.	false	100.0
+Pancake	Flour=1.0,Egg=5.0	LMWAG	I love that.	true	20.0
+Apple		GLMVW	Apples, fresh from the farm	true	6.0
+Eggo	Sugar=0.1,Egg=2.0	AGLMW	Yummy Eggos!	true	5.0
+Tomato		AGLMVW	Raw tomatoes.	true	12.0
+Egg		AGLMV	Raw eggs, fresh from the farm	true	6.0
+Pasta	Pork=0.2,Spaghetti=0.25,Tomato=3.0	LMAG	Tomato pasta with tomato sauce. Still hot.	true	8.0
+Fish fingers	Fish=0.3	AGLM	Fried Fish Fingers.	true	20.0

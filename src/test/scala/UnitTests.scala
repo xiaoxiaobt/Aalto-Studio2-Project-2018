@@ -7,7 +7,7 @@ import scala.collection.parallel.mutable.ParHashMap
 class UnitTests extends AnyFlatSpec with Matchers {
 
   "Fridge add/remove functions" should "work correctly" in {
-    val testMenu = new FoodMenu()
+    val testMenu = FoodMenu()
     testMenu.getFoodArray shouldBe empty
     val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")
     val food2 =
@@ -37,7 +37,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
   }
 
   "Fridge getBy functions" should "work correctly" in {
-    val testMenu = new FoodMenu()
+    val testMenu = FoodMenu()
     testMenu.getFoodArray shouldBe empty
     val food1 =
       Food(
@@ -83,7 +83,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
   }
 
   "Menu get/add/del functions" should "work correctly" in {
-    val testMenu = new FoodMenu()
+    val testMenu = FoodMenu()
     testMenu.getFoodArray shouldBe empty
     val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")
     val food2 =
@@ -120,7 +120,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
   }
 
   "Menu availability" should "work correctly" in {
-    val testMenu = new FoodMenu()
+    val testMenu = FoodMenu()
     testMenu.getFoodArray shouldBe empty
     val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")
     val food2 = Food("Eggs", ParHashMap[Food, Double](), Set[Char](), "Good")

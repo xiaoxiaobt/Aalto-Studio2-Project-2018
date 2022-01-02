@@ -6,32 +6,30 @@ import scala.swing.Alignment.Left
 import scala.swing.event._
 import scala.collection.mutable.ArrayBuffer
 import java.awt.Color.{BLACK, GRAY, RED, WHITE}
-import javax.swing.BorderFactory.{createEmptyBorder, createLineBorder}
-import javax.swing.ImageIcon
-import Swing.{Icon, VStrut, HStrut, EmptyBorder}
+import Swing.{Icon, VStrut, HStrut, EmptyBorder, LineBorder, pair2Dimension}
 
 class UI extends MainFrame {
   title = "Smart Cookbook"
-  preferredSize = new Dimension(1920, 1080)
+  preferredSize = (1920, 1080)
 
   // Initialize
-  val menu: FoodMenu = new FoodMenu()
+  val menu: FoodMenu = FoodMenu()
   val myColor = Settings.color
   var changed = false
   private var tempSearchText = ""
-  private val fileProcessor = new FileProcessor(this)
+  private val fileProcessor = FileProcessor(this)
 
   // Frames, boxes and buttons (Almost all boxes)
-  val outerBox = new BoxPanel(Horizontal)
-  val leftBox = new BorderPanel
-  val leftInfoSection = new BoxPanel(Vertical)
-  val leftWelcome = new Label("What would you like to eat today? ")
+  val outerBox = BoxPanel(Horizontal)
+  val leftBox = BorderPanel()
+  val leftInfoSection = BoxPanel(Vertical)
+  val leftWelcome = Label("What would you like to eat today? ")
   leftWelcome.horizontalAlignment = Left
-  val leftMenuScroll = new ScrollPane()
-  val leftNormalMenuBox = new BoxPanel(Vertical)
-  val leftSearchArea = new BoxPanel(Horizontal)
-  val searchPreventionBox = new TextField("")
-  val searchBox = new TextField(" Search for recipes or ingredients here...")
+  val leftMenuScroll = ScrollPane()
+  val leftNormalMenuBox = BoxPanel(Vertical)
+  val leftSearchArea = BoxPanel(Horizontal)
+  val searchPreventionBox = TextField("")
+  val searchBox = TextField(" Search for recipes or ingredients here...")
   val searchButton: Button = Button("") {
     if (searchBox.text == " Search for recipes or ingredients here...")
       searchBox.text = ""
@@ -50,22 +48,22 @@ class UI extends MainFrame {
     searchBox.foreground = GRAY
     p("Notice: Returned to the main interface")
   }
-  val leftFeedback = new TextField("")
-  val leftMultifunctionalFrame = new BorderPanel
-  val leftMultifunctionalBox = new BoxPanel(Horizontal)
-  val leftMultifunctionalText = new TextField("")
+  val leftFeedback = TextField("")
+  val leftMultifunctionalFrame = BorderPanel()
+  val leftMultifunctionalBox = BoxPanel(Horizontal)
+  val leftMultifunctionalText = TextField("")
   val leftMultifunctionalButton: Button = Button("") {
     addMenuToUI(leftMultifunctionalText.text)
-    leftMultifunctionalText.border = createEmptyBorder()
+    leftMultifunctionalText.border = EmptyBorder
     leftMultifunctionalText.editable = false
     leftMultifunctionalText.text = ""
     if (!changed) refreshMenuBox() else changeBox(searchBox.text)
     outerBox.repaint()
     outerBox.revalidate()
   }
-  val rightBox = new BorderPanel
-  val rightInfoSection = new BoxPanel(Vertical)
-  val rightWelcome = new Label("Options: ")
+  val rightBox = BorderPanel()
+  val rightInfoSection = BoxPanel(Vertical)
+  val rightWelcome = Label("Options: ")
   val rightCheckboxList: ArrayBuffer[CheckBox] = ArrayBuffer()
   var buttonSave: Button = Button("") {
     fileProcessor.IOWritelines()
@@ -107,13 +105,13 @@ class UI extends MainFrame {
         .filter(x => allergies.forall(y => x._1.tag.contains(y)))
         .map(_._1)
     for (food <- foodListMenuAllergies)
-      leftNormalMenuBox.contents += new UISectionBox(food, this).defaultBox
+      leftNormalMenuBox.contents += UISectionBox(food, this).defaultBox
     outerBox.repaint()
     outerBox.revalidate()
   }
 
   def changeBox(keyword: String): Unit = {
-    val subUI = new UISearchRepresentation(this, keyword.trim)
+    val subUI = UISearchRepresentation(this, keyword.trim)
     while (leftNormalMenuBox.contents.nonEmpty)
       leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
     leftNormalMenuBox.contents ++= Array(
@@ -152,23 +150,19 @@ class UI extends MainFrame {
   }
 
   // Icons
-  private val iconSelected: ImageIcon = Icon(
-    "src/main/scala/icons/selected.png"
-  )
-  private val iconFree: ImageIcon = Icon("src/main/scala/icons/free.png")
-  private val iconButton: ImageIcon = Icon("src/main/scala/icons/button.png")
-  private val iconSave: ImageIcon = Icon("src/main/scala/icons/save.png")
-  private val iconSavePressed: ImageIcon = Icon(
-    "src/main/scala/icons/save_done.png"
-  )
-  private val iconExit: ImageIcon = Icon("src/main/scala/icons/exit.png")
-  private val iconFind: ImageIcon = Icon("src/main/scala/icons/find.png")
-  private val iconBack: ImageIcon = Icon("src/main/scala/icons/back.png")
-  private val iconTick: ImageIcon = Icon("src/main/scala/icons/tick.png")
+  private val iconSelected = Icon("src/main/scala/icons/selected.png")
+  private val iconFree = Icon("src/main/scala/icons/free.png")
+  private val iconButton = Icon("src/main/scala/icons/button.png")
+  private val iconSave = Icon("src/main/scala/icons/save.png")
+  private val iconSavePressed = Icon("src/main/scala/icons/save_done.png")
+  private val iconExit = Icon("src/main/scala/icons/exit.png")
+  private val iconFind = Icon("src/main/scala/icons/find.png")
+  private val iconBack = Icon("src/main/scala/icons/back.png")
+  private val iconTick = Icon("src/main/scala/icons/tick.png")
 
   // Left Welcome Label
   leftWelcome.horizontalAlignment = Left
-  leftWelcome.font = new Font("Arial", 0, 80)
+  leftWelcome.font = Font("Arial", Font.Plain, 80)
   leftInfoSection.contents += VStrut(20)
   leftInfoSection.contents += leftWelcome
 
@@ -177,7 +171,7 @@ class UI extends MainFrame {
   leftInfoSection.border = EmptyBorder(30, 0, 30, 30)
 
   // Left Menu Box ScrollPane Frame
-  leftMenuScroll.preferredSize = new Dimension(1440, 600)
+  leftMenuScroll.preferredSize = (1440, 600)
   leftInfoSection.contents += VStrut(20)
   leftInfoSection.contents += leftMenuScroll
 
@@ -186,19 +180,19 @@ class UI extends MainFrame {
   leftMenuScroll.contents = leftNormalMenuBox
 
   // Left Search Area
-  leftSearchArea.preferredSize = new Dimension(1440, 100)
+  leftSearchArea.preferredSize = (1440, 100)
   leftSearchArea.background = WHITE
   leftInfoSection.contents += VStrut(10)
 
   // Left Search Prevention TextField (Avoiding cursor move to search box after clicking "MAKE")
-  searchPreventionBox.font = new Font("Arial", 0, 1)
-  searchPreventionBox.border = createEmptyBorder()
+  searchPreventionBox.font = Font("Arial", Font.Plain, 1)
+  searchPreventionBox.border = EmptyBorder
   leftInfoSection.contents += searchPreventionBox
 
   // Left Search TextField
-  searchBox.font = new Font("Arial", 0, 50)
+  searchBox.font = Font("Arial", Font.Plain, 50)
   searchBox.foreground = GRAY
-  searchBox.border = createLineBorder(myColor, 5)
+  searchBox.border = LineBorder(myColor, 5)
   listenTo(searchBox)
   reactions += { case _: FocusGained =>
     p("Notice: Search box gained focus")
@@ -207,14 +201,14 @@ class UI extends MainFrame {
     outerBox.repaint()
   }
   searchButton.background = WHITE
-  searchButton.font = new Font("Arial", 0, 50)
-  searchButton.preferredSize = new Dimension(100, 100)
-  searchButton.border = createLineBorder(myColor, 5)
+  searchButton.font = Font("Arial", Font.Plain, 50)
+  searchButton.preferredSize = (100, 100)
+  searchButton.border = LineBorder(myColor, 5)
   searchButton.icon = iconFind
   backButton.background = WHITE
-  backButton.font = new Font("Arial", 0, 50)
-  backButton.preferredSize = new Dimension(100, 100)
-  backButton.border = createLineBorder(myColor, 5)
+  backButton.font = Font("Arial", Font.Plain, 50)
+  backButton.preferredSize = (100, 100)
+  backButton.border = LineBorder(myColor, 5)
   backButton.icon = iconBack
   leftSearchArea.contents += searchBox
   leftSearchArea.contents += searchButton
@@ -223,9 +217,9 @@ class UI extends MainFrame {
   leftInfoSection.contents += VStrut(20)
 
   // Left Real-time feedback TextField
-  leftFeedback.preferredSize = new Dimension(200, 40)
-  leftFeedback.font = new Font("Arial", 0, 34)
-  leftFeedback.border = createEmptyBorder()
+  leftFeedback.preferredSize = (200, 40)
+  leftFeedback.font = Font("Arial", Font.Plain, 34)
+  leftFeedback.border = EmptyBorder
   leftFeedback.editable = false
   leftFeedback.background = WHITE
   leftInfoSection.contents += leftFeedback
@@ -234,14 +228,14 @@ class UI extends MainFrame {
   // Left Multi-usage Textfield
   leftMultifunctionalText.editable = false
   leftMultifunctionalText.background = WHITE
-  leftMultifunctionalText.preferredSize = new Dimension(1300, 30)
-  leftMultifunctionalText.font = new Font("Arial", 0, 30)
-  leftMultifunctionalText.border = createEmptyBorder()
+  leftMultifunctionalText.preferredSize = (1300, 30)
+  leftMultifunctionalText.font = Font("Arial", Font.Plain, 30)
+  leftMultifunctionalText.border = EmptyBorder
 
   // Left Multi-usage Button
-  leftMultifunctionalButton.font = new Font("Arial", 0, 30)
-  leftMultifunctionalButton.border = createEmptyBorder()
-  leftMultifunctionalButton.preferredSize = new Dimension(50, 50)
+  leftMultifunctionalButton.font = Font("Arial", Font.Plain, 30)
+  leftMultifunctionalButton.border = EmptyBorder
+  leftMultifunctionalButton.preferredSize = (50, 50)
   leftMultifunctionalButton.background = WHITE
   leftMultifunctionalButton.visible = false
   leftMultifunctionalButton.icon = iconTick
@@ -265,23 +259,23 @@ class UI extends MainFrame {
   )
 
   // Left multi-usage frame
-  leftMultifunctionalFrame.preferredSize = new Dimension(1440, 50)
+  leftMultifunctionalFrame.preferredSize = (1440, 50)
   leftMultifunctionalFrame.background = WHITE
   leftMultifunctionalFrame.layout(leftMultifunctionalBox) = West
   leftInfoSection.contents += leftMultifunctionalFrame
 
   // Right Welcome Label
   rightWelcome.horizontalAlignment = Left
-  rightWelcome.font = new Font("Arial", 0, 64)
+  rightWelcome.font = Font("Arial", Font.Plain, 64)
   rightWelcome.foreground = WHITE
   rightWelcome.opaque = false
 
   // Right Checkboxes
   for (a <- Settings.allergies) {
-    val current = new CheckBox(a)
+    val current = CheckBox(a)
     current.opaque = false
     current.foreground = WHITE
-    current.font = new Font("Arial", 0, 50)
+    current.font = Font("Arial", Font.Plain, 50)
     current.selectedIcon = iconSelected
     current.icon = iconFree
     current.iconTextGap = 10
@@ -315,7 +309,7 @@ class UI extends MainFrame {
   buttonSave.icon = iconSave
   buttonSave.background = WHITE
   buttonSave.opaque = false
-  buttonSave.border = createEmptyBorder()
+  buttonSave.border = EmptyBorder
   buttonSave.icon = iconSave
   buttonSave.pressedIcon = iconSavePressed
 
@@ -324,7 +318,7 @@ class UI extends MainFrame {
   buttonExit.pressedIcon = iconExit
   buttonExit.background = WHITE
   buttonExit.opaque = false
-  buttonExit.border = createEmptyBorder()
+  buttonExit.border = EmptyBorder
   buttonExit.icon = iconExit
 
   // Right Info Box
@@ -344,13 +338,13 @@ class UI extends MainFrame {
   outerBox.contents += rightBox
 
   // Left Panel Section
-  leftBox.preferredSize = new Dimension(1440, 1080)
+  leftBox.preferredSize = (1440, 1080)
   leftBox.layout(leftInfoSection) = North
   leftBox.background = WHITE
   contents = outerBox
 
   // Right Panel Section
-  rightBox.preferredSize = new Dimension(480, 1080)
+  rightBox.preferredSize = (480, 1080)
   rightBox.layout(rightInfoSection) = North
   rightBox.background = myColor
 
@@ -363,5 +357,5 @@ class UI extends MainFrame {
 }
 
 object UI extends App {
-  val ui = new UI
+  private val ui = UI()
 }

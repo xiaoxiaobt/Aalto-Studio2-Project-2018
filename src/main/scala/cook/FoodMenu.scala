@@ -100,14 +100,16 @@ class FoodMenu {
   }
 
   def getByTags(tag: String): ParHashMap[Food, Double] = {
-    val tagList = tag.toUpperCase.trim.split("").distinct
+    val tagSet = tag.toUpperCase.trim.toCharArray.toSet.intersect(
+      Settings.allAbbreviations
+    )
     if (tag.trim.isEmpty) foodMap
     else {
       var map = ParHashMap[Food, Double]()
       for ((item, amount) <- foodMap) {
         val uniqueTags = item.tag
-        // if (tagList.intersect(uniqueTags).length == tagList.length)
-        map += (item -> amount)
+        if (tagSet.intersect(item.tag).size == tagSet.size)
+          map += (item -> amount)
       }
       map
     }

@@ -16,7 +16,7 @@ object Settings {
   )
   val allAbbreviations: Set[Char] = Set('A', 'G', 'L', 'M', 'V', 'W')
   // Color
-  val color = new Color(120, 200, 220)
+  val color = Color(120, 200, 220)
   // Scaling factor
   // var scale: Double = 0.5
   // def scaleTo(num: Int): Int = (scale * num).toInt

@@ -20,8 +20,8 @@ class FileProcessor(ui: UI) {
   private val menu: FoodMenu = ui.menu
 
   def IOWritelines(): Unit = {
-    val file = new File("src/main/scala/saved_data/data.tsv")
-    val pw = new PrintWriter(file)
+    val file = File("src/main/scala/saved_data/data.tsv")
+    val pw = PrintWriter(file)
     pw.write("name\tingredients\ttag\tdescription\tisMenu\tamount\n")
     for ((food, num) <- menu.foodMap) {
       var ingredientsString = ""
@@ -62,7 +62,7 @@ class FileProcessor(ui: UI) {
   def lineParser(line: String): Option[Holder] = {
     val lineArray = line.split("\t").map(_.trim)
     if (lineArray.length != 6) {
-      throw new Exception("Invalid line length")
+      throw Exception("Invalid line length")
     }
     val tooManyLinesMessage =
       "The maximum amount allowed in this system is 1000. Your input has been changed to 1000."

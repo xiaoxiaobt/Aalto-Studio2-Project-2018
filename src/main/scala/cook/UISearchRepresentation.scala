@@ -4,7 +4,6 @@ import scala.swing.BorderPanel.Position.West
 import scala.swing.Orientation.Vertical
 import scala.swing.Alignment.Left
 import scala.swing.event._
-import javax.swing.BorderFactory
 import scala.collection.parallel.mutable.ParHashMap
 
 class UISearchRepresentation(ui: UI, keyword: String) {
@@ -12,40 +11,48 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   private val myColor: Color = Settings.color
   private val key: Double = keyword.toDoubleOption.getOrElse(Double.NaN)
 
-  def allergiesRemove(map: ParHashMap[Food, Double]): ParHashMap[Food, Double] = {
-    //var allergies = (Settings.all_abbri zip ui.rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
-    val allergies = ui.rightCheckboxList.filter(_.selected).map(_.name)
-    map //.filter(x => allergies.forall(y => x._1.tag.contains(y)))
+  def allergiesRemove(
+      map: ParHashMap[Food, Double]
+  ): ParHashMap[Food, Double] = {
+    // var allergies = (Settings.all_abbri zip ui.rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
+    val allergies = ui.rightCheckboxList
+      .zip(Settings.allAbbreviations)
+      .filter(_._1.selected)
+      .map(_._2)
+    map.filter(x => allergies.forall(y => x._1.tag.contains(y)))
   }
 
-  val headline = new Label(" Search Results: You have searched \"" + key + "\"")
-  val headlineBorder = new BorderPanel
+  val headline = Label(" Search Results: You have searched \"" + key + "\"")
+  val headlineBorder = BorderPanel()
 
   // Headline
   headline.horizontalAlignment = Left
-  headline.font = new Font("Arial", 0, 40)
+  headline.font = Font("Arial", Font.Plain, 40)
 
   // Headline frame
   headlineBorder.layout(headline) = West
 
-  def addSubFrame(labelName: String, result: ParHashMap[Food, Double]): BorderPanel = {
-    val line = new Label("  >Search by Name")
-    val lineBorder = new BorderPanel
-    val boxBorder = new BorderPanel
-    val box = new BoxPanel(Vertical)
+  def addSubFrame(
+      labelName: String,
+      result: ParHashMap[Food, Double]
+  ): BorderPanel = {
+    val line = Label("  >Search by Name")
+    val lineBorder = BorderPanel()
+    val boxBorder = BorderPanel()
+    val box = BoxPanel(Vertical)
     line.horizontalAlignment = Left
-    line.font = new Font("Arial", 0, 40)
+    line.font = Font("Arial", Font.Plain, 40)
     line.foreground = myColor
 
     // Box
     lineBorder.layout(line) = West
     box.contents += lineBorder
     for ((itemFood, itemAmount) <- result)
-      box.contents += new UISectionBox(itemFood, ui).defaultBox
+      box.contents += UISectionBox(itemFood, ui).defaultBox
     if (box.contents.size == 1) {
-      val label = new Label("  No matches")
-      label.font = new Font("Arial", 0, 36)
-      val border = new BorderPanel
+      val label = Label("  No matches")
+      label.font = Font("Arial", Font.Plain, 36)
+      val border = BorderPanel()
       border.layout(label) = West
       box.contents += border
     }

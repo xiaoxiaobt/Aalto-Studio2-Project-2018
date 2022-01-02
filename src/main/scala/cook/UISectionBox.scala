@@ -4,8 +4,7 @@ import scala.swing.BorderPanel.Position.{West, East}
 import scala.swing.Orientation.{Horizontal, Vertical}
 import scala.swing.Alignment.Left
 import java.awt.Color.{WHITE, GREEN, BLUE, RED, ORANGE}
-import Swing.{Icon, HStrut}
-import javax.swing.BorderFactory
+import Swing.{Icon, HStrut, LineBorder, EmptyBorder, pair2Dimension}
 import scala.collection.mutable.ArrayBuffer
 
 class UISectionBox(food: Food, ui: UI) {
@@ -13,10 +12,10 @@ class UISectionBox(food: Food, ui: UI) {
   private val menu: FoodMenu = ui.menu
   private val myColor: Color = Settings.color
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
-  val defaultBox = new BoxPanel(Vertical)
-  val firstRow = new BoxPanel(Horizontal)
-  val labelName = new Label(" " + food.name + " " * (28 - food.name.length))
-  val firstRowIconset = new BoxPanel(Horizontal)
+  val defaultBox = BoxPanel(Vertical)
+  val firstRow = BoxPanel(Horizontal)
+  val labelName = Label(" " + food.name + " " * (28 - food.name.length))
+  val firstRowIconset = BoxPanel(Horizontal)
   val iconBoxes = ArrayBuffer.fill[Button](6)(Button("") {})
 
   val buttonDelete: Button = Button(" x ") {
@@ -36,8 +35,7 @@ class UISectionBox(food: Food, ui: UI) {
     p("Adding string: " + editString)
     ui.leftMultifunctionalText.editable = true
     ui.leftMultifunctionalText.text = editString
-    ui.leftMultifunctionalText.border =
-      BorderFactory.createLineBorder(myColor, 5)
+    ui.leftMultifunctionalText.border = LineBorder(myColor, 5)
     ui.leftFeedback.text =
       "> Edit menu in given format (Example below), press green Complete button when finished"
   }
@@ -62,34 +60,33 @@ class UISectionBox(food: Food, ui: UI) {
     p("Editing string: " + editString)
     ui.leftMultifunctionalText.text = editString
     ui.leftMultifunctionalText.editable = true
-    ui.leftMultifunctionalText.border =
-      BorderFactory.createLineBorder(myColor, 5)
+    ui.leftMultifunctionalText.border = LineBorder(myColor, 5)
     ui.leftFeedback.text =
       "> Edit menu in given format in the box below, press green Complete button when finished"
   }
   private val editIcon = Icon("src/main/scala/icons/edit.png")
   buttonModify.icon = editIcon
-  val labelDescription = new Label("   Description: " + food.description)
+  val labelDescription = Label("   Description: " + food.description)
   def d2i(num: Double): String =
     if (num.toInt.toDouble == num) num.toInt.toString else num.toString
-  val labelIngredient = new Label(
+  val labelIngredient = Label(
     "   Ingredients: " + food.ingredients.toList
       .map(x => x._1.name + "×" + d2i(x._2))
       .mkString(", ")
   )
   if (food.hasNoIngredients)
     labelIngredient.text = "   " + food.name + " is an ingredient. "
-  val firstPart = new BorderPanel
-  val secondPart = new BorderPanel
-  val thirdPart = new BorderPanel
-  val lastPart = new BorderPanel
-  val lastRow = new BoxPanel(Horizontal)
-  val labelReady = new Label(
+  val firstPart = BorderPanel()
+  val secondPart = BorderPanel()
+  val thirdPart = BorderPanel()
+  val lastPart = BorderPanel()
+  val lastRow = BoxPanel(Horizontal)
+  val labelReady = Label(
     "Ready to eat: " + menu.foodMap(food).toInt.toString
   )
   if (food.hasNoIngredients)
     labelReady.text = "Amount: " + menu.foodMap(food).toInt.toString
-  val labelCookable = new Label(
+  val labelCookable = Label(
     "Cookable: " + (menu
       .checkAvailability(food) - menu.foodMap(food).toInt).toString
   )
@@ -104,29 +101,29 @@ class UISectionBox(food: Food, ui: UI) {
     }
 
   // First row
-  labelName.font = new Font("Consolas", 0, 48)
+  labelName.font = Font("Consolas", Font.Plain, 48)
   labelName.foreground = myColor
   labelName.horizontalAlignment = Left
-  labelName.preferredSize = new Dimension(1330, 60)
+  labelName.preferredSize = (1330, 60)
   for (x <- iconBoxes) {
     firstRowIconset.contents += x
-    x.border = BorderFactory.createEmptyBorder()
+    x.border = EmptyBorder
     x.background = WHITE
-    x.preferredSize = new Dimension(30, 30)
+    x.preferredSize = (30, 30)
   }
 
-  buttonAdd.font = new Font("Arial", 0, 40)
-  buttonAdd.border = BorderFactory.createEmptyBorder()
+  buttonAdd.font = Font("Arial", Font.Plain, 40)
+  buttonAdd.border = EmptyBorder
   buttonAdd.opaque = false
   buttonAdd.background = WHITE
   buttonAdd.foreground = GREEN
-  buttonModify.font = new Font("Arial", 0, 40)
-  buttonModify.border = BorderFactory.createEmptyBorder()
+  buttonModify.font = Font("Arial", Font.Plain, 40)
+  buttonModify.border = EmptyBorder
   buttonModify.opaque = false
   buttonModify.background = WHITE
   buttonModify.foreground = BLUE
-  buttonDelete.font = new Font("Arial", 0, 40)
-  buttonDelete.border = BorderFactory.createEmptyBorder()
+  buttonDelete.font = Font("Arial", Font.Plain, 40)
+  buttonDelete.border = EmptyBorder
   buttonDelete.opaque = false
   buttonDelete.background = WHITE
   buttonDelete.foreground = RED
@@ -145,12 +142,12 @@ class UISectionBox(food: Food, ui: UI) {
   }
 
   // Second row: Description
-  labelDescription.font = new Font("Arial", 0, 36)
+  labelDescription.font = Font("Arial", Font.Plain, 36)
   // Third row: Ingredients
-  labelIngredient.font = new Font("Arial", 0, 36)
+  labelIngredient.font = Font("Arial", Font.Plain, 36)
   // Last row: Cooked, Cookable & Make
-  labelReady.font = new Font("Arial", 0, 30)
-  labelCookable.font = new Font("Arial", 0, 30)
+  labelReady.font = Font("Arial", Font.Plain, 30)
+  labelCookable.font = Font("Arial", Font.Plain, 30)
   if (menu.foodMap(food) > 0)
     labelReady.foreground = ORANGE
   else
@@ -162,9 +159,9 @@ class UISectionBox(food: Food, ui: UI) {
     labelCookable.text = "Available: 0"
     buttonMake.enabled = false
   }
-  buttonMake.font = new Font("Arial", 0, 32)
+  buttonMake.font = Font("Arial", Font.Plain, 32)
   buttonMake.background = WHITE
-  buttonMake.border = BorderFactory.createLineBorder(myColor, 2)
+  buttonMake.border = LineBorder(myColor, 2)
   lastRow.contents += labelReady
   lastRow.contents += HStrut(20)
   lastRow.contents += labelCookable
@@ -181,6 +178,6 @@ class UISectionBox(food: Food, ui: UI) {
   defaultBox.contents += secondPart
   defaultBox.contents += thirdPart
   defaultBox.contents += lastPart
-  defaultBox.preferredSize = new Dimension(1330, 200)
-  defaultBox.border = BorderFactory.createLineBorder(myColor, 1)
+  defaultBox.preferredSize = (1330, 200)
+  defaultBox.border = LineBorder(myColor, 1)
 }

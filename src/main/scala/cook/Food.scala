@@ -19,3 +19,4 @@ case class Food(
   def hasNoIngredients: Boolean = ingredients.isEmpty
 
 }
+

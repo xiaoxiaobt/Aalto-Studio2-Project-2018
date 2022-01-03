@@ -6,7 +6,8 @@ import scala.swing.Alignment.Left
 import scala.swing.event._
 import scala.collection.mutable.ArrayBuffer
 import java.awt.Color.{BLACK, GRAY, RED, WHITE}
-import Swing.{Icon, VStrut, HStrut, EmptyBorder, LineBorder, pair2Dimension}
+import Swing.{Icon, VStrut, HStrut, EmptyBorder, LineBorder, EmptyIcon, pair2Dimension}
+import javax.swing.ImageIcon
 
 class UI extends MainFrame {
   title = "Smart Cookbook"
@@ -17,14 +18,13 @@ class UI extends MainFrame {
   val myColor = Settings.color
   var changed = false
   private var tempSearchText = ""
-  private val fileProcessor = FileProcessor(this)
+  private val fileProcessor = FileProcessor(menu)
 
   // Frames, boxes and buttons (Almost all boxes)
   val outerBox = BoxPanel(Horizontal)
   val leftBox = BorderPanel()
   val leftInfoSection = BoxPanel(Vertical)
-  val leftWelcome = Label("What would you like to eat today? ")
-  leftWelcome.horizontalAlignment = Left
+  val leftWelcome = Label("What would you like to eat today?", EmptyIcon, Left)
   val leftMenuScroll = ScrollPane()
   val leftNormalMenuBox = BoxPanel(Vertical)
   val leftSearchArea = BoxPanel(Horizontal)
@@ -58,18 +58,16 @@ class UI extends MainFrame {
     leftMultifunctionalText.editable = false
     leftMultifunctionalText.text = ""
     if (!changed) refreshMenuBox() else changeBox(searchBox.text)
-    outerBox.repaint()
     outerBox.revalidate()
   }
   val rightBox = BorderPanel()
   val rightInfoSection = BoxPanel(Vertical)
-  val rightWelcome = Label("Options: ")
+  val rightWelcome = Label("Options: ", EmptyIcon, Left)
   val rightCheckboxList: ArrayBuffer[CheckBox] = ArrayBuffer()
   var buttonSave: Button = Button("") {
     fileProcessor.IOWritelines()
     p("Notice: Saved")
     leftFeedback.text = "> All changes are saved to saved_data/data.txt "
-    leftFeedback.repaint()
   }
   val buttonExit: Button = Button("") { sys.exit(0) }
 
@@ -77,14 +75,12 @@ class UI extends MainFrame {
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
 
   def returnStatus() =
-    Settings.allAbbreviations zip rightCheckboxList.map(_.selected)
+    Settings.allAbbreviations.zip(rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
 
   def revalidateWindow(box: BoxPanel): Unit = {
     leftNormalMenuBox.contents -= box
     if (changed) changeBox(searchBox.text)
-    leftNormalMenuBox.repaint()
     leftNormalMenuBox.revalidate()
-    outerBox.repaint()
     outerBox.revalidate()
   }
 
@@ -97,16 +93,13 @@ class UI extends MainFrame {
       .toArray
       .sortBy(x => menu.checkAvailability(x._1))
       .reverse
-    val allergies = (Settings.allAbbreviations zip rightCheckboxList.map(
-      _.selected
-    )).filter(_._2).map(_._1)
+    val allergies = returnStatus()
     val foodListMenuAllergies =
       foodListMenu
         .filter(x => allergies.forall(y => x._1.tag.contains(y)))
         .map(_._1)
     for (food <- foodListMenuAllergies)
-      leftNormalMenuBox.contents += UISectionBox(food, this).defaultBox
-    outerBox.repaint()
+      leftNormalMenuBox.contents += UISectionBox(food, this)
     outerBox.revalidate()
   }
 
@@ -125,9 +118,7 @@ class UI extends MainFrame {
     if (keyword.trim.toDoubleOption.isDefined)
       leftNormalMenuBox.contents += subUI.box3Border
     listenTo(searchBox)
-    leftNormalMenuBox.repaint()
     leftMenuScroll.revalidate()
-    outerBox.repaint()
     outerBox.revalidate()
   }
 
@@ -142,7 +133,6 @@ class UI extends MainFrame {
     } else {
       leftFeedback.text = "> Failed. Wrong format"
     }
-    leftFeedback.repaint()
     searchBox.text =
       if (tempSearchText.isEmpty) " Search for recipes or ingredients here..."
       else tempSearchText
@@ -161,7 +151,6 @@ class UI extends MainFrame {
   private val iconTick = Icon("src/main/scala/icons/tick.png")
 
   // Left Welcome Label
-  leftWelcome.horizontalAlignment = Left
   leftWelcome.font = Font("Arial", Font.Plain, 80)
   leftInfoSection.contents += VStrut(20)
   leftInfoSection.contents += leftWelcome
@@ -184,7 +173,8 @@ class UI extends MainFrame {
   leftSearchArea.background = WHITE
   leftInfoSection.contents += VStrut(10)
 
-  // Left Search Prevention TextField (Avoiding cursor move to search box after clicking "MAKE")
+  // Left Search Prevention TextField 
+  // (Avoiding cursor move to search box after clicking "MAKE")
   searchPreventionBox.font = Font("Arial", Font.Plain, 1)
   searchPreventionBox.border = EmptyBorder
   leftInfoSection.contents += searchPreventionBox
@@ -198,7 +188,6 @@ class UI extends MainFrame {
     p("Notice: Search box gained focus")
     searchBox.text = ""
     searchBox.foreground = BLACK
-    outerBox.repaint()
   }
   searchButton.background = WHITE
   searchButton.font = Font("Arial", Font.Plain, 50)
@@ -245,11 +234,10 @@ class UI extends MainFrame {
     leftMultifunctionalButton.visible = false
     rightCheckboxList.foreach(_.visible = true)
     buttonSave.visible = true
-    leftMultifunctionalButton.repaint()
     leftMultifunctionalButton.revalidate()
-    outerBox.repaint()
     outerBox.revalidate()
   }
+
   // Left multi-usage box
   leftMultifunctionalBox.background = WHITE
   leftMultifunctionalBox.contents ++= Array(
@@ -265,7 +253,6 @@ class UI extends MainFrame {
   leftInfoSection.contents += leftMultifunctionalFrame
 
   // Right Welcome Label
-  rightWelcome.horizontalAlignment = Left
   rightWelcome.font = Font("Arial", Font.Plain, 64)
   rightWelcome.foreground = WHITE
   rightWelcome.opaque = false
@@ -284,9 +271,7 @@ class UI extends MainFrame {
 
   rightCheckboxList.map(listenTo(_))
   reactions += { case _: ButtonClicked =>
-    val allergies = (Settings.allAbbreviations zip rightCheckboxList.map(
-      _.selected
-    )).filter(_._2).map(_._1)
+    val allergies = returnStatus()
     p(
       "Notice: Checkbox(es) selection changed, new allergen list is: " + allergies
         .mkString("")
@@ -300,9 +285,7 @@ class UI extends MainFrame {
       changeBox(searchBox.text)
     }
     leftMultifunctionalBox.revalidate()
-    leftMultifunctionalBox.repaint()
     outerBox.revalidate()
-    outerBox.repaint()
   }
 
   // Right Save Button
@@ -349,13 +332,16 @@ class UI extends MainFrame {
   rightBox.background = myColor
 
   // Load file
-  fileProcessor.linesToUI()
-  // Repaint and revalidate
+  private val (lines, status) = fileProcessor.IOReadlines()
+  fileProcessor.linesToUI(lines)
+  leftFeedback.text = status
+
+  // Revalidate
   refreshMenuBox()
 
   this.visible = true
 }
 
 object UI extends App {
-  private val ui = UI()
+  val ui = UI()
 }

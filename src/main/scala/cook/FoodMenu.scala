@@ -5,7 +5,7 @@ import scala.collection.parallel.CollectionsHaveToParArray
 
 class FoodMenu {
 
-  var foodMap = ParHashMap[Food, Double]()
+  val foodMap = ParHashMap[Food, Double]()
 
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
 
@@ -29,13 +29,13 @@ class FoodMenu {
   def checkAvailability(food: Food): Int = {
     val testMap = foodMap.clone()
     var testState = true
-    var i = 0
+    var counter = 0
     if (foodMap.contains(food))
       while (testState) {
         testState = checkAmount(food, 1, testMap)
-        if (testState) i += 1
+        if (testState) counter += 1
       }
-    i
+    counter
   }
 
   def checkAmount(
@@ -79,7 +79,9 @@ class FoodMenu {
       val temp = num - foodMap(food)
       foodMap(food) = 0
       makeDish(food, temp)
-    } else food.ingredients.foreach(x => makeDish(x._1, x._2 * num))
+    } else {
+      food.ingredients.foreach((name, amount) => makeDish(name, amount * num))
+    }
   }
 
   def removeFood(food: Food, amount: Double): Boolean = {
@@ -105,7 +107,7 @@ class FoodMenu {
     )
     if (tag.trim.isEmpty) foodMap
     else {
-      var map = ParHashMap[Food, Double]()
+      val map = ParHashMap[Food, Double]()
       for ((item, amount) <- foodMap) {
         val uniqueTags = item.tag
         if (tagSet.intersect(item.tag).size == tagSet.size)
@@ -115,19 +117,19 @@ class FoodMenu {
     }
   }
 
-  def getByName(name: String): ParHashMap[Food, Double] = {
-    var map = ParHashMap[Food, Double]()
-    val nameList = ".*" + name.toUpperCase.trim + ".*"
+  def getByName(key: String): ParHashMap[Food, Double] = {
+    val map = ParHashMap[Food, Double]()
+    val name = key.toUpperCase.trim
     for ((item, amount) <- foodMap) {
-      val itemNameList = item.name.toUpperCase.trim
-      if (itemNameList matches nameList)
+      val itemName = item.name.toUpperCase.trim
+      if (itemName.contains(name))
         map += (item -> amount)
     }
     map
   }
 
   def getByIngredients(name: String): ParHashMap[Food, Double] = {
-    var map = ParHashMap[Food, Double]()
+    val map = ParHashMap[Food, Double]()
     val nameList = name.toUpperCase.trim
     for ((item, amount) <- foodMap) {
       val ingredients =

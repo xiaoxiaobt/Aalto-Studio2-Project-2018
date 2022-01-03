@@ -4,25 +4,26 @@ import scala.swing.BorderPanel.Position.{West, East}
 import scala.swing.Orientation.{Horizontal, Vertical}
 import scala.swing.Alignment.Left
 import java.awt.Color.{WHITE, GREEN, BLUE, RED, ORANGE}
-import Swing.{Icon, HStrut, LineBorder, EmptyBorder, pair2Dimension}
+import Swing.{Icon, HStrut, LineBorder, EmptyBorder, EmptyIcon, pair2Dimension}
 import scala.collection.mutable.ArrayBuffer
 
-class UISectionBox(food: Food, ui: UI) {
+class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {
 
   private val menu: FoodMenu = ui.menu
   private val myColor: Color = Settings.color
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
-  val defaultBox = BoxPanel(Vertical)
   val firstRow = BoxPanel(Horizontal)
-  val labelName = Label(" " + food.name + " " * (28 - food.name.length))
+  val labelName =
+    Label(" " + food.name + " " * (28 - food.name.length), EmptyIcon, Left)
   val firstRowIconset = BoxPanel(Horizontal)
   val iconBoxes = ArrayBuffer.fill[Button](6)(Button("") {})
 
   val buttonDelete: Button = Button(" x ") {
     menu.foodMap -= food
     p("Notice: " + food.name + " has been removed from the list")
-    ui.revalidateWindow(defaultBox)
+    ui.revalidateWindow(this)
   }
+
   val buttonAdd: Button = Button(" + ") {
     ui.rightCheckboxList.foreach(_.visible = false)
     ui.buttonSave.visible = false
@@ -39,24 +40,19 @@ class UISectionBox(food: Food, ui: UI) {
     ui.leftFeedback.text =
       "> Edit menu in given format (Example below), press green Complete button when finished"
   }
+
   val buttonModify: Button = Button("") {
     ui.rightCheckboxList.foreach(_.visible = false)
     ui.buttonSave.visible = false
     ui.rightBox.revalidate()
     ui.leftMultifunctionalButton.visible = true
     ui.deafTo(ui.searchBox)
-    val ingredientsString = {
-      if (food.hasNoIngredients) ""
-      else {
-        food.ingredients.toList
-          .map(x => x._1.name + "=" + x._2.toString)
-          .mkString(",")
-      }
-    }
+    val ingredientsString = food.ingredients
+      .map((f, amount) => f.name + "=" + amount.toString)
+      .mkString(",")
     val editString =
-      food.name + "\t" + ingredientsString + "\t" + food.tag.mkString + "\t" + food.description + "\t" + food.isMenu + "\t" + menu
-        .foodMap(food)
-        .toString
+      food.name + "\t" + ingredientsString + "\t" + food.tag.mkString + "\t" + food.description + "\t" +
+        food.isMenu + "\t" + menu.foodMap(food).toString
     p("Editing string: " + editString)
     ui.leftMultifunctionalText.text = editString
     ui.leftMultifunctionalText.editable = true
@@ -64,6 +60,7 @@ class UISectionBox(food: Food, ui: UI) {
     ui.leftFeedback.text =
       "> Edit menu in given format in the box below, press green Complete button when finished"
   }
+
   private val editIcon = Icon("src/main/scala/icons/edit.png")
   buttonModify.icon = editIcon
   val labelDescription = Label("   Description: " + food.description)
@@ -96,14 +93,13 @@ class UISectionBox(food: Food, ui: UI) {
       menu.makeDish(food, 1)
       p("Notice: 1 " + food.name + " has been made/consumed")
       if (!ui.changed) ui.refreshMenuBox() else ui.changeBox(ui.searchBox.text)
-      ui.leftNormalMenuBox.contents -= defaultBox
+      ui.leftNormalMenuBox.contents -= this
       ui.outerBox.revalidate()
     }
 
   // First row
   labelName.font = Font("Consolas", Font.Plain, 48)
   labelName.foreground = myColor
-  labelName.horizontalAlignment = Left
   labelName.preferredSize = (1330, 60)
   for (x <- iconBoxes) {
     firstRowIconset.contents += x
@@ -174,10 +170,10 @@ class UISectionBox(food: Food, ui: UI) {
   thirdPart.layout(labelIngredient) = West
   lastPart.layout(lastRow) = East
 
-  defaultBox.contents += firstPart
-  defaultBox.contents += secondPart
-  defaultBox.contents += thirdPart
-  defaultBox.contents += lastPart
-  defaultBox.preferredSize = (1330, 200)
-  defaultBox.border = LineBorder(myColor, 1)
+  this.contents += firstPart
+  this.contents += secondPart
+  this.contents += thirdPart
+  this.contents += lastPart
+  this.preferredSize = (1330, 200)
+  this.border = LineBorder(myColor, 1)
 }

@@ -15,21 +15,16 @@ case class Holder(
     val amount: Double
 )
 
-class FileProcessor(ui: UI) {
-
-  private val menu: FoodMenu = ui.menu
+class FileProcessor(private val menu: FoodMenu) {
 
   def IOWritelines(): Unit = {
     val file = File("src/main/scala/saved_data/data.tsv")
     val pw = PrintWriter(file)
     pw.write("name\tingredients\ttag\tdescription\tisMenu\tamount\n")
     for ((food, num) <- menu.foodMap) {
-      var ingredientsString = ""
-      if (!food.hasNoIngredients) {
-        ingredientsString = food.ingredients.toList
-          .map(x => x._1.name + "=" + x._2.toString)
-          .mkString("\t")
-      }
+      val ingredientsString = food.ingredients
+        .map((f, amount) => f.name + "=" + amount.toString)
+        .mkString("\t")
       pw.write(
         food.name + "\t" + ingredientsString + "\t" + food.tag.mkString + "\t" + food.description + "\t" + food.isMenu + "\t" + num.toString + "\n"
       )
@@ -37,26 +32,22 @@ class FileProcessor(ui: UI) {
     pw.close()
   }
 
-  def IOReadlines(): Array[String] = {
+  def IOReadlines(): (Array[String], String) = {
     var lines = Array[String]()
     Using(fromFile("src/main/scala/saved_data/default.tsv")) { source =>
       lines = source.getLines().filter(_.nonEmpty).toArray
     }
+    var feedbackText = "> User-saved file not found. Loaded from default. "
 
     try {
       Using(fromFile("src/main/scala/saved_data/data.tsv")) { source =>
         lines = source.getLines().filter(_.nonEmpty).toArray
       }
-      ui.leftFeedback.text = "> User-saved file loaded successfully. "
+      feedbackText = "> User-saved file loaded successfully. "
     } catch {
-      case _: FileNotFoundException =>
-        ui.leftFeedback.text =
-          "> User-saved file not found. Loaded from default. "
-    } finally {
-      ui.leftFeedback.repaint()
+      case _: FileNotFoundException => ()
     }
-
-    lines.tail
+    (lines.tail, feedbackText)
   }
 
   def lineParser(line: String): Option[Holder] = {
@@ -108,43 +99,33 @@ class FileProcessor(ui: UI) {
     }
   }
 
-  def linesToUI(lines: Array[String] = IOReadlines()) = {
+  def linesToUI(lines: Array[String]) = {
     var holders = lines.map(lineParser).filter(_.isDefined).map(_.get)
     var continue = true
     while (continue) {
       val toBeAdded = ArrayBuffer[Holder]()
       for (holder <- holders) {
-        if (holder.ingredients.isEmpty) {
+        val allIngredientsFound = holder.ingredients.forall(x =>
+          menu.getFoodArray.exists(_.name == x._1)
+        )
+        if (allIngredientsFound) {
+          val ingredients = ParHashMap[Food, Double]()
+          for ((ingredientName, ingredientAmount) <- holder.ingredients) {
+            val correspondingFood =
+              menu.getFoodArray.find(x => x.name == ingredientName).get
+            ingredients += (correspondingFood -> ingredientAmount)
+          }
           val food = Food(
             holder.name,
-            ParHashMap[Food, Double](),
+            ingredients,
             holder.allergies,
             holder.description
           )
           if (holder.isMenu) food.setToMenu()
           menu.addFood(food, holder.amount)
+
         } else {
-          val allIngredientsFound = holder.ingredients.forall(x =>
-            menu.getFoodArray.exists(_.name == x._1)
-          )
-          if (allIngredientsFound) {
-            var ingredients = ParHashMap[Food, Double]()
-            for (ingredient <- holder.ingredients) {
-              val food =
-                menu.getFoodArray.find(x => x.name == ingredient._1).get
-              ingredients += (food -> ingredient._2)
-            }
-            val food = Food(
-              holder.name,
-              ingredients,
-              holder.allergies,
-              holder.description
-            )
-            if (holder.isMenu) food.setToMenu()
-            menu.addFood(food, holder.amount)
-          } else {
-            toBeAdded += holder
-          }
+          toBeAdded += holder
         }
       }
 

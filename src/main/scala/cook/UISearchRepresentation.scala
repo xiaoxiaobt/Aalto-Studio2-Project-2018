@@ -1,12 +1,13 @@
 package cook
-import scala.swing._
+import scala.swing.*
+import scala.swing.event.*
 import scala.swing.BorderPanel.Position.West
 import scala.swing.Orientation.Vertical
 import scala.swing.Alignment.Left
-import scala.swing.event._
-import scala.collection.parallel.mutable.ParHashMap
 import scala.swing.Swing.EmptyIcon
 import scala.collection.parallel.ParIterable
+import scala.collection.parallel.mutable.ParHashMap
+
 
 class UISearchRepresentation(ui: UI, keyword: String) {
   private val menu: FoodMenu = ui.menu

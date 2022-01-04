@@ -1,13 +1,12 @@
 package cook
-import scala.swing._
+import scala.swing.*
+import scala.swing.event.*
+import scala.swing.Alignment.Left
 import scala.swing.BorderPanel.Position.{West, North}
 import scala.swing.Orientation.{Horizontal, Vertical}
-import scala.swing.Alignment.Left
-import scala.swing.event._
+import scala.swing.Swing.{Icon, VStrut, HStrut, EmptyBorder, LineBorder, EmptyIcon, pair2Dimension}
 import scala.collection.mutable.ArrayBuffer
 import java.awt.Color.{BLACK, GRAY, RED, WHITE}
-import Swing.{Icon, VStrut, HStrut, EmptyBorder, LineBorder, EmptyIcon, pair2Dimension}
-import javax.swing.ImageIcon
 
 class UI extends MainFrame {
   title = "Smart Cookbook"
@@ -298,11 +297,11 @@ class UI extends MainFrame {
 
   // Right Exit Button (Shows only with IOError)
   buttonExit.icon = iconExit
-  buttonExit.pressedIcon = iconExit
   buttonExit.background = WHITE
   buttonExit.opaque = false
   buttonExit.border = EmptyBorder
   buttonExit.icon = iconExit
+  buttonExit.pressedIcon = iconExit
 
   // Right Info Box
   rightInfoSection.contents += rightWelcome
@@ -317,6 +316,7 @@ class UI extends MainFrame {
   rightInfoSection.border = EmptyBorder(20, 20, 20, 20)
 
   // Frame Section
+  contents = outerBox
   outerBox.contents += leftBox
   outerBox.contents += rightBox
 
@@ -324,7 +324,7 @@ class UI extends MainFrame {
   leftBox.preferredSize = (1440, 1080)
   leftBox.layout(leftInfoSection) = North
   leftBox.background = WHITE
-  contents = outerBox
+ 
 
   // Right Panel Section
   rightBox.preferredSize = (480, 1080)

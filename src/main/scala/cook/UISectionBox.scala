@@ -1,10 +1,10 @@
 package cook
-import scala.swing._
+import scala.swing.*
+import scala.swing.Alignment.Left
 import scala.swing.BorderPanel.Position.{West, East}
 import scala.swing.Orientation.{Horizontal, Vertical}
-import scala.swing.Alignment.Left
+import scala.swing.Swing.{Icon, HStrut, LineBorder, EmptyBorder, EmptyIcon, pair2Dimension}
 import java.awt.Color.{WHITE, GREEN, BLUE, RED, ORANGE}
-import Swing.{Icon, HStrut, LineBorder, EmptyBorder, EmptyIcon, pair2Dimension}
 import scala.collection.mutable.ArrayBuffer
 
 class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {

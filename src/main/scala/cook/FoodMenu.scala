@@ -38,7 +38,7 @@ class FoodMenu {
     counter
   }
 
-  def checkAmount(
+  private def checkAmount(
       food: Food,
       num: Double,
       testMap: ParHashMap[Food, Double]
@@ -80,7 +80,7 @@ class FoodMenu {
       foodMap(food) = 0
       makeDish(food, temp)
     } else {
-      food.ingredients.foreach((name, amount) => makeDish(name, amount * num))
+      food.ingredients.foreach((f, amount) => makeDish(f, amount * num))
     }
   }
 
@@ -102,10 +102,10 @@ class FoodMenu {
   }
 
   def getByTags(tag: String): ParHashMap[Food, Double] = {
-    val tagSet = tag.toUpperCase.trim.toCharArray.toSet.intersect(
+    val tagSet = tag.toUpperCase.toCharArray.toSet.intersect(
       Settings.allAbbreviations
     )
-    if (tag.trim.isEmpty) foodMap
+    if (tagSet.isEmpty) foodMap
     else {
       val map = ParHashMap[Food, Double]()
       for ((item, amount) <- foodMap) {

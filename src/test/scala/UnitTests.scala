@@ -1,7 +1,6 @@
-import cook._
-import org.scalatest._
-import matchers.should._
+import cook.*
 import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 import scala.collection.parallel.mutable.ParHashMap
 
 class UnitTests extends AnyFlatSpec with Matchers {

@@ -36,7 +36,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
       labelName: String,
       result: ParIterable[Food]
   ): BorderPanel = {
-    val line = Label("  >Search by Name", EmptyIcon, Left)
+    val line = Label(labelName, EmptyIcon, Left)
     val lineBorder = BorderPanel()
     val boxBorder = BorderPanel()
     val box = BoxPanel(Vertical)

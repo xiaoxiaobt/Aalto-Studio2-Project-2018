@@ -18,5 +18,8 @@ case class Food(
 
   def hasNoIngredients: Boolean = ingredients.isEmpty
 
-}
+  def getIngredientsString: String = ingredients
+    .map((f, amount) => f.name + "=" + amount.toString)
+    .mkString(",")
 
+}

@@ -22,11 +22,15 @@ class FileProcessor(private val menu: FoodMenu) {
     val pw = PrintWriter(file)
     pw.write("name\tingredients\ttag\tdescription\tisMenu\tamount\n")
     for ((food, num) <- menu.foodMap) {
-      val ingredientsString = food.ingredients
-        .map((f, amount) => f.name + "=" + amount.toString)
-        .mkString("\t")
       pw.write(
-        food.name + "\t" + ingredientsString + "\t" + food.tag.mkString + "\t" + food.description + "\t" + food.isMenu + "\t" + num.toString + "\n"
+        Array(
+          food.name,
+          food.getIngredientsString,
+          food.tag.mkString,
+          food.description,
+          food.isMenu,
+          num.toString
+        ).mkString("\t") + "\n"
       )
     }
     pw.close()

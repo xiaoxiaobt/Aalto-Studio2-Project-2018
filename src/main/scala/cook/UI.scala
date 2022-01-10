@@ -4,7 +4,15 @@ import scala.swing.event.*
 import scala.swing.Alignment.Left
 import scala.swing.BorderPanel.Position.{West, North}
 import scala.swing.Orientation.{Horizontal, Vertical}
-import scala.swing.Swing.{Icon, VStrut, HStrut, EmptyBorder, LineBorder, EmptyIcon, pair2Dimension}
+import scala.swing.Swing.{
+  Icon,
+  VStrut,
+  HStrut,
+  EmptyBorder,
+  LineBorder,
+  EmptyIcon,
+  pair2Dimension
+}
 import scala.collection.mutable.ArrayBuffer
 import java.awt.Color.{BLACK, GRAY, RED, WHITE}
 
@@ -74,7 +82,10 @@ class UI extends MainFrame {
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
 
   def returnStatus() =
-    Settings.allAbbreviations.zip(rightCheckboxList.map(_.selected)).filter(_._2).map(_._1)
+    Settings.allAbbreviations
+      .zip(rightCheckboxList.map(_.selected))
+      .filter(_._2)
+      .map(_._1)
 
   def revalidateWindow(box: BoxPanel): Unit = {
     leftNormalMenuBox.contents -= box
@@ -85,8 +96,7 @@ class UI extends MainFrame {
 
   def refreshMenuBox(): Unit = {
     listenTo(searchBox)
-    while (leftNormalMenuBox.contents.nonEmpty)
-      leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
+    leftNormalMenuBox.contents.clear()
     val foodListMenu = menu.foodMap
       .filter(_._1.isMenu)
       .toArray
@@ -104,8 +114,7 @@ class UI extends MainFrame {
 
   def changeBox(keyword: String): Unit = {
     val subUI = UISearchRepresentation(this, keyword.trim)
-    while (leftNormalMenuBox.contents.nonEmpty)
-      leftNormalMenuBox.contents -= leftNormalMenuBox.contents.last
+    leftNormalMenuBox.contents.clear()
     leftNormalMenuBox.contents ++= Array(
       subUI.headlineBorder,
       VStrut(40),
@@ -172,7 +181,7 @@ class UI extends MainFrame {
   leftSearchArea.background = WHITE
   leftInfoSection.contents += VStrut(10)
 
-  // Left Search Prevention TextField 
+  // Left Search Prevention TextField
   // (Avoiding cursor move to search box after clicking "MAKE")
   searchPreventionBox.font = Font("Arial", Font.Plain, 1)
   searchPreventionBox.border = EmptyBorder
@@ -324,7 +333,6 @@ class UI extends MainFrame {
   leftBox.preferredSize = (1440, 1080)
   leftBox.layout(leftInfoSection) = North
   leftBox.background = WHITE
- 
 
   // Right Panel Section
   rightBox.preferredSize = (480, 1080)

@@ -3,20 +3,28 @@ import scala.swing.*
 import scala.swing.Alignment.Left
 import scala.swing.BorderPanel.Position.{West, East}
 import scala.swing.Orientation.{Horizontal, Vertical}
-import scala.swing.Swing.{Icon, HStrut, LineBorder, EmptyBorder, EmptyIcon, pair2Dimension}
+import scala.swing.Swing.{
+  Icon,
+  HStrut,
+  LineBorder,
+  EmptyBorder,
+  EmptyIcon,
+  pair2Dimension
+}
 import java.awt.Color.{WHITE, GREEN, BLUE, RED, ORANGE}
-import scala.collection.mutable.ArrayBuffer
 
 class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {
 
   private val menu: FoodMenu = ui.menu
   private val myColor: Color = Settings.color
-  def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
+
   val firstRow = BoxPanel(Horizontal)
   val labelName =
     Label(" " + food.name + " " * (28 - food.name.length), EmptyIcon, Left)
   val firstRowIconset = BoxPanel(Horizontal)
-  val iconBoxes = ArrayBuffer.fill[Button](6)(Button("") {})
+  val iconBoxes = Array.fill[Button](6)(Button(""){})
+
+  def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
 
   val buttonDelete: Button = Button(" x ") {
     menu.foodMap -= food
@@ -67,9 +75,7 @@ class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {
   def d2i(num: Double): String =
     if (num.toInt.toDouble == num) num.toInt.toString else num.toString
   val labelIngredient = Label(
-    "   Ingredients: " + food.ingredients.toList
-      .map(x => x._1.name + "×" + d2i(x._2))
-      .mkString(", ")
+    "   Ingredients: " + food.getIngredientsString
   )
   if (food.hasNoIngredients)
     labelIngredient.text = "   " + food.name + " is an ingredient. "
@@ -91,7 +97,7 @@ class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {
   val buttonMake =
     Button(if (food.hasNoIngredients) "       Use       " else "  Use/Make  ") {
       menu.makeDish(food, 1)
-      p("Notice: 1 " + food.name + " has been made/consumed")
+      p("Notice: 1 portion of " + food.name + " has been made/consumed")
       if (!ui.changed) ui.refreshMenuBox() else ui.changeBox(ui.searchBox.text)
       ui.leftNormalMenuBox.contents -= this
       ui.outerBox.revalidate()

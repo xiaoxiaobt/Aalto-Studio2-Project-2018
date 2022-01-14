@@ -25,14 +25,6 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.foodMap(food2) shouldBe 2
     testMenu.addFood(food2, 23)
     testMenu.foodMap(food2) shouldBe 25
-
-    testMenu.removeFood(food2, 26) shouldBe false
-    testMenu.foodMap(food2) shouldBe 25
-    testMenu.removeFood(food2, 23)
-    testMenu.foodMap(food2) shouldBe 2
-    testMenu.removeFood(food2, 2)
-    testMenu.foodMap(food2) shouldBe 0
-    testMenu.removeFood(food3, 5)
   }
 
   "Fridge getBy functions" should "work correctly" in {
@@ -42,7 +34,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
       Food(
         "Food Cookies",
         ParHashMap[Food, Double](),
-        "LG1a".toCharArray.toSet,
+        "LG1a".toSet,
         ""
       )
     val food2 =
@@ -51,7 +43,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
       Food(
         "",
         ParHashMap[Food, Double]((food1 -> 2)),
-        "AAA".toCharArray.toSet,
+        "AAA".toSet,
         ""
       )
     testMenu.foodMap.clear()
@@ -104,16 +96,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.addFood(food3, 3)
     testMenu.addFood(food3, 5)
 
-    testMenu.addMenu(food2)
     food1.isMenu shouldBe false
-    food2.isMenu shouldBe true
-    food3.isMenu shouldBe false
-    food4.isMenu shouldBe false
-
-    testMenu.deleteMenu(food1)
-    testMenu.deleteMenu(food4)
-    food1.isMenu shouldBe false
-    food2.isMenu shouldBe true
     food3.isMenu shouldBe false
     food4.isMenu shouldBe false
   }

@@ -22,7 +22,7 @@ class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {
   val labelName =
     Label(" " + food.name + " " * (28 - food.name.length), EmptyIcon, Left)
   val firstRowIconset = BoxPanel(Horizontal)
-  val iconBoxes = Array.fill[Button](6)(Button(""){})
+  val iconBoxes = Array.fill[Button](6)(Button("") {})
 
   def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
 
@@ -55,11 +55,8 @@ class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {
     ui.rightBox.revalidate()
     ui.leftMultifunctionalButton.visible = true
     ui.deafTo(ui.searchBox)
-    val ingredientsString = food.ingredients
-      .map((f, amount) => f.name + "=" + amount.toString)
-      .mkString(",")
     val editString =
-      food.name + "\t" + ingredientsString + "\t" + food.tag.mkString + "\t" + food.description + "\t" +
+      food.name + "\t" + food.getIngredientsString + "\t" + food.tag.mkString + "\t" + food.description + "\t" +
         food.isMenu + "\t" + menu.foodMap(food).toString
     p("Editing string: " + editString)
     ui.leftMultifunctionalText.text = editString
@@ -84,24 +81,22 @@ class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {
   val thirdPart = BorderPanel()
   val lastPart = BorderPanel()
   val lastRow = BoxPanel(Horizontal)
-  val labelReady = Label(
-    "Ready to eat: " + menu.foodMap(food).toInt.toString
-  )
+  val readyAmountInt = menu.foodMap(food).toInt
+  val labelReady = Label("Ready to eat: " + readyAmountInt.toString)
+
   if (food.hasNoIngredients)
-    labelReady.text = "Amount: " + menu.foodMap(food).toInt.toString
+    labelReady.text = "Amount: " + readyAmountInt.toString
   val labelCookable = Label(
-    "Cookable: " + (menu
-      .checkAvailability(food) - menu.foodMap(food).toInt).toString
+    "Cookable: " + (menu.checkAvailability(food) - readyAmountInt).toString
   )
   if (food.hasNoIngredients) labelCookable.visible = false
-  val buttonMake =
-    Button(if (food.hasNoIngredients) "       Use       " else "  Use/Make  ") {
-      menu.makeDish(food, 1)
-      p("Notice: 1 portion of " + food.name + " has been made/consumed")
-      if (!ui.changed) ui.refreshMenuBox() else ui.changeBox(ui.searchBox.text)
-      ui.leftNormalMenuBox.contents -= this
-      ui.outerBox.revalidate()
-    }
+  val buttonMake = Button("  Use/Make  ") {
+    menu.makeDish(food, 1)
+    p("Notice: 1 portion of " + food.name + " has been made/consumed")
+    if (!ui.changed) ui.refreshMenuBox() else ui.changeBox(ui.searchBox.text)
+    ui.leftNormalMenuBox.contents -= this
+    ui.outerBox.revalidate()
+  }
 
   // First row
   labelName.font = Font("Consolas", Font.Plain, 48)

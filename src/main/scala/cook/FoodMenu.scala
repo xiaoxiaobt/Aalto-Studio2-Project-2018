@@ -1,31 +1,15 @@
 package cook
-import collection.mutable.Map
-import scala.collection.parallel.mutable.ParHashMap
+import scala.collection.parallel.mutable.{ParArray, ParHashMap}
 import scala.collection.parallel.CollectionsHaveToParArray
+import scala.collection.mutable.{ArrayBuffer, Map}
 
 class FoodMenu {
 
   val foodMap = ParHashMap[Food, Double]()
 
-  def p[T](a: T) = if (Settings.diagnosis) println(a.toString)
-
   def getFoodArray = foodMap.keys.toParArray
 
-  def addMenu(food: Food): Boolean = {
-    if (foodMap.contains(food)) {
-      food.setToMenu()
-      true
-    } else false
-  }
-
-  def deleteMenu(food: Food): Boolean = {
-    if (foodMap.contains(food)) {
-      food.setToRaw()
-      true
-    } else false
-  }
-
-  /** Returns the amount of food as an integer */
+  /** Returns the amount of foods as an integer */
   def checkAvailability(food: Food): Int = {
     val testMap = foodMap.clone()
     var testState = true
@@ -45,10 +29,10 @@ class FoodMenu {
   ): Boolean = {
     if (foodMap.contains(food)) {
       val currentAmount = testMap(food)
-      if (currentAmount >= num)
+      if (currentAmount >= num) {
         testMap += (food -> (testMap(food) - num))
         true
-      else if (currentAmount > 0) {
+      } else if (currentAmount > 0) {
         testMap += (food -> 0)
         checkAmount(food, num - currentAmount, testMap)
       } else {
@@ -84,13 +68,6 @@ class FoodMenu {
     }
   }
 
-  def removeFood(food: Food, amount: Double): Boolean = {
-    if (foodMap.contains(food) && amount >= 0 && foodMap(food) >= amount) {
-      foodMap += (food -> (foodMap(food) - amount))
-      true
-    } else false
-  }
-
   def addFood(food: Food, amount: Double): Boolean = {
     if (amount > 0) {
       if (foodMap.contains(food))
@@ -101,46 +78,46 @@ class FoodMenu {
     } else false
   }
 
-  def getByTags(tag: String): ParHashMap[Food, Double] = {
-    val tagSet = tag.toUpperCase.toCharArray.toSet.intersect(
+  // Only used in unit tests
+  def getByTags(tag: String): ParArray[Food] = {
+    val tagSet = tag.toUpperCase.toSet.intersect(
       Settings.allAbbreviations
     )
-    if (tagSet.isEmpty) foodMap
+    if (tagSet.isEmpty) foodMap.keys.toParArray
     else {
-      val map = ParHashMap[Food, Double]()
+      val foods = ArrayBuffer[Food]()
       for ((item, amount) <- foodMap) {
         val uniqueTags = item.tag
         if (tagSet.intersect(item.tag).size == tagSet.size)
-          map += (item -> amount)
+          foods += item
       }
-      map
+      foods.toParArray
     }
   }
 
-  def getByName(key: String): ParHashMap[Food, Double] = {
-    val map = ParHashMap[Food, Double]()
-    val name = key.toUpperCase.trim
+  def getByName(key: String): ParArray[Food] = {
+    val foods = ArrayBuffer[Food]()
+    val name = key.trim.toUpperCase
     for ((item, amount) <- foodMap) {
-      val itemName = item.name.toUpperCase.trim
-      if (itemName.contains(name))
-        map += (item -> amount)
+      val itemName = item.name.trim.toUpperCase
+      if (itemName.contains(name)) foods += item
     }
-    map
+    foods.toParArray
   }
 
-  def getByIngredients(name: String): ParHashMap[Food, Double] = {
-    val map = ParHashMap[Food, Double]()
-    val nameList = name.toUpperCase.trim
+  def getByIngredients(name: String): ParArray[Food] = {
+    val foods = ArrayBuffer[Food]()
+    val ingredientName = name.trim.toUpperCase
     for ((item, amount) <- foodMap) {
       val ingredients =
-        item.ingredients.keys.map(_.name.toUpperCase.trim).mkString(" ")
-      if (ingredients.contains(nameList)) map += (item -> amount)
+        item.ingredients.keys.map(_.name.trim.toUpperCase).mkString(" ")
+      if (ingredients.contains(ingredientName)) foods += item
     }
-    map
+    foods.toParArray
   }
 
-  def getByAvailability(num: Double): ParHashMap[Food, Double] = {
-    foodMap.filter(_._2 >= num)
+  def getByAvailability(num: Double): ParArray[Food] = {
+    foodMap.filter(_._2 >= num).keys.toParArray
   }
 
 }

@@ -35,16 +35,20 @@ class UI extends MainFrame {
   val leftMenuScroll = ScrollPane()
   val leftNormalMenuBox = BoxPanel(Vertical)
   val leftSearchArea = BoxPanel(Horizontal)
-  val searchPreventionBox = TextField("")
-  val searchBox = TextField(" Search for recipes or ingredients here...")
+  val searchPreventionBox = TextField()
+  val searchHint = " Search for recipes or ingredients here..."
+  val searchBox = TextField(searchHint)
   val searchButton: Button = Button("") {
-    if (searchBox.text == " Search for recipes or ingredients here...")
-      searchBox.text = ""
-    p("Notice: Searched: \"" + searchBox.text + "\"")
-    changed = true
-    leftFeedback.text = "> Return to the previous page, click Back button"
-    changeBox(searchBox.text)
-    tempSearchText = searchBox.text
+    if (searchBox.text == searchHint || searchBox.text == "") {
+      searchBox.text = searchHint
+      searchBox.foreground = GRAY
+    } else {
+      p("Notice: Searched: \"" + searchBox.text + "\"")
+      changed = true
+      leftFeedback.text = "> Return to the previous page, click Back button"
+      changeBox(searchBox.text)
+      tempSearchText = searchBox.text
+    }
   }
   var backButton: Button = Button("") {
     changed = false
@@ -55,10 +59,10 @@ class UI extends MainFrame {
     searchBox.foreground = GRAY
     p("Notice: Returned to the main interface")
   }
-  val leftFeedback = TextField("")
+  val leftFeedback = TextField()
   val leftMultifunctionalFrame = BorderPanel()
   val leftMultifunctionalBox = BoxPanel(Horizontal)
-  val leftMultifunctionalText = TextField("")
+  val leftMultifunctionalText = TextField()
   val leftMultifunctionalButton: Button = Button("") {
     addMenuToUI(leftMultifunctionalText.text)
     leftMultifunctionalText.border = EmptyBorder
@@ -97,17 +101,14 @@ class UI extends MainFrame {
   def refreshMenuBox(): Unit = {
     listenTo(searchBox)
     leftNormalMenuBox.contents.clear()
-    val foodListMenu = menu.foodMap
-      .filter(_._1.isMenu)
-      .toArray
-      .sortBy(x => menu.checkAvailability(x._1))
-      .reverse
     val allergies = returnStatus()
-    val foodListMenuAllergies =
-      foodListMenu
-        .filter(x => allergies.forall(y => x._1.tag.contains(y)))
-        .map(_._1)
-    for (food <- foodListMenuAllergies)
+
+    val foodListMenu = menu.getFoodArray
+      .filter(food => food.isMenu && allergies.subsetOf(food.tag))
+      .toArray
+      .sortBy(x => menu.checkAvailability(x))(Ordering[Int].reverse)
+
+    for (food <- foodListMenu)
       leftNormalMenuBox.contents += UISectionBox(food, this)
     outerBox.revalidate()
   }
@@ -150,7 +151,6 @@ class UI extends MainFrame {
   // Icons
   private val iconSelected = Icon("src/main/scala/icons/selected.png")
   private val iconFree = Icon("src/main/scala/icons/free.png")
-  private val iconButton = Icon("src/main/scala/icons/button.png")
   private val iconSave = Icon("src/main/scala/icons/save.png")
   private val iconSavePressed = Icon("src/main/scala/icons/save_done.png")
   private val iconExit = Icon("src/main/scala/icons/exit.png")

@@ -83,7 +83,7 @@ class FileProcessor(private val menu: FoodMenu) {
           })
           .toMap
       } else { Map[String, Double]() }
-      val tag = lineArray(2).toCharArray.toSet
+      val tag = lineArray(2).toSet
       val description = lineArray(3)
       val isMenu = lineArray(4).toBoolean
       var amount = lineArray(5).toDouble

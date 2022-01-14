@@ -6,8 +6,7 @@ import scala.swing.Orientation.Vertical
 import scala.swing.Alignment.Left
 import scala.swing.Swing.EmptyIcon
 import scala.collection.parallel.ParIterable
-import scala.collection.parallel.mutable.ParHashMap
-
+import scala.collection.parallel.mutable.{ParArray, ParHashMap}
 
 class UISearchRepresentation(ui: UI, keyword: String) {
   private val menu: FoodMenu = ui.menu
@@ -27,14 +26,14 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   // Headline frame
   headlineBorder.layout(headline) = West
 
-  private def allergiesRemove(map: ParHashMap[Food, Double]) = {
+  private def allergiesRemove(foods: ParArray[Food]) = {
     val allergies = ui.returnStatus()
-    map.keys.filter(x => allergies.forall(y => x.tag.contains(y)))
+    foods.filter(x => allergies.forall(y => x.tag.contains(y)))
   }
 
   private def addSubFrame(
       labelName: String,
-      result: ParIterable[Food]
+      result: ParArray[Food]
   ): BorderPanel = {
     val line = Label(labelName, EmptyIcon, Left)
     val lineBorder = BorderPanel()

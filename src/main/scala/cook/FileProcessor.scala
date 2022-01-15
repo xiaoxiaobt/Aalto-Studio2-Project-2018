@@ -7,12 +7,12 @@ import java.io.{File, PrintWriter, FileNotFoundException}
 import java.awt.Color.RED
 
 case class Holder(
-    val name: String,
-    val ingredients: Map[String, Double],
-    val allergies: Set[Char],
-    val description: String,
-    val isMenu: Boolean,
-    val amount: Double
+    name: String,
+    ingredients: Map[String, Double],
+    allergies: Set[Char],
+    description: String,
+    isMenu: Boolean,
+    amount: Double
 )
 
 class FileProcessor(private val menu: FoodMenu) {
@@ -96,14 +96,13 @@ class FileProcessor(private val menu: FoodMenu) {
       }
       Some(Holder(name, ingredients, tag, description, isMenu, amount))
     } catch {
-      case _: Exception => {
+      case _: Exception =>
         println("Invalid line: " + line)
         None
-      }
     }
   }
 
-  def linesToUI(lines: Array[String]) = {
+  def linesToUI(lines: Array[String]): Unit = {
     var holders = lines.map(lineParser).filter(_.isDefined).map(_.get)
     var continue = true
     while (continue) {

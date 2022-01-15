@@ -10,10 +10,10 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.getFoodArray shouldBe empty
     val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")
     val food2 =
-      Food("Eggs", ParHashMap[Food, Double]((food1 -> 2)), Set[Char](), "Good")
+      Food("Eggs", ParHashMap[Food, Double](food1 -> 2), Set[Char](), "Good")
     val food3 = Food(
       "Unknown",
-      ParHashMap[Food, Double]((food1 -> 2)),
+      ParHashMap[Food, Double](food1 -> 2),
       Set[Char](),
       "Good"
     )
@@ -38,11 +38,11 @@ class UnitTests extends AnyFlatSpec with Matchers {
         ""
       )
     val food2 =
-      Food("Food Eggs", ParHashMap[Food, Double]((food1 -> 2)), Set[Char](), "")
+      Food("Food Eggs", ParHashMap[Food, Double](food1 -> 2), Set[Char](), "")
     val food3 =
       Food(
         "",
-        ParHashMap[Food, Double]((food1 -> 2)),
+        ParHashMap[Food, Double](food1 -> 2),
         "AAA".toSet,
         ""
       )
@@ -51,26 +51,26 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.addFood(food2, 2)
     testMenu.addFood(food3, 3)
 
-    testMenu.getByTags("") should have size (3)
-    testMenu.getByTags("A1") should have size (1)
-    testMenu.getByTags("A") should have size (2)
+    testMenu.getByTags("") should have size 3
+    testMenu.getByTags("A1") should have size 1
+    testMenu.getByTags("A") should have size 2
     testMenu.getByTags("8") shouldBe empty
-    testMenu.getByTags("gl") should have size (1)
-    testMenu.getByTags(" ") should have size (3)
+    testMenu.getByTags("gl") should have size 1
+    testMenu.getByTags(" ") should have size 3
 
-    testMenu.getByName("foo") should have size (2)
-    testMenu.getByName("fOod  ") should have size (2)
-    testMenu.getByName("") should have size (3)
-    testMenu.getByName(" ") should have size (3)
+    testMenu.getByName("foo") should have size 2
+    testMenu.getByName("fOod  ") should have size 2
+    testMenu.getByName("") should have size 3
+    testMenu.getByName(" ") should have size 3
     testMenu.getByName("jfdnsdj") shouldBe empty
-    testMenu.getByName("s") should have size (2)
+    testMenu.getByName("s") should have size 2
     testMenu.getByName("cookies food") shouldBe empty
 
     testMenu.getByAvailability(4) shouldBe empty
-    testMenu.getByAvailability(3) should have size (1)
-    testMenu.getByAvailability(2) should have size (2)
-    testMenu.getByAvailability(1) should have size (3)
-    testMenu.getByAvailability(0) should have size (3)
+    testMenu.getByAvailability(3) should have size 1
+    testMenu.getByAvailability(2) should have size 2
+    testMenu.getByAvailability(1) should have size 3
+    testMenu.getByAvailability(0) should have size 3
   }
 
   "Menu get/add/del functions" should "work correctly" in {
@@ -78,16 +78,16 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.getFoodArray shouldBe empty
     val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")
     val food2 =
-      Food("Eggs", ParHashMap[Food, Double]((food1 -> 2)), Set[Char](), "Good")
+      Food("Eggs", ParHashMap[Food, Double](food1 -> 2), Set[Char](), "Good")
     val food3 = Food(
       "Unknown",
-      ParHashMap[Food, Double]((food1 -> 2)),
+      ParHashMap[Food, Double](food1 -> 2),
       Set[Char](),
       "Good"
     )
     val food4 = Food(
       "Unknown",
-      ParHashMap[Food, Double]((food1 -> 2)),
+      ParHashMap[Food, Double](food1 -> 2),
       Set[Char](),
       "Good"
     )

@@ -19,8 +19,7 @@ class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {
   private val myColor: Color = Settings.color
 
   val firstRow = BoxPanel(Horizontal)
-  val labelName =
-    Label(" " + food.name + " " * (28 - food.name.length), EmptyIcon, Left)
+  val labelName = Label(" " + "%-28s".format(food.name), EmptyIcon, Left)
   val firstRowIconset = BoxPanel(Horizontal)
   val iconBoxes = Array.fill[Button](6)(Button("") {})
 
@@ -28,7 +27,7 @@ class UISectionBox(food: Food, ui: UI) extends BoxPanel(Vertical) {
 
   val buttonDelete: Button = Button(" x ") {
     menu.foodMap -= food
-    p("Notice: " + food.name + " has been removed from the list")
+    p("Notice: %s has been removed from the list".format(food.name))
     ui.revalidateWindow(this)
   }
 

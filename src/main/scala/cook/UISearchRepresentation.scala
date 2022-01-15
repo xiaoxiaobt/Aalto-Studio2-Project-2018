@@ -14,7 +14,7 @@ class UISearchRepresentation(ui: UI, keyword: String) {
   private val key: Double = keyword.toDoubleOption.getOrElse(Double.NaN)
 
   val headline = Label(
-    " Search Results: You have searched \"" + keyword + "\"",
+    " Search Results: You have searched \"%s\"".format(keyword.trim),
     EmptyIcon,
     Left
   )

@@ -2,10 +2,10 @@ package cook
 import scala.collection.parallel.mutable.ParHashMap
 
 case class Food(
-    val name: String,
-    val ingredients: ParHashMap[Food, Double],
-    val tag: Set[Char],
-    val description: String
+    name: String,
+    ingredients: ParHashMap[Food, Double],
+    tag: Set[Char],
+    description: String
 ) {
 
   private var menuType: Boolean = false

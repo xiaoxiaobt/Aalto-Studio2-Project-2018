@@ -6,16 +6,15 @@ import scala.util.Using
 import java.io.{File, PrintWriter, FileNotFoundException}
 import java.awt.Color.RED
 
-case class Holder(
-    name: String,
-    ingredients: Map[String, Double],
-    allergies: Set[Char],
-    description: String,
-    isMenu: Boolean,
-    amount: Double
-)
-
 class FileProcessor(private val menu: FoodMenu) {
+  case class Holder(
+      name: String,
+      ingredients: Map[String, Double],
+      allergies: Set[Char],
+      description: String,
+      isMenu: Boolean,
+      amount: Double
+  )
 
   def IOWritelines(): Unit = {
     val file = File("src/main/scala/saved_data/data.tsv")
@@ -116,7 +115,7 @@ class FileProcessor(private val menu: FoodMenu) {
           for ((ingredientName, ingredientAmount) <- holder.ingredients) {
             val correspondingFood =
               menu.getFoodArray.find(x => x.name == ingredientName).get
-            ingredients += (correspondingFood -> ingredientAmount)
+            ingredients(correspondingFood) = ingredientAmount
           }
           val food = Food(
             holder.name,

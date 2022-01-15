@@ -30,10 +30,10 @@ class FoodMenu {
     if (foodMap.contains(food)) {
       val currentAmount = testMap(food)
       if (currentAmount >= num) {
-        testMap += (food -> (testMap(food) - num))
+        testMap(food) -= num
         true
       } else if (currentAmount > 0) {
-        testMap += (food -> 0)
+        testMap(food) = 0
         checkAmount(food, num - currentAmount, testMap)
       } else {
         if (food.ingredients.isEmpty) false
@@ -71,9 +71,9 @@ class FoodMenu {
   def addFood(food: Food, amount: Double): Boolean = {
     if (amount > 0) {
       if (foodMap.contains(food))
-        foodMap += (food -> (foodMap(food) + amount))
+        foodMap(food) += amount
       else
-        foodMap += (food -> amount)
+        foodMap(food) = amount
       true
     } else false
   }

@@ -5,7 +5,7 @@ import scala.collection.parallel.mutable.ParHashMap
 
 class UnitTests extends AnyFlatSpec with Matchers {
 
-  "Fridge add/remove functions" should "work correctly" in {
+  "Fridge addFood function" should "work correctly" in {
     val testMenu = FoodMenu()
     testMenu.getFoodArray shouldBe empty
     val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")
@@ -51,12 +51,12 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.addFood(food2, 2)
     testMenu.addFood(food3, 3)
 
-    testMenu.getByTags("") should have size 3
-    testMenu.getByTags("A1") should have size 1
-    testMenu.getByTags("A") should have size 2
-    testMenu.getByTags("8") shouldBe empty
-    testMenu.getByTags("gl") should have size 1
-    testMenu.getByTags(" ") should have size 3
+//     testMenu.getByTags("") should have size 3
+//     testMenu.getByTags("A1") should have size 1
+//     testMenu.getByTags("A") should have size 2
+//     testMenu.getByTags("8") shouldBe empty
+//     testMenu.getByTags("gl") should have size 1
+//     testMenu.getByTags(" ") should have size 3
 
     testMenu.getByName("foo") should have size 2
     testMenu.getByName("fOod  ") should have size 2
@@ -73,7 +73,7 @@ class UnitTests extends AnyFlatSpec with Matchers {
     testMenu.getByAvailability(0) should have size 3
   }
 
-  "Menu get/add/del functions" should "work correctly" in {
+  "Menu get/add functions" should "work correctly" in {
     val testMenu = FoodMenu()
     testMenu.getFoodArray shouldBe empty
     val food1 = Food("Cookies", ParHashMap[Food, Double](), Set[Char](), "Good")

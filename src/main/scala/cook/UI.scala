@@ -222,7 +222,7 @@ class UI extends MainFrame {
   leftInfoSection.contents += leftFeedback
   leftInfoSection.contents += VStrut(20)
 
-  // Left Multi-usage Textfield
+  // Left Multi-usage TextField
   leftMultifunctionalText.editable = false
   leftMultifunctionalText.background = WHITE
   leftMultifunctionalText.preferredSize = (1300, 30)
